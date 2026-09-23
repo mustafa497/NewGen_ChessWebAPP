@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Student Dashboard · Nexus Chess Academy</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
@@ -659,6 +662,71 @@ td.num{font-family:'Fraunces',serif; font-variant-numeric:tabular-nums;}
   .certs{grid-template-columns:1fr;}
   .due-meta{gap:1rem;}
 }
+/* ================= PUZZLE OF THE DAY =================
+   A real board, not a picture: the position comes from the published puzzle
+   set and the moves are checked by the same engine the rest of the site uses. */
+.pzl-stage{ min-width:0; }
+.pzl-board{
+  display:grid; grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(8,1fr);
+  aspect-ratio:1/1; width:100%; max-width:440px; margin-inline:auto;
+  border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.14);
+  box-shadow:0 24px 50px -28px rgba(0,0,0,0.9);
+  container-type:inline-size; touch-action:none; user-select:none; -webkit-user-select:none;
+}
+.pzl-sq{
+  position:relative; display:flex; align-items:center; justify-content:center;
+  line-height:1; cursor:pointer; font-size:10.2cqw;
+  transition:background-color .12s ease;
+}
+.pzl-sq.is-light{ background:#eeeed2; }
+.pzl-sq.is-dark{ background:#769656; }
+.pzl-sq.is-w{ color:#fdfdfb; text-shadow:0 1px 0 #6d6a63,0 -1px 0 #6d6a63,1px 0 0 #6d6a63,-1px 0 0 #6d6a63,0 3px 5px rgba(0,0,0,0.35); }
+.pzl-sq.is-b{ color:#2f2c29; text-shadow:0 1px 0 rgba(255,255,255,0.3),0 3px 5px rgba(0,0,0,0.3); }
+.pzl-sq.is-sel{ box-shadow:inset 0 0 0 100px rgba(255,238,88,0.62); }
+.pzl-sq.is-last{ box-shadow:inset 0 0 0 100px rgba(255,238,88,0.38); }
+.pzl-sq.is-check{ box-shadow:inset 0 0 0 100px rgba(226,86,86,0.55); }
+.pzl-sq.is-hint{ box-shadow:inset 0 0 0 4px rgba(79,216,255,0.9); }
+.pzl-sq.can-move::after{
+  content:''; position:absolute; width:26%; height:26%; border-radius:50%;
+  background:rgba(20,30,10,0.26); pointer-events:none;
+}
+.pzl-sq.can-take{ box-shadow:inset 0 0 0 4px rgba(20,30,10,0.3); }
+.pzl-board.is-locked .pzl-sq{ cursor:default; }
+.pzl-board.is-right{ box-shadow:0 0 0 3px var(--green), 0 24px 50px -28px rgba(0,0,0,0.9); }
+.pzl-board.is-wrong{ animation:pzlShake .4s ease; }
+@keyframes pzlShake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
+
+.pzl-side{ min-width:0; }
+.pzl-turn{ font-family:'Fraunces',serif; font-size:1.05rem; color:var(--ink); }
+.pzl-tags{ display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.7rem; }
+.pzl-status{ margin-top:0.9rem; font-size:0.82rem; line-height:1.6; color:var(--ink-dim); min-height:2.6rem; }
+.pzl-status.is-ok{ color:var(--green); }
+.pzl-status.is-no{ color:var(--rose); }
+.pzl-acts{ display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:0.4rem; }
+.pzl-acts button{
+  padding:0.6rem 1rem; border-radius:3px; font-size:0.82rem; cursor:pointer;
+  border:1px solid var(--line); background:transparent; color:var(--ink-dim);
+  font-family:inherit; transition:border-color .2s ease, color .2s ease;
+}
+.pzl-acts button:hover{ border-color:rgba(255,255,255,0.26); color:var(--ink); }
+.pzl-acts .btn-key{
+  border:none; background:var(--cyan); color:var(--bg-0); font-weight:500;
+}
+.pzl-acts .btn-key:hover{ box-shadow:0 0 22px -6px var(--cyan-dim); color:var(--bg-0); }
+.pzl-acts button[hidden]{ display:none; }
+.pzl-hint-line{
+  margin-top:0.8rem; text-align:center; font-size:0.8rem; color:var(--cyan);
+}
+.pzl-hint-line[hidden]{ display:none; }
+.pzl-mini-h{ font-size:0.64rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); }
+.pzl-mini{ display:flex; gap:1.4rem; margin-top:0.8rem; }
+.pzl-mini b{ display:block; font-family:'Fraunces',serif; font-size:1.5rem; font-variant-numeric:tabular-nums; }
+.pzl-mini span{ display:block; font-size:0.72rem; color:var(--ink-dim); margin-top:0.2rem; }
+
+@media (max-width:980px){
+  .pzl-board{ max-width:none; }
+  .pzl-side{ margin-top:1.1rem; }
+}
 </style>
 </head>
 <body>
@@ -717,12 +785,9 @@ td.num{font-family:'Fraunces',serif; font-variant-numeric:tabular-nums;}
       <a href="#" class="rail-link" data-view="chapters">
         <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         Chapters <span class="pip" id="pipCh">0</span></a>
-      <a href="#" class="rail-link" data-view="assignments">
-        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        Assignments <span class="pip" id="pipDue">0</span></a>
-      <a href="#" class="rail-link" data-view="practice">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-        Practice</a>
+      <a href="#" class="rail-link" data-view="puzzles">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+        Puzzles <span class="pip" id="pipStreak">0</span></a>
 
       <div class="rail-sec">Recognition</div>
       <a href="#" class="rail-link" data-view="leaderboard">
@@ -835,8 +900,8 @@ td.num{font-family:'Fraunces',serif; font-variant-numeric:tabular-nums;}
       <div class="card">
         <div class="card-head">
           <div>
-            <h3>Thirty chapters, five stages</h3>
-            <p>One assignment after each. A stage assessment closes every stage.</p>
+            <h3>The whole path</h3>
+            <p>Work through them in order. A revision session closes every block.</p>
           </div>
           <div class="spacer"></div>
           <span class="chip green" id="chDoneChip">&mdash;</span>
@@ -845,25 +910,43 @@ td.num{font-family:'Fraunces',serif; font-variant-numeric:tabular-nums;}
       </div>
     </section>
 
-    <!-- ---------- ASSIGNMENTS ---------- -->
-    <section class="view" id="view-assignments">
-      <div class="eyebrow">Assignments</div>
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Assignment</th><th>Chapter</th><th>Due</th><th>Status</th><th>Score</th>
-            </tr>
-          </thead>
-          <tbody id="asgBody"></tbody>
-        </table>
-      </div>
-    </section>
+    <!-- ---------- PUZZLES ---------- -->
+    <section class="view" id="view-puzzles">
+      <div class="eyebrow">Puzzle of the day</div>
 
-    <!-- ---------- PRACTICE ---------- -->
-    <section class="view" id="view-practice">
-      <div class="eyebrow">Practice</div>
-      <div class="grid g-4" id="pracKpis"></div>
+      <div class="grid g-32">
+        <div class="pzl-stage">
+          <div class="pzl-board" id="sdBoard" role="application" aria-label="Puzzle board"></div>
+          <p class="pzl-hint-line" id="sdHintLine" hidden></p>
+        </div>
+
+        <div class="pzl-side">
+          <div class="card">
+            <p class="pzl-turn" id="sdTurn">Loading&hellip;</p>
+            <div class="pzl-tags">
+              <span class="chip cyan" id="sdDepth">&mdash;</span>
+              <span class="chip" id="sdRating">&mdash;</span>
+            </div>
+            <p class="pzl-status" id="sdStatus">Take your time. An illegal move just puts the piece back.</p>
+            <div class="pzl-acts">
+              <button type="button" class="btn-quiet" id="sdHint">Show a hint</button>
+              <button type="button" class="btn-quiet" id="sdSkip">Skip</button>
+              <button type="button" class="btn-key" id="sdNext" hidden>Next puzzle &rarr;</button>
+            </div>
+          </div>
+
+          <div class="card mt">
+            <p class="pzl-mini-h">Today</p>
+            <div class="pzl-mini">
+              <div><b id="sdSolvedToday">0</b><span>solved today</span></div>
+              <div><b id="sdStreak">0</b><span>day streak</span></div>
+              <div><b id="sdBest">0</b><span>best run</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid g-4 mt" id="pracKpis"></div>
 
       <div class="tiles mt">
         <a class="tile" href="rush.html" style="--tc:#4fd8ff">
@@ -912,6 +995,7 @@ td.num{font-family:'Fraunces',serif; font-variant-numeric:tabular-nums;}
 </div>
 
 
+<script src="assets/chess-core.js"></script>
 <script>
 /* ============================================================
    LOGIN GATE
@@ -1069,6 +1153,345 @@ td.num{font-family:'Fraunces',serif; font-variant-numeric:tabular-nums;}
    Sample data, generated the same way every time so the numbers do not
    jump between refreshes.
    ============================================================ */
+/* ============================================================
+   PUZZLE OF THE DAY
+   A playable board inside the dashboard. Positions come from the published
+   set in assets/puzzles/, and every move is checked by assets/chess-core.js -
+   the same engine Tactics Rush and the Puzzle Lab use, so a move that is
+   legal here is legal everywhere.
+
+   Progress is kept per student in localStorage: how many they solved today,
+   the day streak, and their best run. Nothing is sent anywhere.
+   ============================================================ */
+window.NexusDaily = (function () {
+  const C = window.NexusChess;
+  const GLYPH = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟' };
+
+  let all = [];          // every puzzle we could load
+  let puzzle = null;     // the one on the board
+  let st = null;         // live position
+  let flipped = false;
+  let solveIdx = 0;      // where we are in the solution
+  let selected = null;
+  let legalFrom = [];
+  let lastMove = null;
+  let locked = true;
+  let cells = [];
+  let who = 's00';       // which student's progress we are keeping
+  let done = false;
+
+  const $ = id => document.getElementById(id);
+  const boardEl = () => $('sdBoard');
+
+  /* ---- progress, per student ---- */
+  const KEY = () => 'nexus.daily.' + who;
+  const today = () => new Date().toISOString().slice(0, 10);
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY());
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { day: today(), solvedToday: 0, streak: 0, best: 0, seen: [] };
+  }
+  function save(p) { try { localStorage.setItem(KEY(), JSON.stringify(p)); } catch (e) {} }
+
+  function progress() {
+    const p = load();
+    if (p.day !== today()) {
+      /* a day with nothing solved breaks the streak; yesterday's keeps it */
+      const yday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+      p.streak = (p.day === yday && p.solvedToday > 0) ? p.streak : 0;
+      p.day = today();
+      p.solvedToday = 0;
+      save(p);
+    }
+    return p;
+  }
+
+  function paintProgress() {
+    const p = progress();
+    $('sdSolvedToday').textContent = p.solvedToday;
+    $('sdStreak').textContent = p.streak;
+    $('sdBest').textContent = p.best;
+    const pip = $('pipStreak');
+    if (pip) pip.textContent = p.streak;
+  }
+
+  /* ---- board ---- */
+  function build() {
+    const el = boardEl();
+    el.innerHTML = '';
+    cells = [];
+    for (let v = 0; v < 64; v++) {
+      const d = document.createElement('div');
+      d.className = 'pzl-sq';
+      d.dataset.v = v;
+      el.appendChild(d);
+      cells.push(d);
+    }
+    el.addEventListener('click', onClick);
+  }
+
+  const viewIndex = i => (flipped ? 63 - i : i);
+
+  function paint() {
+    for (let v = 0; v < 64; v++) {
+      const i = viewIndex(v);
+      const cell = cells[v];
+      const p = st ? st.b[i] : null;
+      const dark = ((i & 7) + (i >> 3)) % 2 === 1;
+      let cls = 'pzl-sq ' + (dark ? 'is-dark' : 'is-light');
+      if (lastMove && (i === lastMove.from || i === lastMove.to)) cls += ' is-last';
+      if (selected === i) cls += ' is-sel';
+      if (p) cls += C.isWhite(p) ? ' is-w' : ' is-b';
+      cell.className = cls;
+      cell.textContent = p ? GLYPH[p.toLowerCase()] : '';
+      cell.dataset.sq = C.name(i);
+    }
+    legalFrom.forEach(m => {
+      const v = flipped ? 63 - m.to : m.to;
+      cells[v].classList.add(st.b[m.to] ? 'can-take' : 'can-move');
+    });
+    if (st && C.inCheck(st)) {
+      const k = st.kings[st.turn];
+      cells[flipped ? 63 - k : k].classList.add('is-check');
+    }
+  }
+
+  function onClick(e) {
+    if (locked || done) return;
+    const cell = e.target.closest('.pzl-sq');
+    if (!cell) return;
+    const i = viewIndex(+cell.dataset.v);
+
+    if (selected === null) {
+      const p = st.b[i];
+      if (!p || C.colorOf(p) !== st.turn) return;
+      selected = i;
+      legalFrom = C.legalMoves(st).filter(m => m.from === i);
+      paint();
+      return;
+    }
+    if (i === selected) { selected = null; legalFrom = []; paint(); return; }
+
+    const m = legalFrom.filter(x => x.to === i)[0];
+    if (!m) {
+      /* clicking another of your own pieces just moves the selection */
+      const p = st.b[i];
+      if (p && C.colorOf(p) === st.turn) {
+        selected = i;
+        legalFrom = C.legalMoves(st).filter(x => x.from === i);
+      } else {
+        selected = null; legalFrom = [];
+      }
+      paint();
+      return;
+    }
+
+    /* a promotion always goes to a queen here - the puzzles never need less */
+    const chosen = legalFrom.filter(x => x.from === m.from && x.to === m.to)
+                            .sort((a, b) => (b.promo === 'q' ? 1 : 0) - (a.promo === 'q' ? 1 : 0))[0];
+    selected = null; legalFrom = [];
+    tryMove(chosen);
+  }
+
+  function apply(m) {
+    lastMove = { from: m.from, to: m.to };
+    C.make(st, m);
+    paint();
+  }
+
+  function correct(m) {
+    const want = puzzle.moves[solveIdx];
+    const got = C.toUCI(m);
+    if (got === want) return true;
+    if (want && want.length === 4 && got.length === 5 && got.slice(0, 4) === want) return true;
+    if (puzzle.altMate) {                       /* any mate counts on a mate-in-one */
+      C.make(st, m);
+      const mate = C.isCheckmate(st);
+      C.unmake(st);
+      return mate;
+    }
+    return false;
+  }
+
+  function say(msg, kind) {
+    const el = $('sdStatus');
+    el.textContent = msg;
+    el.className = 'pzl-status' + (kind ? ' is-' + kind : '');
+  }
+
+  function tryMove(m) {
+    locked = true;
+    const right = correct(m);
+    apply(m);
+
+    if (!right) {
+      boardEl().classList.add('is-wrong');
+      setTimeout(() => boardEl().classList.remove('is-wrong'), 420);
+      say('Not this one. Put it back and look again.', 'no');
+      /* take it back so they can try the position properly */
+      setTimeout(() => {
+        C.unmake(st);
+        lastMove = null;
+        paint();
+        locked = false;
+      }, 700);
+      return;
+    }
+
+    solveIdx++;
+    if (solveIdx >= puzzle.moves.length) { solved(); return; }
+
+    say('Good. Now the reply…');
+    setTimeout(() => {
+      const reply = C.fromUCI(st, puzzle.moves[solveIdx]);
+      if (reply) apply(reply);
+      solveIdx++;
+      locked = false;
+      say('Your move again.');
+    }, 520);
+  }
+
+  function solved() {
+    done = true;
+    boardEl().classList.add('is-right');
+    say('Solved. Well played.', 'ok');
+    $('sdNext').hidden = false;
+    $('sdHint').hidden = true;
+    $('sdSkip').hidden = true;
+
+    const p = progress();
+    p.solvedToday++;
+    if (p.solvedToday === 1) p.streak++;        /* first of the day extends it */
+    p.best = Math.max(p.best || 0, p.solvedToday);
+    if (puzzle && p.seen.indexOf(puzzle.id) < 0) p.seen.push(puzzle.id);
+    if (p.seen.length > 400) p.seen = p.seen.slice(-200);
+    save(p);
+    paintProgress();
+  }
+
+  /* ---- choosing one ---- */
+  function depthOf(p) {
+    if (p.mateIn) return p.mateIn;
+    return Math.ceil((p.moves.length - (p.setupPly || 0)) / 2);
+  }
+
+  function next() {
+    if (!all.length) return;
+    const p = progress();
+    const seen = {};
+    p.seen.forEach(id => { seen[id] = true; });
+    let pool = all.filter(x => !seen[x.id]);
+    if (!pool.length) pool = all.slice();       /* been through them all: start over */
+
+    /* start gently and work up as the day goes on */
+    const wanted = p.solvedToday < 2 ? 1 : (p.solvedToday < 5 ? 2 : 3);
+    let band = pool.filter(x => depthOf(x) === wanted);
+    if (!band.length) band = pool;
+    show(band[Math.floor(Math.random() * band.length)]);
+  }
+
+  function show(p) {
+    puzzle = p;
+    done = false;
+    solveIdx = p.setupPly || 0;
+    st = C.fromFEN(p.fen);
+    lastMove = null; selected = null; legalFrom = [];
+    flipped = (p.setupPly ? (st.turn === 'w' ? 'b' : 'w') : st.turn) === 'b';
+
+    boardEl().classList.remove('is-right');
+    $('sdNext').hidden = true;
+    $('sdHint').hidden = false;
+    $('sdSkip').hidden = false;
+    $('sdHintLine').hidden = true;
+
+    const d = depthOf(p);
+    $('sdDepth').textContent = d === 1 ? 'Mate in one' : d === 2 ? 'Mate in two' : 'Mate in ' + d;
+    $('sdRating').textContent = 'Rating ' + p.rating;
+
+    paint();
+    locked = true;
+
+    if (p.setupPly) {
+      /* the opponent's move into the position, played for them */
+      say('Watch the reply…');
+      setTimeout(() => {
+        const m = C.fromUCI(st, p.moves[0]);
+        if (m) apply(m);
+        ready();
+      }, 520);
+    } else {
+      setTimeout(ready, 160);
+    }
+  }
+
+  function ready() {
+    locked = false;
+    const turn = st.turn === 'w' ? 'White' : 'Black';
+    $('sdTurn').textContent = turn + ' to play';
+    say('Find the move. An illegal one just puts the piece back.');
+  }
+
+  /* ---- loading ---- */
+  async function fetchAll() {
+    try {
+      const idx = await (await fetch('assets/puzzles/index.json', { cache: 'no-store' })).json();
+      const out = [];
+      for (const src of (idx.sources || [])) {
+        for (const b of (src.batches || [])) {
+          const raw = await (await fetch('assets/puzzles/' + b.file)).json();
+          out.push(...(Array.isArray(raw) ? raw : (raw.puzzles || [])));
+        }
+      }
+      return out;
+    } catch (e) {
+      /* opened from disk, or the files are not there: the page still works,
+         the board just says so rather than sitting blank */
+      return (window.NexusPuzzleSeed && window.NexusPuzzleSeed.length)
+        ? window.NexusPuzzleSeed.slice() : [];
+    }
+  }
+
+  let started = false;
+  function start(studentId) {
+    who = studentId || who;
+    paintProgress();
+    if (started) return;
+    started = true;
+    build();
+
+    if (!C) { say('The board could not start.', 'no'); return; }
+
+    $('sdHint').addEventListener('click', function () {
+      if (!puzzle || done) return;
+      const uci = puzzle.moves[solveIdx];
+      if (!uci) return;
+      const from = C.index(uci.slice(0, 2));
+      cells[flipped ? 63 - from : from].classList.add('is-hint');
+      $('sdHintLine').textContent = 'Try the piece on ' + uci.slice(0, 2) + '.';
+      $('sdHintLine').hidden = false;
+    });
+    $('sdSkip').addEventListener('click', function () {
+      const p = progress();
+      if (puzzle && p.seen.indexOf(puzzle.id) < 0) { p.seen.push(puzzle.id); save(p); }
+      next();
+    });
+    $('sdNext').addEventListener('click', next);
+
+    say('Loading a position…');
+    fetchAll().then(list => {
+      all = list.filter(p => p && p.fen && Array.isArray(p.moves) && p.moves.length);
+      if (!all.length) { say('No puzzles could be loaded.', 'no'); return; }
+      next();
+    });
+  }
+
+  return { start: start };
+})();
+
+
 window.NexusStudent = (function () {
 
   const STAGES = [
@@ -1298,35 +1721,8 @@ window.NexusStudent = (function () {
     });
     document.getElementById('chapterList').innerHTML = html;
   }
-
-  /* ---- assignments ---- */
-  function paintAssignments() {
-    const rows = [
-      ['Ten king-and-pawn endings',      12, 'In 2 days',   'due',      null],
-      ['When an exchange helps you',     11, 'In 6 days',   'due',      null],
-      ['Twelve forks, twelve positions', 10, '4 Sep 2026',  'graded',   92],
-      ['Defend the castled king',         9, '28 Aug 2026', 'graded',   88],
-      ['Open files and rook lifts',       8, '21 Aug 2026', 'graded',   79],
-      ['Develop every piece once',        7, '14 Aug 2026', 'graded',   95],
-      ['Stage 1 assessment',              6, '7 Aug 2026',  'graded',   90],
-      ['Stalemate traps',                 5, '31 Jul 2026', 'late',     71]
-    ];
-    const badge = {
-      due:    '<span class="dotstat"><i style="background:#d08a52"></i>Not handed in</span>',
-      graded: '<span class="dotstat"><i style="background:#5ac8a0"></i>Graded</span>',
-      late:   '<span class="dotstat"><i style="background:#e0748a"></i>Handed in late</span>'
-    };
-    document.getElementById('pipDue').textContent = rows.filter(r => r[3] === 'due').length;
-    document.getElementById('asgBody').innerHTML = rows.map(r =>
-      '<tr><td>' + r[0] + '</td>' +
-      '<td style="color:var(--ink-dim)">Chapter ' + r[1] + '</td>' +
-      '<td style="color:var(--ink-dim)">' + r[2] + '</td>' +
-      '<td>' + badge[r[3]] + '</td>' +
-      '<td class="num">' + (r[4] == null ? '<span style="color:var(--ink-dim)">&mdash;</span>' : r[4]) + '</td></tr>'
-    ).join('');
-  }
-
-  /* ---- practice ---- */
+  
+/* ---- practice ---- */
   function paintPractice() {
     document.getElementById('pracKpis').innerHTML =
       kpi('Puzzles solved', PUZZLES.toLocaleString(), '', 'Across the lab and Rush', '#4fd8ff', I.grid) +
@@ -1392,9 +1788,8 @@ window.NexusStudent = (function () {
   /* ---- view switching ---- */
   const TITLES = {
     overview:     ['Overview',     'Where you are, and what is next.'],
-    chapters:     ['Chapters',     'Thirty chapters across five stages.'],
-    assignments:  ['Assignments',  'What has been set, and how it was marked.'],
-    practice:     ['Practice',     'Puzzles, on your own time.'],
+    chapters:     ['Chapters',     'Every session, in the order you meet them.'],
+    puzzles:      ['Puzzles',      'A position a day, and a streak worth keeping.'],
     leaderboard:  ['Leaderboards', 'Your class, and your school nationally.'],
     certificates: ['Certificates', 'What you have earned so far.']
   };
@@ -1406,6 +1801,8 @@ window.NexusStudent = (function () {
     document.getElementById('tbHeading').textContent = t[0];
     document.getElementById('tbSub').textContent     = t[1];
     document.getElementById('rail').classList.remove('open');
+    /* the board only starts once it is actually on screen */
+    if (view === 'puzzles' && window.NexusDaily) window.NexusDaily.start(ME ? ME.id : 's00');
   }
 
   document.getElementById('railNav').addEventListener('click', function (e) {
@@ -1440,7 +1837,6 @@ window.NexusStudent = (function () {
       NOW  = DONE;
       paintOverview();
       paintChapters();
-      paintAssignments();
       paintPractice();
       paintBoards();
       paintCerts();
