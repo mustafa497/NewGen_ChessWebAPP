@@ -1,0 +1,42 @@
+# Nexus Chess Academy — static multi-page site. No build step.
+
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/school-dashboard.html"
+  status = 200
+
+# The Honours page was absorbed into Coaches; keep old links working.
+[[redirects]]
+  from = "/honours.html"
+  to = "/coaches.html#honours"
+  status = 301
+
+# About was folded into Coaches; keep old links working.
+[[redirects]]
+  from = "/about.html"
+  to = "/coaches.html#about"
+  status = 301
+
+# The tuition page was removed; the demo form replaced it. A few links on
+# Learning Path and Why Nexus still name it, and so will old bookmarks.
+[[redirects]]
+  from = "/pricing.html"
+  to = "/index.html"
+  status = 301

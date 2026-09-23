@@ -1,0 +1,416 @@
+/* Nexus Tactics Rush — loaded only by rush.html */
+
+/* Author rules beat the user-agent's [hidden]{display:none}, so anything
+   given a display here would stay on screen when hidden. The promotion
+   overlay did exactly that and sat invisibly over the board, eating clicks. */
+.rush [hidden]{ display:none !important; }
+
+.rush{
+  --r-navy:#080e1c;
+  --r-panel:#0e162a;
+  --r-panel-2:#121d38;
+  --r-ivory:#f4efe3;
+  --r-ink:#e9f0fb;
+  --r-body:#93a5c4;
+  --r-blue:#4a9eff;
+  --r-blue-hot:#7bc2ff;
+  --r-gold:#e8b964;
+  --r-green:#4ad6a0;
+  --r-red:#ff7a7a;
+  --r-line:rgba(255,255,255,0.09);
+  --r-ease:cubic-bezier(0.22,1,0.36,1);
+  position:relative;
+  padding:7rem 0 5rem;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 0%, rgba(74,158,255,0.12), transparent 64%),
+    linear-gradient(180deg, #0a1124 0%, #07090f 70%);
+}
+.rush::before{
+  content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect width='60' height='60' fill='%23ffffff' fill-opacity='0.013'/><rect x='60' y='60' width='60' height='60' fill='%23ffffff' fill-opacity='0.013'/></svg>");
+  background-size:120px 120px;
+}
+.rush > .wrap{ position:relative; z-index:1; }
+
+/* ---------- menu ---------- */
+.rk-head{ text-align:center; max-width:46rem; margin:0 auto 3rem; }
+.rk-eyebrow{
+  display:flex; align-items:center; justify-content:center; gap:0.8rem;
+  font-size:0.7rem; letter-spacing:0.28em; text-transform:uppercase;
+  color:var(--r-blue); margin-bottom:1.3rem;
+}
+.rk-eyebrow::before, .rk-eyebrow::after{ content:''; width:26px; height:1px; background:var(--r-blue); opacity:0.6; }
+.rk-head h1{
+  font-family:'Fraunces',serif; font-weight:600; letter-spacing:-0.025em;
+  font-size:clamp(2.4rem,6vw,4.4rem); line-height:0.98; color:var(--r-ivory); margin:0;
+}
+.rk-head h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--r-blue),var(--r-blue-hot) 45%,var(--r-gold));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+.rk-tag{ margin-top:1.1rem; font-size:1.05rem; color:var(--r-body); }
+
+.rk-modes{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.3rem; margin-bottom:2rem; }
+.rk-mode{
+  position:relative; text-align:left; padding:2rem 1.8rem;
+  border-radius:14px; cursor:pointer;
+  background:linear-gradient(160deg,var(--r-panel-2),var(--r-panel));
+  border:1px solid var(--r-line); color:var(--r-ink);
+  font-family:'Space Grotesk',sans-serif;
+  transition:transform .3s var(--r-ease), border-color .3s ease, box-shadow .3s ease;
+}
+.rk-mode:hover{ transform:translateY(-3px); border-color:rgba(74,158,255,0.45); box-shadow:0 26px 52px -30px rgba(0,0,0,0.9); }
+.rk-mode-t{ display:block; font-family:'Fraunces',serif; font-size:1.5rem; font-weight:600; color:var(--r-ivory); }
+.rk-mode-d{ display:block; margin-top:0.5rem; font-size:0.88rem; line-height:1.6; color:var(--r-body); }
+.rk-mode-b{
+  display:inline-flex; align-items:center; gap:0.4rem; margin-top:1.3rem;
+  font-size:0.74rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--r-blue);
+}
+.rk-mode-b b{ font-family:'Fraunces',serif; font-size:1.05rem; letter-spacing:0; color:var(--r-ivory); }
+
+/* the shape of a run, shown before it starts */
+.rk-ladder{ margin:2rem 0 1.6rem; }
+.rk-ladder-t{
+  margin:0 0 0.85rem; font-size:0.7rem; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--r-dim);
+}
+.rk-ladder ol{
+  list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:0.9rem;
+}
+.rk-ladder li{
+  position:relative; padding:0.95rem 1rem; border-radius:11px;
+  border:1px solid var(--r-line); background:rgba(255,255,255,0.016);
+  display:flex; flex-direction:column; gap:0.26rem; overflow:hidden;
+}
+.rk-ladder li::before{
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+}
+.rk-ladder li.is-1::before{ background:#4ad6a0; }
+.rk-ladder li.is-2::before{ background:#4a9eff; }
+.rk-ladder li.is-3::before{ background:#e8b964; }
+.rk-ladder b{
+  font-size:0.68rem; letter-spacing:0.12em; color:var(--r-dim); font-weight:600;
+}
+.rk-ladder span{ font-family:'Fraunces',serif; font-size:1.02rem; color:var(--r-ink); }
+.rk-ladder i{ font-style:normal; font-size:0.78rem; color:var(--r-body); line-height:1.5; }
+
+@media (max-width:640px){
+  .rk-ladder ol{ grid-template-columns:1fr; gap:0.6rem; }
+}
+
+.rk-foot{ display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; }
+.rk-note{ font-size:0.82rem; color:var(--r-body); }
+.rk-note b{ color:var(--r-ink); font-weight:500; }
+.rk-btn{
+  padding:0.6rem 1.1rem; border-radius:999px; cursor:pointer;
+  background:transparent; border:1px solid var(--r-line); color:var(--r-body);
+  font-family:'Space Grotesk',sans-serif; font-size:0.82rem;
+  transition:color .3s, border-color .3s;
+}
+.rk-btn:hover{ color:var(--r-ink); border-color:var(--r-blue); }
+
+.rk-history{ margin-top:2.4rem; }
+.rk-history h2{ font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--r-body); margin-bottom:1rem; font-family:'Space Grotesk',sans-serif; font-weight:500; }
+.rh-row{
+  display:grid; grid-template-columns:3rem 1fr auto auto; gap:1rem; align-items:baseline;
+  padding:0.7rem 0; border-top:1px solid var(--r-line); font-size:0.84rem; color:var(--r-body);
+}
+.rh-row b{ font-family:'Fraunces',serif; font-size:1.2rem; color:var(--r-ivory); }
+.rh-empty{ font-size:0.85rem; color:var(--r-body); }
+
+/* ---------- loading / error ---------- */
+.rk-state{ text-align:center; padding:5rem 0; }
+.rk-state h2{ font-family:'Fraunces',serif; font-size:1.6rem; color:var(--r-ivory); margin-bottom:0.8rem; }
+.rk-state p{ color:var(--r-body); max-width:44ch; margin:0 auto 1.6rem; line-height:1.7; }
+.rk-spin{
+  width:34px; height:34px; margin:0 auto 1.6rem; border-radius:50%;
+  border:2px solid rgba(255,255,255,0.14); border-top-color:var(--r-blue);
+  animation:rkSpin .9s linear infinite;
+}
+@keyframes rkSpin{ to{ transform:rotate(360deg); } }
+
+/* ---------- play ---------- */
+.rp-wrap{ display:grid; grid-template-columns:minmax(0,1fr) 20rem; gap:2.2rem; align-items:start; }
+
+.rp-hud{
+  display:flex; align-items:center; gap:1.6rem; flex-wrap:wrap;
+  padding:0.85rem 1.3rem; margin-bottom:0.85rem;
+  background:var(--r-panel); border:1px solid var(--r-line); border-radius:12px;
+}
+.rp-stat{ display:flex; flex-direction:column; gap:0.15rem; }
+.rp-stat span{ font-size:0.64rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--r-body); }
+.rp-stat b{ font-family:'Fraunces',serif; font-size:1.8rem; line-height:1; color:var(--r-ivory); font-variant-numeric:tabular-nums; }
+#rushTime.is-low{ color:var(--r-red); }
+.rp-dots{ display:flex; gap:0.35rem; }
+.rp-dots i{
+  width:11px; height:11px; border-radius:50%; display:block;
+  background:rgba(255,255,255,0.14); transition:background .2s ease, box-shadow .2s ease;
+}
+.rp-dots i.is-out{ background:var(--r-red); box-shadow:0 0 10px rgba(255,122,122,0.6); }
+.rp-hud-right{ margin-left:auto; display:flex; align-items:center; gap:1rem; }
+
+/* board */
+/* The board took the full width of its column, which on a wide window made
+   it far taller than the screen. Cap it by the height that is actually left
+   once the nav and the HUD have had their share. */
+.rp-board-wrap{
+  position:relative;
+  width:min(100%, max(19rem, calc(100vh - 12.6rem)));
+  margin-inline:auto;
+  container-type:inline-size;     /* the coordinate overlay sizes off this */
+}
+@supports (height: 100dvh){
+  .rp-board-wrap{ width:min(100%, max(19rem, calc(100dvh - 12.6rem))); }
+}
+.rb-board{
+  display:grid; grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(8,1fr);
+  aspect-ratio:1/1; width:100%;
+  container-type:inline-size;
+  border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.14);
+  box-shadow:0 30px 60px -32px rgba(0,0,0,0.9);
+  touch-action:none; user-select:none; -webkit-user-select:none;
+}
+.rb-board.is-locked{ cursor:default; }
+
+/* Coordinates sit in an overlay rather than on the squares: the squares
+   already spend ::after on the legal-move dot, and an overlay flips with the
+   board without touching the grid. */
+.rb-coords{ position:absolute; inset:0; pointer-events:none; z-index:3; }
+.rb-ranks{ position:absolute; left:0; top:0; bottom:0; width:12.5%; display:flex; flex-direction:column; }
+.rb-files{ position:absolute; left:0; right:0; bottom:0; height:12.5%; display:flex; }
+.rb-coords span{
+  flex:1; display:flex; font-weight:600; line-height:1;
+  font-size:clamp(0.5rem, 1.85cqw, 0.8rem);
+  font-family:'Space Grotesk', sans-serif;
+}
+.rb-ranks span{ align-items:flex-start; justify-content:flex-start; padding:6% 0 0 8%; }
+.rb-files span{ align-items:flex-end; justify-content:flex-end; padding:0 9% 6% 0; }
+.rb-coords span.on-light{ color:#769656; }
+.rb-coords span.on-dark{ color:#eeeed2; }
+.rb-board.is-right{ box-shadow:0 0 0 3px var(--r-green), 0 30px 60px -32px rgba(0,0,0,0.9); }
+.rb-board.is-wrong{ box-shadow:0 0 0 3px var(--r-red), 0 30px 60px -32px rgba(0,0,0,0.9); animation:rbShake .34s ease; }
+@keyframes rbShake{
+  0%,100%{ transform:translateX(0); } 25%{ transform:translateX(-6px); }
+  50%{ transform:translateX(5px); } 75%{ transform:translateX(-3px); }
+}
+.rb-sq{
+  position:relative; display:flex; align-items:center; justify-content:center;
+  font-size:clamp(1.6rem,5.2vw,3.4rem); line-height:1; cursor:pointer;
+  transition:background-color .12s ease;
+}
+/* A square is 12.5% of the board, so this fills most of it. Sizing off the
+   board rather than the viewport keeps the pieces right at every width. */
+@supports (font-size: 1cqw){
+  .rb-sq{ font-size:10.2cqw; }
+}
+/* the usual tournament colours, so the board reads the way players expect */
+.rb-sq.is-light{ background:#eeeed2; }
+.rb-sq.is-dark{ background:#769656; }
+.rb-sq.is-w{ color:#fdfdfb; text-shadow:0 1px 0 #6d6a63,0 -1px 0 #6d6a63,1px 0 0 #6d6a63,-1px 0 0 #6d6a63,0 3px 5px rgba(0,0,0,0.35); }
+.rb-sq.is-b{ color:#2f2c29; text-shadow:0 1px 0 rgba(255,255,255,0.3),0 3px 5px rgba(0,0,0,0.3); }
+.rb-sq.is-last{ box-shadow:inset 0 0 0 100px rgba(255,238,88,0.42); }
+.rb-sq.is-sel{ box-shadow:inset 0 0 0 100px rgba(255,238,88,0.62); }
+.rb-sq.is-check{ box-shadow:inset 0 0 0 100px rgba(226,86,86,0.55); }
+.rb-sq.is-lifting{ transform:scale(1.06); z-index:2; }
+.rb-sq.rb-move::after{
+  content:''; position:absolute; width:26%; height:26%; border-radius:50%;
+  background:rgba(20,30,10,0.26); pointer-events:none;
+}
+.rb-sq.rb-take{ box-shadow:inset 0 0 0 4px rgba(20,30,10,0.3); }
+
+/* promotion chooser */
+.rp-promo{
+  position:absolute; inset:0; z-index:5;
+  display:flex; align-items:center; justify-content:center; gap:0.6rem;
+  background:rgba(6,10,20,0.82); backdrop-filter:blur(3px); border-radius:10px;
+}
+.rp-btn{
+  width:clamp(3rem,9vw,4.4rem); height:clamp(3rem,9vw,4.4rem); border-radius:10px;
+  font-size:clamp(1.8rem,5vw,2.8rem); line-height:1; cursor:pointer;
+  background:#dde5f0; border:2px solid transparent;
+  transition:transform .15s var(--r-ease), border-color .2s ease;
+}
+.rp-btn:hover{ transform:translateY(-3px); border-color:var(--r-blue); }
+.rp-btn.is-w{ color:#1b2436; }
+.rp-btn.is-b{ color:#151d2c; }
+
+/* side panel */
+.rp-side{ display:flex; flex-direction:column; gap:1rem; }
+
+/* what has been played on this board, in the notation a coach would write */
+.rp-moves-h{
+  font-size:0.64rem; letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--r-body); margin-bottom:0.75rem;
+}
+.rp-moves{
+  list-style:none; margin:0; padding:0;
+  max-height:12rem; overflow-y:auto;
+  font-variant-numeric:tabular-nums;
+}
+.rp-moves li{
+  display:grid; grid-template-columns:1.9rem 1fr 1fr; gap:0.5rem; align-items:baseline;
+  padding:0.32rem 0; border-top:1px solid rgba(255,255,255,0.05);
+  font-size:0.88rem; color:var(--r-ink);
+}
+.rp-moves li:first-child{ border-top:none; }
+.rp-moves .n{ color:var(--r-body); font-size:0.78rem; }
+.rp-moves .mv{ font-family:'Fraunces',serif; }
+.rp-moves .mv.is-theirs{ color:var(--r-body); }
+  .rp-moves .mv.is-gap{ color:var(--r-body); opacity:0.45; }
+.rp-moves .mv.is-last{ color:var(--r-blue); }
+.rp-moves-empty{ font-size:0.78rem; color:var(--r-body); line-height:1.6; }
+.rp-moves-empty[hidden]{ display:none; }
+.rp-card{ padding:1.3rem 1.4rem; background:var(--r-panel); border:1px solid var(--r-line); border-radius:12px; }
+.rp-turn{ font-size:1rem; color:var(--r-ivory); font-weight:500; }
+.rp-meta{ margin-top:0.5rem; font-size:0.82rem; color:var(--r-body); }
+.rp-meta b{ color:var(--r-blue); font-weight:500; }
+.rp-hint{ margin-top:0.9rem; font-size:0.78rem; line-height:1.6; color:var(--r-body); }
+
+/* review panel */
+.rv-panel{ padding:1.3rem 1.4rem; background:var(--r-panel-2); border:1px solid rgba(74,158,255,0.28); border-radius:12px; }
+.rv-panel h3{ font-family:'Fraunces',serif; font-size:1.1rem; color:var(--r-ivory); margin:0 0 0.5rem; }
+.rv-meta{ font-size:0.78rem; color:var(--r-body); margin-bottom:0.9rem; }
+.rv-moves{ display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1rem; }
+.rv-m{
+  padding:0.28rem 0.6rem; border-radius:5px; font-size:0.82rem;
+  background:rgba(255,255,255,0.05); color:var(--r-body); font-variant-numeric:tabular-nums;
+}
+.rv-m.is-on{ background:rgba(74,158,255,0.2); color:var(--r-ink); }
+.rv-btns{ display:flex; gap:0.5rem; flex-wrap:wrap; }
+
+/* ---------- results ---------- */
+.rs-head{ text-align:center; margin-bottom:2.4rem; }
+.rs-reason{ font-size:0.74rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--r-blue); margin-bottom:1rem; }
+.rs-score{ font-family:'Fraunces',serif; font-size:clamp(4rem,14vw,8rem); line-height:0.9; color:var(--r-ivory); }
+.rs-score-l{ font-size:0.86rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--r-body); margin-top:0.6rem; }
+.rs-best-flag{
+  display:inline-block; margin-top:1rem; padding:0.4rem 1rem; border-radius:999px;
+  font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;
+  background:var(--r-gold); color:#1a1305;
+}
+.rs-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; margin-bottom:2.4rem; }
+.rs-tile{ padding:1.2rem 1.3rem; background:var(--r-panel); border:1px solid var(--r-line); border-radius:11px; text-align:center; }
+.rs-tile b{ display:block; font-family:'Fraunces',serif; font-size:1.6rem; color:var(--r-ivory); font-variant-numeric:tabular-nums; }
+.rs-tile span{ display:block; margin-top:0.4rem; font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--r-body); }
+
+.rs-list{ border:1px solid var(--r-line); border-radius:12px; overflow:hidden; margin-bottom:1.6rem; }
+.rs-row{
+  display:grid; grid-template-columns:2rem 4rem 2.1rem 1fr 3.5rem; gap:1rem; align-items:center; width:100%;
+  padding:0.85rem 1.2rem; text-align:left; cursor:pointer;
+  background:transparent; border:none; border-top:1px solid var(--r-line);
+  color:var(--r-body); font-family:'Space Grotesk',sans-serif; font-size:0.85rem;
+  transition:background .2s ease;
+}
+.rs-row:first-child{ border-top:none; }
+.rs-row:hover{ background:rgba(74,158,255,0.07); }
+.rs-mark{ font-size:1rem; }
+.rs-row.is-solved .rs-mark{ color:var(--r-green); }
+.rs-row.is-failed .rs-mark{ color:var(--r-red); }
+.rs-rating{ font-family:'Fraunces',serif; color:var(--r-ink); }
+.rs-depth{
+  justify-self:start; padding:0.1rem 0.34rem; border-radius:4px;
+  font-size:0.66rem; font-weight:600; letter-spacing:0.04em;
+}
+.rs-depth.is-1{ color:#9fe8c4; background:rgba(74,214,160,0.13); }
+.rs-depth.is-2{ color:#a8d2ff; background:rgba(74,158,255,0.13); }
+.rs-depth.is-3{ color:#f0cf93; background:rgba(232,185,100,0.14); }
+.rs-themes{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rs-ms{ text-align:right; font-variant-numeric:tabular-nums; }
+.rs-empty{ padding:1.4rem; color:var(--r-body); }
+.rs-actions{ display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
+.rs-cta{
+  display:inline-flex; align-items:center; gap:0.5rem;
+  padding:0.95rem 1.9rem; border-radius:8px; cursor:pointer; text-decoration:none;
+  font-family:'Space Grotesk',sans-serif; font-size:0.94rem; font-weight:500;
+  border:1px solid var(--r-line); background:transparent; color:var(--r-ink);
+  transition:transform .25s var(--r-ease), border-color .3s ease, background .3s ease;
+}
+.rs-cta:hover{ transform:translateY(-2px); border-color:var(--r-blue); background:rgba(74,158,255,0.08); }
+.rs-cta.is-key{
+  color:#04101f; border-color:transparent;
+  background:linear-gradient(135deg,var(--r-blue-hot),var(--r-blue));
+  box-shadow:0 0 26px -8px rgba(74,158,255,0.7);
+}
+.rs-disclaimer{ margin-top:2rem; text-align:center; font-size:0.78rem; color:var(--r-body); }
+
+/* ---------- mobile: clock, score and mistakes above a full-width board ---------- */
+@media (max-width:900px){
+  .rush{ padding:5.5rem 0 3rem; }
+  .rp-wrap{ grid-template-columns:1fr; gap:1.2rem; }
+  .rk-modes{ grid-template-columns:1fr; gap:0.9rem; }
+  .rk-mode{ padding:1.5rem 1.4rem; }
+  .rs-grid{ grid-template-columns:repeat(2,1fr); }
+  .rp-hud{ gap:1.1rem; padding:0.9rem 1rem; }
+  .rp-stat b{ font-size:1.5rem; }
+  .rs-row{ grid-template-columns:1.6rem 3.4rem 1.9rem 1fr 3rem; gap:0.55rem; padding:0.8rem; font-size:0.8rem; }
+}
+@media (max-width:560px){
+  .rs-grid{ grid-template-columns:1fr 1fr; }
+  .rs-actions{ flex-direction:column; }
+  .rs-cta{ justify-content:center; }
+  .rp-hud-right{ margin-left:0; width:100%; justify-content:space-between; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .rk-mode, .rs-cta, .rp-btn, .rb-sq{ transition:none; }
+  .rk-mode:hover, .rs-cta:hover, .rp-btn:hover{ transform:none; }
+  .rb-board.is-wrong{ animation:none; }
+  .rk-spin{ animation:none; border-top-color:var(--r-blue); }
+}
+
+.rk-notice{
+  margin-top:1.2rem; padding:0.9rem 1.1rem; border-radius:9px;
+  font-size:0.85rem; line-height:1.6; color:#ffd7d7;
+  background:rgba(255,122,122,0.1); border:1px solid rgba(255,122,122,0.35);
+}
+
+/* how long the mate is — the run steps up through these */
+.rp-stage{
+  display:inline-block; margin-top:0.7rem;
+  padding:0.32rem 0.75rem; border-radius:999px;
+  font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;
+}
+.rp-stage.is-1{ color:#9fe8c4; background:rgba(74,214,160,0.13); border:1px solid rgba(74,214,160,0.35); }
+.rp-stage.is-2{ color:#a8d2ff; background:rgba(74,158,255,0.13); border:1px solid rgba(74,158,255,0.38); }
+.rp-stage.is-3{ color:#f0cf93; background:rgba(232,185,100,0.14); border:1px solid rgba(232,185,100,0.42); }
+.rp-stage.is-stepped{ animation:rpStageBump 620ms cubic-bezier(.2,.9,.25,1); }
+@keyframes rpStageBump{
+  0%{ transform:scale(1); }
+  35%{ transform:scale(1.16); }
+  100%{ transform:scale(1); }
+}
+
+/* the moment the run steps up a depth — brief, over the board, never in the
+   way of a click (pointer-events stay off throughout) */
+.rp-step{
+  position:absolute; left:0; right:0; top:50%; transform:translateY(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:0.35rem;
+  padding:1.1rem 1rem; pointer-events:none; opacity:0; z-index:4;
+  /* a soft band rather than a panel — no backdrop-filter, which samples the
+     checkerboard and smears it into visible blocks */
+  background:linear-gradient(90deg,
+    rgba(7,12,22,0) 0%, rgba(7,12,22,0.72) 12%,
+    rgba(7,12,22,0.95) 34%, rgba(7,12,22,0.95) 66%,
+    rgba(7,12,22,0.72) 88%, rgba(7,12,22,0) 100%);
+  text-shadow:0 1px 14px rgba(0,0,0,0.8);
+}
+.rp-step b{
+  font-family:'Fraunces', serif; font-weight:400; font-size:clamp(1.5rem, 4.4vw, 2.1rem);
+  color:#f3f7ff; letter-spacing:0.01em;
+}
+.rp-step span{
+  font-size:0.72rem; letter-spacing:0.16em; text-transform:uppercase; color:#9fb0cc;
+}
+.rp-step.is-on{ animation:rpStepSweep 1700ms cubic-bezier(.22,.9,.25,1) forwards; }
+@keyframes rpStepSweep{
+  0%{ opacity:0; transform:translateY(-50%) scale(0.94); }
+  14%{ opacity:1; transform:translateY(-50%) scale(1); }
+  76%{ opacity:1; transform:translateY(-50%) scale(1); }
+  100%{ opacity:0; transform:translateY(-50%) scale(1.02); }
+}
+@media (prefers-reduced-motion: reduce){
+  .rp-stage.is-stepped{ animation:none; }
+  .rp-step.is-on{ animation:none; opacity:1; }
+}

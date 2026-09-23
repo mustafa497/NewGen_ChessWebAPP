@@ -1,0 +1,629 @@
+{
+  "version": 2,
+  "updated": "2026-09-23",
+  "note": "The single source for the Nexus syllabus. Edited in coach-panel.html; upload this file to make a change live.",
+  "modules": [
+    {
+      "id": "b1",
+      "name": "Beginner (Level 1)",
+      "accent": "#4fd8ff"
+    },
+    {
+      "id": "b2",
+      "name": "Beginner (Level 2)",
+      "accent": "#5ac8a0"
+    },
+    {
+      "id": "b3",
+      "name": "Beginner (Level 3)",
+      "accent": "#9fd77f"
+    },
+    {
+      "id": "i1",
+      "name": "Intermediate (Level 1)",
+      "accent": "#c9a66b"
+    },
+    {
+      "id": "i2",
+      "name": "Intermediate (Level 2)",
+      "accent": "#d08a52"
+    },
+    {
+      "id": "a1",
+      "name": "Advance (Level 1)",
+      "accent": "#8b7fe8"
+    },
+    {
+      "id": "a2",
+      "name": "Advance (Level 2)",
+      "accent": "#dfe6f2"
+    }
+  ],
+  "entries": [
+    {
+      "id": "b001",
+      "module": "b1",
+      "session": 1,
+      "topic": "Piece Movement",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b002",
+      "module": "b1",
+      "session": 2,
+      "topic": "Piece Capture includes capture in 1, 2 and 3.",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b003",
+      "module": "b1",
+      "session": 3,
+      "topic": "Piece Value and Trades",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b004",
+      "module": "b1",
+      "session": 4,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b005",
+      "module": "b1",
+      "session": 5,
+      "topic": "Check and escaping check by hit, block and run method",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b006",
+      "module": "b1",
+      "session": 6,
+      "topic": "Checkmate, Assisted checkmate",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b007",
+      "module": "b1",
+      "session": 7,
+      "topic": "Ladders mate",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b008",
+      "module": "b1",
+      "session": 8,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b009",
+      "module": "b1",
+      "session": 9,
+      "topic": "Castling Short and Castling Long",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b010",
+      "module": "b1",
+      "session": 10,
+      "topic": "Conditions of castling",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b011",
+      "module": "b1",
+      "session": 11,
+      "topic": "Hanging Pieces",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b012",
+      "module": "b1",
+      "session": 12,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b013",
+      "module": "b1",
+      "session": 13,
+      "topic": "Counting attackers vs defenders",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b014",
+      "module": "b1",
+      "session": 14,
+      "topic": "Attacking more times to win material",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b015",
+      "module": "b1",
+      "session": 15,
+      "topic": "Protection",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b016",
+      "module": "b1",
+      "session": 16,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b017",
+      "module": "b2",
+      "session": 1,
+      "topic": "Opening Principles (Controlling Center)",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b018",
+      "module": "b2",
+      "session": 2,
+      "topic": "Opening Principles (Developing Minor Pieces)",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b019",
+      "module": "b2",
+      "session": 3,
+      "topic": "Opening Principles (Castling)",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b020",
+      "module": "b2",
+      "session": 4,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b021",
+      "module": "b2",
+      "session": 5,
+      "topic": "Phases of chess",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b022",
+      "module": "b2",
+      "session": 6,
+      "topic": "Material evaluation",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b023",
+      "module": "b2",
+      "session": 7,
+      "topic": "En Passant",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b024",
+      "module": "b2",
+      "session": 8,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b025",
+      "module": "b2",
+      "session": 9,
+      "topic": "Coordinates",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b026",
+      "module": "b2",
+      "session": 10,
+      "topic": "Fork",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b027",
+      "module": "b2",
+      "session": 11,
+      "topic": "Pin",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b028",
+      "module": "b2",
+      "session": 12,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b029",
+      "module": "b2",
+      "session": 13,
+      "topic": "Using Pin to win material",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b030",
+      "module": "b2",
+      "session": 14,
+      "topic": "Skewer (Intro / difference with pin)",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b031",
+      "module": "b2",
+      "session": 15,
+      "topic": "Skewer (More examples)",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b032",
+      "module": "b2",
+      "session": 16,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b033",
+      "module": "b3",
+      "session": 1,
+      "topic": "Promoting Pawn to Queen and checkmate the King",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b034",
+      "module": "b3",
+      "session": 2,
+      "topic": "Checkmate with King and Queen, Stalemate",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b035",
+      "module": "b3",
+      "session": 3,
+      "topic": "Checkmate with King and Rook, Stalemate",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b036",
+      "module": "b3",
+      "session": 4,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b037",
+      "module": "b3",
+      "session": 5,
+      "topic": "One Pawn Endgame 1",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b038",
+      "module": "b3",
+      "session": 6,
+      "topic": "One Pawn Endgame 2",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b039",
+      "module": "b3",
+      "session": 7,
+      "topic": "Draws in one pawn endgame",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b040",
+      "module": "b3",
+      "session": 8,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b041",
+      "module": "b3",
+      "session": 9,
+      "topic": "Pieces that can checkmate and pieces that can't",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b042",
+      "module": "b3",
+      "session": 10,
+      "topic": "Quick Checkmates",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b043",
+      "module": "b3",
+      "session": 11,
+      "topic": "Dealing with Scholar's mate",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b044",
+      "module": "b3",
+      "session": 12,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b045",
+      "module": "b3",
+      "session": 13,
+      "topic": "Intro to Common openings by white",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b046",
+      "module": "b3",
+      "session": 14,
+      "topic": "Intro to Common response by black against e4",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b047",
+      "module": "b3",
+      "session": 15,
+      "topic": "Intro to Common response by black against d4",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "b048",
+      "module": "b3",
+      "session": 16,
+      "topic": "Revision and Gameplay",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e14",
+      "module": "i1",
+      "session": 1,
+      "topic": "Building a repertoire",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e15",
+      "module": "i1",
+      "session": 2,
+      "topic": "Pawn structures",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e16",
+      "module": "i1",
+      "session": 3,
+      "topic": "Calculation under pressure",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e17",
+      "module": "i1",
+      "session": 4,
+      "topic": "Prophylactic thinking",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e18",
+      "module": "i1",
+      "session": 5,
+      "topic": "Converting advantages",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e19",
+      "module": "i1",
+      "session": 6,
+      "topic": "Rook endgames",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e20",
+      "module": "i1",
+      "session": 7,
+      "topic": "Stage assessment",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e21",
+      "module": "a1",
+      "session": 1,
+      "topic": "Deep opening preparation",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e22",
+      "module": "a1",
+      "session": 2,
+      "topic": "Dynamic vs static advantage",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e23",
+      "module": "a1",
+      "session": 3,
+      "topic": "Sacrificial attack",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e24",
+      "module": "a1",
+      "session": 4,
+      "topic": "Complex endgame technique",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e25",
+      "module": "a1",
+      "session": 5,
+      "topic": "Time management",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e26",
+      "module": "a1",
+      "session": 6,
+      "topic": "Stage assessment",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e27",
+      "module": "a2",
+      "session": 1,
+      "topic": "Opponent-specific preparation",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e28",
+      "module": "a2",
+      "session": 2,
+      "topic": "Tournament seconding",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e29",
+      "module": "a2",
+      "session": 3,
+      "topic": "Norm campaign planning",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    },
+    {
+      "id": "e30",
+      "module": "a2",
+      "session": 4,
+      "topic": "Engine-assisted deep analysis",
+      "notes": "",
+      "minutes": 45,
+      "resources": []
+    }
+  ]
+}

@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Chess Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#07090f;
+    --bg-1:#0b0e18;
+    --panel:#0e1220;
+    --cyan:#4fd8ff;
+    --cyan-dim:rgba(79,216,255,0.32);
+    --gold:#c9a66b;
+    --gold-dim:rgba(201,166,107,0.4);
+    --wood-light:#8a5a34;
+    --wood-light-2:#a9713f;
+    --wood-dark:#0d0806;
+    --ink:#f3f6fb;
+    --ink-dim:#8d99b2;
+    --line:rgba(255,255,255,0.09);
+    --ease-lux:cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  html,body{ background:var(--bg-0); color:var(--ink); font-family:'Space Grotesk', sans-serif; overflow-x:hidden; }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; }
+
+  .wrap{ max-width:1280px; margin:0 auto; padding-left:6vw; padding-right:6vw; }
+
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.01em; }
+
+  /* ================= NAV ================= */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:1.6rem 6vw;
+    background:linear-gradient(180deg, rgba(7,9,15,0.9), rgba(7,9,15,0));
+    backdrop-filter:blur(6px);
+  }
+  .brand{ display:flex; align-items:center; }
+  .brand img{ height:36px; width:auto; }
+  .footer-brand .brand img{ height:48px; }
+  @media (max-width:600px){ .brand img{ height:28px; } }
+  .nav-links{ display:flex; gap:2.3rem; font-size:0.9rem; color:var(--ink-dim); }
+  .nav-links a{ text-decoration:none; transition:color .3s; }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-cta{ font-size:0.86rem; padding:0.6rem 1.3rem; border:1px solid rgba(255,255,255,0.22); border-radius:2px; text-decoration:none; transition:border-color .3s, background .3s; }
+  .nav-cta:hover{ border-color:var(--cyan); background:rgba(79,216,255,0.06); }
+  @media (max-width:860px){ .nav-links{ display:none; } }
+
+  /* ================= HERO ================= */
+  .hero{
+    position:relative; min-height:100vh; display:flex; flex-direction:column;
+    justify-content:center; align-items:center;
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 10%, rgba(28,42,74,0.5), transparent 60%),
+      linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 65%);
+    padding:10vh 6vw 8vh;
+  }
+  #particles{ position:absolute; inset:0; z-index:0; opacity:0.5; }
+
+  .content-wrap{
+    position:relative; z-index:3; display:grid;
+    grid-template-columns:1.05fr 0.95fr; align-items:center; gap:3rem;
+    max-width:1280px; width:100%;
+  }
+  .text-col{ display:flex; flex-direction:column; align-items:flex-start; text-align:left; }
+  .kicker{ font-size:0.85rem; color:var(--gold); margin-bottom:1.3rem; display:flex; align-items:center; gap:0.6rem; }
+  .kicker::before{ content:''; width:22px; height:1px; background:var(--gold); opacity:0.7; }
+  h1.headline{ font-size:clamp(2.4rem, 4.4vw, 4rem); line-height:1.06; max-width:12ch; }
+  h1.headline em{ font-style:italic; font-weight:300; color:#c7d0e0; }
+  .sub{ margin-top:1.5rem; font-size:1.06rem; line-height:1.6; color:var(--ink-dim); max-width:42ch; }
+  .cta-row{ margin-top:2.4rem; display:flex; align-items:center; gap:1.8rem; flex-wrap:wrap; }
+  .btn-primary{
+    padding:0.95rem 2.1rem; font-size:0.95rem; font-weight:500; color:var(--bg-0);
+    background:var(--cyan); border:none; border-radius:2px; cursor:pointer;
+    box-shadow:0 0 0 0 var(--cyan-dim); transition:box-shadow .4s ease, transform .25s ease;
+  }
+  .btn-primary:hover{ box-shadow:0 0 32px 4px var(--cyan-dim); transform:translateY(-1px); }
+  .btn-ghost{
+    display:flex; align-items:center; gap:0.7rem; background:none; border:none; color:var(--ink);
+    font-size:0.95rem; font-family:'Space Grotesk', sans-serif; cursor:pointer; padding:0.5rem 0;
+    border-bottom:1px solid rgba(255,255,255,0.15); transition:border-color .3s;
+  }
+  .btn-ghost:hover{ border-color:var(--ink); }
+  .play-ico{ width:26px; height:26px; border-radius:50%; border:1px solid rgba(255,255,255,0.35); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .play-ico svg{ width:8px; height:8px; margin-left:2px; }
+  .trust{ margin-top:3.2rem; display:flex; gap:2.2rem; flex-wrap:wrap; }
+  .trust-item{ display:flex; flex-direction:column; gap:0.2rem; }
+  .trust-num{ font-family:'Fraunces', serif; font-size:1.35rem; font-weight:500; }
+  .trust-label{ font-size:0.78rem; color:var(--ink-dim); }
+
+  /* ---- board ---- */
+  .board-col{ position:relative; display:flex; justify-content:center; align-items:center; perspective:1500px; min-height:520px; }
+  .board-rig{
+    position:relative; width:100%; max-width:480px; transform-style:preserve-3d;
+    transform:rotateX(52deg) rotateZ(38deg); transition:transform 0.15s ease-out;
+  }
+  .hero.is-offscreen .piece,
+  .hero.is-offscreen .piece-shadow,
+  .hero.is-offscreen .sq.glow::after{ animation-play-state:paused; }
+  .board{
+    display:grid; grid-template-columns:repeat(8, 1fr); grid-template-rows:repeat(8, 1fr);
+    width:100%; aspect-ratio:1/1; border-radius:4px; overflow:hidden;
+    box-shadow:0 0 50px 8px rgba(201,166,107,0.10), 0 40px 90px -20px rgba(0,0,0,0.85);
+    border:6px solid #1c130c;
+  }
+  .sq{ position:relative; }
+  .sq.dark{
+    background-image:
+      linear-gradient(145deg,#171009,#0a0705),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.9' numOctaves='2' seed='4' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size:cover, 90px 90px;
+    background-blend-mode:normal, overlay;
+  }
+  .sq.light{
+    background-image:
+      linear-gradient(145deg,var(--wood-light-2),var(--wood-light)),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><filter id='w'><feTurbulence type='fractalNoise' baseFrequency='0.009 0.7' numOctaves='3' seed='7' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23w)'/></svg>");
+    background-size:cover, 90px 90px;
+    background-blend-mode:normal, overlay;
+  }
+  .sq.glow::after{
+    content:''; position:absolute; inset:0; box-shadow:inset 0 0 12px 1px rgba(201,166,107,0.6);
+    animation:pulseGlow 3.6s ease-in-out infinite;
+  }
+  @keyframes pulseGlow{ 0%,100%{ opacity:0.3; } 50%{ opacity:0.85; } }
+  .board-base{
+    position:absolute; left:50%; top:50%; width:114%; aspect-ratio:1/1;
+    transform:translate(-50%,-50%) translateZ(-26px);
+    background:radial-gradient(ellipse at center, rgba(30,20,12,0.9), rgba(7,10,18,0) 70%);
+    filter:blur(2px);
+  }
+
+  .pieces-layer{ position:absolute; inset:0; transform-style:preserve-3d; pointer-events:none; }
+  .piece{
+    position:absolute; width:24%; transform-style:preserve-3d;
+  }
+  .piece.king{ width:20%; animation:kingMove 9s ease-in-out infinite; }
+  .piece.knight{ width:27%; animation:knightMove 9s ease-in-out infinite; }
+  .piece.pawn{ width:14%; animation:pawnMove 6s ease-in-out infinite; }
+
+  /* contact shadows — sit on the board plane, breathe opposite to each piece's lift height */
+  .piece-shadow{
+    position:absolute; aspect-ratio:1/0.32; border-radius:50%;
+    background:radial-gradient(ellipse at center, rgba(0,0,0,0.6), rgba(0,0,0,0) 72%);
+    transform-style:preserve-3d;
+  }
+  .shadow-knight{ width:22%; animation:knightShadow 9s ease-in-out infinite; }
+  .shadow-king{ width:16%; animation:kingShadow 9s ease-in-out infinite; }
+  .shadow-pawn{ width:11%; animation:pawnShadow 6s ease-in-out infinite; }
+
+  @keyframes knightMove{
+    0%, 32%   { left:15%; top:64%; transform:translateZ(120px) rotateZ(-38deg) rotateX(-52deg) rotateY(-10deg) scale(1);   filter:drop-shadow(0 0 16px rgba(201,166,107,0.55)); }
+    40%       { left:22%; top:47%; transform:translateZ(200px) rotateZ(-26deg) rotateX(-52deg) rotateY(4deg)  scale(1.08); filter:drop-shadow(0 0 26px rgba(79,216,255,0.7)); }
+    50%, 82%  { left:32%; top:38%; transform:translateZ(120px) rotateZ(-38deg) rotateX(-52deg) rotateY(-14deg) scale(1);  filter:drop-shadow(0 0 16px rgba(201,166,107,0.55)); }
+    90%       { left:24%; top:52%; transform:translateZ(200px) rotateZ(-30deg) rotateX(-52deg) rotateY(-4deg) scale(1.08); filter:drop-shadow(0 0 26px rgba(79,216,255,0.7)); }
+    100%      { left:15%; top:64%; transform:translateZ(120px) rotateZ(-38deg) rotateX(-52deg) rotateY(-10deg) scale(1);   filter:drop-shadow(0 0 16px rgba(201,166,107,0.55)); }
+  }
+  @keyframes knightShadow{
+    0%, 32%   { left:19%; top:76%; opacity:0.6; transform:scale(1); }
+    40%       { left:26%; top:60%; opacity:0.22; transform:scale(1.5); }
+    50%, 82%  { left:36%; top:50%; opacity:0.6; transform:scale(1); }
+    90%       { left:28%; top:64%; opacity:0.22; transform:scale(1.5); }
+    100%      { left:19%; top:76%; opacity:0.6; transform:scale(1); }
+  }
+
+  @keyframes kingMove{
+    0%, 40%  { left:60%; top:16%; transform:translateZ(95px) rotateZ(-38deg) rotateX(-52deg);             filter:drop-shadow(0 0 16px rgba(201,166,107,0.55)); }
+    50%      { left:60%; top:16%; transform:translateZ(140px) rotateZ(-38deg) rotateX(-52deg) scale(1.04); filter:drop-shadow(0 0 24px rgba(79,216,255,0.7)); }
+    60%, 92% { left:60%; top:29%; transform:translateZ(95px) rotateZ(-38deg) rotateX(-52deg);             filter:drop-shadow(0 0 16px rgba(201,166,107,0.55)); }
+    100%     { left:60%; top:16%; transform:translateZ(95px) rotateZ(-38deg) rotateX(-52deg);             filter:drop-shadow(0 0 16px rgba(201,166,107,0.55)); }
+  }
+  @keyframes kingShadow{
+    0%, 40%  { left:63%; top:26%; opacity:0.55; transform:scale(1); }
+    50%      { left:63%; top:26%; opacity:0.3;  transform:scale(1.3); }
+    60%, 92% { left:63%; top:39%; opacity:0.55; transform:scale(1); }
+    100%     { left:63%; top:26%; opacity:0.55; transform:scale(1); }
+  }
+
+  @keyframes pawnMove{
+    0%, 20% { left:44%; top:70%; transform:translateZ(70px) rotateZ(-38deg) rotateX(-52deg);             filter:drop-shadow(0 0 14px rgba(201,166,107,0.5)); }
+    30%     { left:44%; top:70%; transform:translateZ(110px) rotateZ(-38deg) rotateX(-52deg) scale(1.05); filter:drop-shadow(0 0 20px rgba(79,216,255,0.65)); }
+    40%,100%{ left:44%; top:58%; transform:translateZ(70px) rotateZ(-38deg) rotateX(-52deg);             filter:drop-shadow(0 0 14px rgba(201,166,107,0.5)); }
+  }
+  @keyframes pawnShadow{
+    0%, 20% { left:46%; top:78%; opacity:0.55; transform:scale(1); }
+    30%     { left:46%; top:78%; opacity:0.3;  transform:scale(1.25); }
+    40%,100%{ left:46%; top:66%; opacity:0.55; transform:scale(1); }
+  }
+
+  @media (max-width:900px){
+    .content-wrap{ grid-template-columns:1fr; text-align:center; }
+    .text-col{ align-items:center; text-align:center; }
+    .cta-row, .trust{ justify-content:center; }
+    .board-col{ order:-1; min-height:360px; margin-bottom:1rem; }
+    .board-rig{ transform:rotateX(46deg) rotateZ(38deg) scale(0.9); max-width:320px; }
+    h1.headline{ max-width:100%; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .piece, .sq.glow::after, .piece-shadow{ animation:none !important; }
+    .piece{ filter:drop-shadow(0 0 16px rgba(201,166,107,0.55)); }
+    .board-rig{ transition:none; }
+  }
+
+  .scroll-cue{
+    position:absolute; bottom:2.2rem; left:50%; transform:translateX(-50%); z-index:4;
+    display:flex; flex-direction:column; align-items:center; gap:0.6rem; color:var(--ink-dim);
+    font-size:0.72rem; letter-spacing:0.06em;
+  }
+  .scroll-line{ width:1px; height:34px; background:linear-gradient(180deg, var(--ink-dim), transparent); animation:scrollLine 2.2s ease-in-out infinite; }
+  @keyframes scrollLine{ 0%{ transform:scaleY(0.3); transform-origin:top; opacity:0.4; } 50%{ transform:scaleY(1); transform-origin:top; opacity:1; } 100%{ transform:scaleY(0.3); transform-origin:bottom; opacity:0.4; } }
+
+  /* ================= SECTION SHELL ================= */
+  section.block{ position:relative; padding:9rem 0; border-top:1px solid var(--line); }
+  .eyebrow{ font-size:0.85rem; color:var(--gold); margin-bottom:1rem; display:flex; align-items:center; gap:0.6rem; }
+  .eyebrow::before{ content:''; width:22px; height:1px; background:var(--gold); opacity:0.7; }
+  .block-head{ max-width:640px; margin-bottom:4.5rem; }
+  .block-head h2{ font-size:clamp(1.9rem, 3vw, 2.7rem); line-height:1.15; }
+  .block-head p{ margin-top:1.1rem; color:var(--ink-dim); font-size:1.02rem; line-height:1.65; max-width:52ch; }
+
+  /* ================= THE NEXUS METHOD ================= */
+  .method{
+    --m-bg:#0C0D10;
+    --m-card:#141519;
+    --m-ink:#F3EDE2;
+    --m-body:#B5B1A9;
+    --m-gold:#C6A46A;
+    --m-rule:rgba(198,164,106,0.20);
+    --m-rule-soft:rgba(198,164,106,0.10);
+    --m-ease:cubic-bezier(0.22, 1, 0.36, 1);
+    position:relative;
+    background:var(--m-bg);
+    overflow:hidden;
+  }
+  /* barely-there chessboard + a restrained warm glow behind the journey */
+  .method-bg{
+    position:absolute; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      radial-gradient(ellipse 62% 48% at 50% 62%, rgba(198,164,106,0.075), transparent 68%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128'><rect width='64' height='64' fill='%23F3EDE2' fill-opacity='0.012'/><rect x='64' y='64' width='64' height='64' fill='%23F3EDE2' fill-opacity='0.012'/></svg>");
+    background-size:auto, 128px 128px;
+  }
+  .method > .wrap{ position:relative; z-index:1; }
+
+  /* ---- editorial header ---- */
+  .method-eyebrow{
+    display:flex; align-items:center; gap:0.7rem;
+    font-size:0.72rem; letter-spacing:0.24em; text-transform:uppercase;
+    color:var(--m-gold); margin-bottom:1.6rem;
+  }
+  .method-eyebrow::before{ content:''; width:26px; height:1px; background:var(--m-gold); opacity:0.75; }
+
+  .method-head{
+    display:grid; grid-template-columns:1.35fr 1fr; gap:4rem; align-items:end;
+    padding-bottom:4.5rem; border-bottom:1px solid var(--m-rule-soft);
+  }
+  .method-head h2{
+    font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.015em;
+    font-size:clamp(1.9rem, 3.6vw, 3rem); line-height:1.14; color:var(--m-ink); margin:0;
+  }
+  .method-head h2 em{ font-style:normal; color:var(--m-gold); }
+  .method-lede{
+    font-size:1rem; line-height:1.75; color:var(--m-body); max-width:38ch; margin:0;
+  }
+
+  /* ---- journey ---- */
+  .journey{ position:relative; margin-top:4.5rem; }
+
+  /* desktop rail: one gold line drawn through four milestones */
+  .rail{ position:relative; height:34px; margin-bottom:-1px; }
+  .rail-line{
+    position:absolute; top:50%; left:12.5%; right:12.5%; height:1px;
+    background:linear-gradient(90deg, transparent, var(--m-gold) 12%, var(--m-gold) 88%, transparent);
+    opacity:0.5; transform:scaleX(0); transform-origin:left center;
+    transition:transform 1.25s var(--m-ease);
+  }
+  .journey.is-in .rail-line{ transform:scaleX(1); }
+  .rail-dot{
+    position:absolute; top:50%; width:9px; height:9px; margin:-4.5px 0 0 -4.5px;
+    border-radius:50%; background:var(--m-bg); border:1px solid var(--m-gold);
+    opacity:0; transition:opacity .4s ease, box-shadow .4s ease;
+  }
+  .journey.is-in .rail-dot{ opacity:1; }
+  .rail-dot:nth-child(2){ left:12.5%; transition-delay:.20s; }
+  .rail-dot:nth-child(3){ left:37.5%; transition-delay:.48s; }
+  .rail-dot:nth-child(4){ left:62.5%; transition-delay:.76s; }
+  .rail-dot:nth-child(5){ left:87.5%; transition-delay:1.04s; }
+
+  .milestones{
+    list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:1.4rem;
+  }
+
+  .milestone{
+    opacity:0; transform:translateY(12px);
+    transition:opacity .5s ease, transform .5s var(--m-ease);
+  }
+  .milestone.is-in{ opacity:1; transform:translateY(0); }
+
+  .ms-inner{
+    position:relative; height:100%;
+    display:flex; flex-direction:column;
+    padding:2.2rem 1.9rem 1.9rem;
+    background:var(--m-card);
+    border:1px solid var(--m-rule-soft);
+    border-radius:3px;
+    transition:transform .3s var(--m-ease), border-color .3s ease, box-shadow .3s ease;
+  }
+  /* a single gold hairline along the top edge, brightening on interaction */
+  .ms-inner::before{
+    content:''; position:absolute; top:-1px; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--m-rule), transparent);
+    transition:background .3s ease;
+  }
+  .milestone:hover .ms-inner,
+  .milestone:focus-within .ms-inner{
+    transform:translateY(-4px);
+    border-color:rgba(198,164,106,0.42);
+    box-shadow:0 22px 44px -28px rgba(0,0,0,0.9);
+  }
+  .milestone:hover .ms-inner::before,
+  .milestone:focus-within .ms-inner::before{
+    background:linear-gradient(90deg, transparent, var(--m-gold), transparent);
+  }
+
+  /* Soft, friendly line work: thick rounded strokes, no sharp corners. The
+     academy teaches children, so the motifs read warm rather than austere. */
+  .ms-art{ height:56px; margin-bottom:1.5rem; }
+  .ms-art svg{ height:56px; width:auto; overflow:visible; }
+  .ms-art .ivory, .ms-art .gold{
+    fill:none; stroke-linecap:round; stroke-linejoin:round; stroke-width:2.4;
+    transition:opacity .3s ease;
+  }
+  .ms-art .ivory{ stroke:var(--m-ink); opacity:0.55; }
+  .ms-art .gold{ stroke:var(--m-gold); opacity:0.9; }
+  .ms-art .gold-fill{ fill:var(--m-gold); stroke:none; opacity:0.85; transition:opacity .3s ease; }
+  /* organic shapes (a hand) read far better filled than stroked at this size */
+  .ms-art .ivory-fill{ fill:var(--m-ink); stroke:none; opacity:0.55; transition:opacity .3s ease; }
+  .milestone:hover .ms-art .ivory-fill,
+  .milestone:focus-within .ms-art .ivory-fill{ opacity:0.8; }
+  .ms-art .wash{ fill:var(--m-gold); stroke:none; opacity:0.14; }
+  .milestone:hover .ms-art .ivory,
+  .milestone:focus-within .ms-art .ivory{ opacity:0.8; }
+  .milestone:hover .ms-art .gold,
+  .milestone:hover .ms-art .gold-fill,
+  .milestone:focus-within .ms-art .gold,
+  .milestone:focus-within .ms-art .gold-fill{ opacity:1; }
+
+  /* ---- gentle idle motion, only once the panel has revealed ---- */
+  .ms-art [class*="anim-"]{ animation-play-state:paused; transform-box:fill-box; }
+  .milestone.is-in .ms-art [class*="anim-"]{ animation-play-state:running; }
+
+  /* 01 — the piece hops softly around its square */
+  .anim-hop{ transform-origin:center; animation:artHop 3.2s ease-in-out infinite; }
+  @keyframes artHop{
+    0%, 62%, 100%{ transform:translateY(0) scale(1); }
+    72%{ transform:translateY(-5px) scale(1.06); }
+    84%{ transform:translateY(0) scale(0.97); }
+    92%{ transform:translateY(0) scale(1); }
+  }
+  /* 02 — the three steps climb in sequence */
+  .anim-step{ transform-origin:center bottom; animation:artStep 3.4s ease-in-out infinite; }
+  .anim-step-2{ animation-delay:.28s; }
+  .anim-step-3{ animation-delay:.56s; }
+  @keyframes artStep{
+    0%, 55%, 100%{ transform:translateY(0); }
+    68%{ transform:translateY(-4px); }
+    82%{ transform:translateY(0); }
+  }
+  /* 03 — the coach raises a hand and waves hello */
+  .anim-wave{ transform-origin:0% 100%; animation:artWave 3.4s ease-in-out infinite; }
+  @keyframes artWave{
+    0%, 58%, 100%{ transform:rotate(0deg); }
+    66%{ transform:rotate(-16deg); }
+    74%{ transform:rotate(6deg); }
+    82%{ transform:rotate(-12deg); }
+    90%{ transform:rotate(0deg); }
+  }
+  .anim-nod{ transform-origin:center bottom; animation:artNod 3.4s ease-in-out infinite; }
+  @keyframes artNod{
+    0%, 60%, 100%{ transform:translateY(0); }
+    70%{ transform:translateY(-1.5px); }
+    82%{ transform:translateY(0); }
+  }
+  /* 04 — a hand lowers the pawn onto the square, lifts away, repeats */
+  .anim-play{ animation:artPlay 4.2s ease-in-out infinite; }
+  @keyframes artPlay{
+    0%, 8%{ transform:translateY(-12px); }
+    36%, 64%{ transform:translateY(0); }
+    90%, 100%{ transform:translateY(-12px); }
+  }
+  /* the square lights up while the pawn is standing on it */
+  .anim-land{ animation:artLand 4.2s ease-in-out infinite; }
+  @keyframes artLand{
+    0%, 26%{ opacity:0.10; }
+    40%, 62%{ opacity:0.38; }
+    80%, 100%{ opacity:0.10; }
+  }
+
+  /* hover / focus gives the motif a little extra lift */
+  .milestone:hover .ms-art svg,
+  .milestone:focus-within .ms-art svg{ transform:scale(1.06); }
+  .ms-art svg{ transition:transform .35s var(--m-ease); transform-origin:left center; }
+
+  .ms-num{
+    font-family:'Fraunces', serif; font-weight:400; font-size:1.05rem;
+    letter-spacing:0.06em; color:var(--m-gold); opacity:0.75;
+  }
+  .ms-title{
+    font-family:'Fraunces', serif; font-weight:500; font-size:1.22rem; line-height:1.25;
+    letter-spacing:-0.01em; color:var(--m-ink); margin:0.85rem 0 0;
+  }
+  .ms-copy{
+    font-size:0.9rem; line-height:1.65; color:var(--m-body); margin:0.85rem 0 1.8rem;
+  }
+  .ms-label{
+    margin-top:auto; padding-top:1.1rem; border-top:1px solid var(--m-rule-soft);
+    font-size:0.65rem; letter-spacing:0.19em; text-transform:uppercase; color:var(--m-gold);
+    opacity:0.72; transition:opacity .3s ease;
+  }
+  .milestone:hover .ms-label, .milestone:focus-within .ms-label{ opacity:1; }
+
+  /* keyboard focus */
+  .ms-inner:focus-visible{ outline:2px solid var(--m-gold); outline-offset:4px; }
+
+  /* ---- closing CTA ---- */
+  .method-cta{
+    margin-top:4.5rem; padding-top:3.2rem; border-top:1px solid var(--m-rule-soft);
+    display:flex; align-items:center; gap:1.6rem; flex-wrap:wrap;
+  }
+  .mc-lead{
+    font-family:'Fraunces', serif; font-size:clamp(1.25rem, 2vw, 1.6rem);
+    line-height:1.3; color:var(--m-ink); margin:0; flex:1 1 auto; max-width:22ch;
+  }
+  .mc-right{ display:flex; flex-direction:column; align-items:flex-start; gap:0.7rem; }
+  .mc-btn{
+    display:inline-flex; align-items:center; gap:0.7rem;
+    padding:0.95rem 2rem; border-radius:2px; text-decoration:none;
+    background:var(--m-gold); color:#141110; font-size:0.92rem; font-weight:500;
+    box-shadow:0 0 0 0 rgba(198,164,106,0);
+    transition:box-shadow .35s ease, transform .3s var(--m-ease);
+  }
+  .mc-btn:hover, .mc-btn:focus-visible{
+    transform:translateY(-2px);
+    box-shadow:0 14px 34px -12px rgba(198,164,106,0.6);
+  }
+  .mc-btn:focus-visible{ outline:2px solid var(--m-ink); outline-offset:3px; }
+  .mc-sub{ font-size:0.84rem; color:var(--m-body); margin:0; }
+
+  /* ---- tablet: balanced 2 x 2 ---- */
+  @media (max-width:1000px){
+    .method-head{ grid-template-columns:1fr; gap:1.8rem; align-items:start; }
+    .method-lede{ max-width:52ch; }
+    .milestones{ grid-template-columns:repeat(2, 1fr); gap:1.2rem; }
+    /* the horizontal rail no longer maps to the grid — each panel carries its own marker */
+    .rail{ display:none; }
+    .ms-inner::after{
+      content:''; position:absolute; top:-4.5px; left:1.9rem;
+      width:9px; height:9px; border-radius:50%;
+      background:var(--m-bg); border:1px solid var(--m-gold);
+    }
+  }
+
+  /* ---- mobile: vertical timeline ---- */
+  @media (max-width:640px){
+    .method-head{ padding-bottom:3rem; }
+    .journey{ margin-top:3rem; }
+    .milestones{
+      grid-template-columns:1fr; gap:0;
+      padding-left:1.9rem; border-left:1px solid var(--m-rule);
+    }
+    .milestone{ padding-bottom:1.4rem; }
+    .milestone:last-child{ padding-bottom:0; }
+    .ms-inner{ padding:1.8rem 1.5rem 1.5rem; }
+    .ms-inner::after{
+      /* gold milestone sitting on the timeline */
+      top:2.3rem; left:calc(-1.9rem - 5px);
+      width:11px; height:11px;
+    }
+    .ms-art{ height:44px; margin-bottom:1.2rem; }
+    .ms-art svg{ height:44px; }
+    .method-cta{ margin-top:3rem; padding-top:2.4rem; flex-direction:column; align-items:stretch; gap:1.2rem; }
+    .mc-lead{ max-width:none; }
+    .mc-right{ align-items:stretch; }
+    .mc-btn{ justify-content:center; width:100%; }
+    .mc-sub{ text-align:center; }
+  }
+
+  /* ---- reduced motion: static presentation ---- */
+  @media (prefers-reduced-motion: reduce){
+    .milestone{ opacity:1; transform:none; transition:none; }
+    .rail-line{ transform:scaleX(1); transition:none; }
+    .rail-dot{ opacity:1; transition:none; }
+    .ms-inner, .ms-art .gold, .ms-art .ivory, .ms-art svg, .mc-btn{ transition:none; }
+    .milestone:hover .ms-inner, .milestone:focus-within .ms-inner,
+    .mc-btn:hover, .mc-btn:focus-visible{ transform:none; }
+    /* motifs hold still */
+    .ms-art [class*="anim-"]{ animation:none !important; transform:none !important; }
+    .milestone:hover .ms-art svg, .milestone:focus-within .ms-art svg{ transform:none; }
+  }
+
+  /* ================= PRICING ================= */
+  .pricing-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1.5rem; }
+  .price-card{ border:1px solid var(--line); border-radius:4px; padding:2.4rem; display:flex; flex-direction:column; }
+  .price-card.is-highlight{ border-color:rgba(201,166,107,0.5); background:linear-gradient(180deg, rgba(201,166,107,0.06), transparent 60%); }
+  .price-card .path-num{ font-family:'Fraunces', serif; font-size:0.9rem; color:var(--gold); }
+  .price-card h3{ margin-top:1.1rem; font-size:1.35rem; }
+  .price-figure{ margin-top:1rem; font-family:'Fraunces', serif; font-size:1.6rem; color:var(--ink); }
+  .price-figure span{ font-size:0.85rem; color:var(--ink-dim); font-family:'Space Grotesk', sans-serif; margin-left:0.4rem; }
+  .price-card ul{ list-style:none; margin-top:1.6rem; flex-grow:1; }
+  .price-card li{ font-size:0.9rem; color:var(--ink-dim); padding:0.55rem 0; border-top:1px solid var(--line); }
+  .price-card li:first-child{ border-top:none; }
+  .price-card .btn-ghost{ margin-top:1.8rem; align-self:flex-start; }
+  @media (max-width:860px){ .pricing-grid{ grid-template-columns:1fr; } }
+
+  /* ================= MEET THE MENTORS ================= */
+  .mentors{ position:relative; }
+  .mentors::before{
+    content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 0%, rgba(201,166,107,0.06), transparent 65%),
+      radial-gradient(ellipse 60% 50% at 12% 100%, rgba(120,72,38,0.07), transparent 70%);
+  }
+  .mentors > .wrap{ position:relative; z-index:1; }
+
+  .mentor-stage{ perspective:1800px; }
+  .mentor-track{ position:relative; min-height:560px; }
+
+  .mentor-card{
+    position:absolute; inset-inline:0; top:0;
+    transform-style:preserve-3d;
+    transform:translate3d(0, var(--my,0px), var(--mz,0px)) scale(var(--ms,1)) rotateX(var(--mr,0deg));
+    opacity:var(--mo,1);
+    transition:transform .9s cubic-bezier(0.22,1,0.36,1), opacity .9s cubic-bezier(0.22,1,0.36,1),
+               filter .9s ease;
+    will-change:transform, opacity;
+  }
+  .mentor-card[data-pos="1"]{ --my:-40px; --mz:-150px; --ms:0.935; --mo:0.55; --mr:5deg; filter:blur(1.2px); }
+  .mentor-card[data-pos="2"]{ --my:-72px; --mz:-280px; --ms:0.875; --mo:0.30; --mr:8deg; filter:blur(2.4px); }
+  .mentor-card[data-pos="0"]{ --my:0px; --mz:0px; --ms:1; --mo:1; --mr:0deg; filter:none; }
+
+  .mc-inner{
+    position:relative; overflow:hidden; border-radius:6px;
+    border:1px solid var(--line); background:#0e1118;
+    box-shadow:0 40px 90px -40px rgba(0,0,0,0.95), 0 8px 30px -18px rgba(0,0,0,0.8);
+  }
+  /* gold edge highlight, active card only */
+  .mc-glow{
+    position:absolute; inset:0; border-radius:6px; pointer-events:none;
+    opacity:0; transition:opacity .5s ease;
+    border:1px solid var(--acc); 
+    box-shadow:inset 0 1px 0 0 rgba(255,255,255,0.05), 0 0 44px -14px var(--acc);
+  }
+  .mentor-card[data-pos="0"] .mc-glow{ opacity:0.55; }
+
+  /* click target for the cards behind */
+  .mc-pick{
+    position:absolute; inset:0; z-index:5; border:none; background:none;
+    cursor:pointer; border-radius:6px;
+  }
+  .mentor-card[data-pos="0"] .mc-pick{ display:none; }
+
+  .mc-grid{
+    display:grid; grid-template-columns:3fr 2fr; gap:2.6rem;
+    padding:2.8rem 3rem;
+  }
+
+  .mc-role{ font-size:0.74rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--acc); }
+  .mc-name{
+    font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.015em;
+    font-size:clamp(1.6rem, 2.9vw, 2.3rem); line-height:1.15; margin-top:0.5rem; color:var(--ink);
+  }
+  .mc-stats{ display:flex; gap:2.4rem; margin-top:1.4rem; }
+  .mc-stats .v{ display:block; font-family:'Fraunces',serif; font-size:1.3rem; color:var(--ink); }
+  .mc-stats .l{ display:block; font-size:0.74rem; color:var(--ink-dim); margin-top:0.2rem; }
+  .mc-bio{ margin-top:1.5rem; max-width:52ch; font-size:0.93rem; line-height:1.65; color:var(--ink-dim); }
+
+  .mc-chips{ display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:1.5rem; list-style:none; }
+  .mc-chip{
+    display:inline-block; border:1px solid var(--acc); border-radius:2px;
+    padding:0.28rem 0.65rem; font-size:0.75rem; color:#c4bcb0;
+    border-color:color-mix(in srgb, var(--acc) 32%, transparent);
+    transition:transform .3s ease, border-color .3s ease, background .3s ease;
+  }
+  .mc-chip:hover{
+    transform:translateY(-2px);
+    border-color:color-mix(in srgb, var(--acc) 70%, transparent);
+    background:color-mix(in srgb, var(--acc) 8%, transparent);
+  }
+
+  .mc-spec-lab{ margin-top:1.5rem; font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); }
+  .mc-spec{ margin-top:0.45rem; font-size:0.86rem; color:var(--ink-dim); }
+
+  .mc-cta{
+    display:inline-flex; align-items:center; gap:0.6rem; margin-top:1.9rem;
+    padding:0.85rem 1.7rem; border-radius:2px; text-decoration:none;
+    background:var(--acc); color:#0a0d14; font-size:0.9rem; font-weight:500;
+    transition:box-shadow .4s ease, transform .25s cubic-bezier(0.22,1,0.36,1);
+  }
+  .mc-cta:hover{ box-shadow:0 10px 34px -10px var(--acc); }
+
+  /* ---- photo stack ---- */
+  .mstack-wrap{ padding:0 52px; }
+  .mstack{
+    position:relative; aspect-ratio:4/5; width:100%; max-width:280px; margin:0 auto;
+    perspective:1200px;
+  }
+  .mshot{
+    position:absolute; inset:0; padding:0; border:1px solid var(--line);
+    border-radius:5px; overflow:hidden; background:#0a0d14; cursor:pointer;
+    transform:translate3d(var(--sx,0px), var(--sy,0px), 0) rotate(var(--sr,0deg)) scale(var(--ss,1));
+    opacity:var(--so,1);
+    transition:transform .75s cubic-bezier(0.22,1,0.36,1), opacity .75s ease, box-shadow .5s ease;
+    will-change:transform, opacity;
+  }
+  .mshot[data-d="0"]{ --sx:0px;  --sy:0px;   --sr:0deg;   --ss:1;     --so:1;    cursor:default; }
+  .mshot[data-d="1"]{ --sx:17px; --sy:-14px; --sr:2.2deg; --ss:0.95;  --so:0.82; }
+  .mshot[data-d="2"]{ --sx:32px; --sy:-26px; --sr:4deg;   --ss:0.905; --so:0.60; }
+  .mshot[data-d="3"]{ --sx:44px; --sy:-36px; --sr:5.6deg; --ss:0.865; --so:0.38; }
+  .mshot img{ width:100%; height:100%; object-fit:cover; object-position:var(--focal, 50% 35%); }
+  .mshot::after{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(to top, rgba(8,8,10,0.78), rgba(8,8,10,0.12) 38%, transparent 62%);
+  }
+  .mshot[data-d="0"]{ box-shadow:0 28px 60px -28px rgba(0,0,0,0.95); }
+
+  .mcap{ margin-top:1rem; min-height:2.4rem; font-size:0.78rem; line-height:1.45; color:var(--ink-dim); }
+  .mcap.swap{ opacity:0; transform:translateY(4px); }
+  .mcap{ transition:opacity .32s ease, transform .32s ease; }
+
+  /* ---- indicator ---- */
+  .mentor-nav{ display:flex; align-items:center; gap:1.3rem; margin-top:2.6rem; }
+  .m-count{ font-family:'Fraunces',serif; font-size:0.9rem; color:var(--ink-dim); font-variant-numeric:tabular-nums; }
+  .m-count b{ color:var(--ink); font-weight:500; }
+  .m-markers{ display:flex; gap:0.5rem; }
+  .m-marker{
+    height:2px; width:20px; border:none; padding:0; cursor:pointer; border-radius:2px;
+    background:rgba(255,255,255,0.15); transition:width .5s ease, background .5s ease;
+  }
+  .m-marker[aria-selected="true"]{ width:40px; background:var(--gold); }
+  .m-hint{ margin-left:auto; display:flex; align-items:center; gap:0.5rem; font-size:0.76rem; color:var(--ink-dim); transition:opacity .4s ease; }
+  .m-hint.gone{ opacity:0; pointer-events:none; }
+  .m-hint span{ animation:mHint 2s ease-in-out infinite; }
+  @keyframes mHint{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-4px);} }
+
+  @media (max-width:900px){
+    .mc-grid{ grid-template-columns:1fr; gap:2rem; padding:2rem 1.6rem; }
+    .mentor-track{ min-height:740px; }
+    .mstack-wrap{ padding:0 44px; }
+  }
+  @media (max-width:600px){
+    .mentor-track{ min-height:800px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .mentor-card{
+      transform:none !important; filter:none !important;
+      transition:opacity .45s ease;
+    }
+    .mentor-card[data-pos="0"]{ opacity:1; }
+    .mentor-card:not([data-pos="0"]){ opacity:0; pointer-events:none; }
+    .mshot{ transform:none !important; transition:opacity .4s ease; }
+    .mshot:not([data-d="0"]){ opacity:0; pointer-events:none; }
+    .m-hint span{ animation:none; }
+  }
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+  }
+  /* ================= HONOURS ================= */
+  .honours{
+    position:relative;
+    background:
+      radial-gradient(ellipse 60% 80% at 12% 50%, rgba(201,166,107,0.07), transparent 60%),
+      linear-gradient(180deg, rgba(12,10,8,0.6), transparent);
+  }
+  .hon-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:5rem; align-items:center; }
+
+  .hon-frame{ position:relative; }
+  .hon-frame::before{
+    content:''; position:absolute; inset:-14px -14px 22px 22px;
+    border:1px solid rgba(201,166,107,0.28); border-radius:2px; pointer-events:none;
+  }
+  .hon-photo{
+    position:relative; overflow:hidden; border-radius:2px; aspect-ratio:4/5;
+    filter:grayscale(1) contrast(1.04);
+  }
+  .hon-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .hon-photo::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(6,5,4,0) 55%, rgba(6,5,4,0.55));
+  }
+  .hon-cap{
+    margin-top:1.3rem; font-size:0.74rem; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--ink-dim);
+  }
+
+  .hon-lead{ font-family:'Fraunces', serif; font-size:1.35rem; line-height:1.45; color:#e6dfd2; max-width:34ch; }
+  .hon-list{ margin-top:2.4rem; }
+  .hon-row{
+    display:grid; grid-template-columns:82px 1fr auto; gap:1.6rem; align-items:baseline;
+    padding:1.15rem 0; border-top:1px solid var(--line);
+    opacity:0; transform:translateY(14px);
+    transition:opacity .7s ease, transform .7s var(--ease-lux);
+  }
+  .hon-row.is-in{ opacity:1; transform:translateY(0); }
+  .hon-row:last-child{ border-bottom:1px solid var(--line); }
+  .hon-year{ font-family:'Fraunces', serif; font-size:0.92rem; color:var(--gold); }
+  .hon-name{ font-size:0.98rem; color:var(--ink); }
+  .hon-sub{ display:block; font-size:0.78rem; color:var(--ink-dim); margin-top:0.25rem; }
+  .hon-place{
+    font-family:'Fraunces', serif; font-size:0.88rem; color:var(--ink-dim);
+    white-space:nowrap; letter-spacing:0.04em;
+  }
+  .hon-row:hover .hon-name{ color:#f6efe2; }
+  .hon-note{ margin-top:1.8rem; font-size:0.78rem; color:var(--ink-dim); }
+
+  @media (max-width:900px){
+    .hon-grid{ grid-template-columns:1fr; gap:2.8rem; }
+    .hon-frame{ max-width:360px; }
+    .hon-row{ grid-template-columns:66px 1fr; }
+    .hon-place{ grid-column:2; margin-top:0.35rem; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hon-row{ opacity:1 !important; transform:none !important; transition:none; }
+  }
+
+  /* ================= LEARNING PATH ================= */
+  .path-num{ font-family:'Fraunces', serif; font-size:0.95rem; color:var(--gold); }
+
+  .path-progress{ max-width:420px; margin-bottom:1rem; }
+  .path-progress-meta{ display:flex; justify-content:space-between; font-size:0.76rem; color:var(--ink-dim); margin-bottom:0.5rem; }
+  .path-progress-track{ height:3px; background:rgba(255,255,255,0.09); border-radius:2px; overflow:hidden; }
+  .path-progress-fill{
+    height:100%; width:0%;
+    background:linear-gradient(90deg, var(--gold), var(--cyan));
+    box-shadow:0 0 12px rgba(79,216,255,0.5);
+    transition:width 1.4s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .path-canvas{ max-width:720px; margin:0 auto; }
+
+  .sec-head{
+    text-align:center; padding:4.5rem 0 2.6rem;
+    opacity:0; transform:translateY(24px);
+    transition:opacity .7s ease, transform .7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .sec-head.is-in{ opacity:1; transform:translateY(0); }
+  .sec-head:first-child{ padding-top:0; }
+  .sec-eyebrow{ font-size:0.72rem; letter-spacing:0.14em; color:var(--ink-dim); text-transform:uppercase; }
+  .sec-head h3{ font-size:1.7rem; margin-top:0.5rem; }
+  .sec-head p{ margin-top:0.55rem; font-size:0.9rem; color:var(--ink-dim); }
+  .sec-rule{ width:1px; height:40px; margin:1.4rem auto 0; background:linear-gradient(180deg, transparent, var(--ink-dim), transparent); }
+
+  .lattice{ display:flex; flex-direction:column; align-items:center; }
+  .node-row{ display:grid; grid-template-columns:repeat(5, 1fr); width:100%; align-items:center; }
+
+  .node{
+    grid-row:1; justify-self:center; position:relative;
+    width:78px; height:78px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; transform:translateY(26px) scale(0.9);
+    transition:opacity .6s ease, transform .6s cubic-bezier(0.16,1,0.3,1);
+  }
+  .node.is-in{ opacity:1; transform:translateY(0) scale(1); }
+  .node-face{
+    position:absolute; inset:8px; transform:rotate(45deg); border-radius:10px;
+    transition:transform .3s cubic-bezier(0.16,1,0.3,1), box-shadow .3s ease;
+  }
+  .node:hover .node-face{ transform:rotate(45deg) scale(1.09); }
+  .node-icon{ position:relative; z-index:2; width:32px; height:32px; pointer-events:none; }
+
+  .node.done .node-face{
+    background:linear-gradient(145deg, var(--accent), color-mix(in srgb, var(--accent) 55%, #000));
+    box-shadow:0 8px 22px -8px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .node.done .node-icon{ color:#0a0d14; }
+  .node.locked .node-face{ background:rgba(255,255,255,0.03); box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08); }
+  .node.locked .node-icon{ color:var(--ink-dim); opacity:0.4; }
+  .node.current .node-face{
+    background:linear-gradient(145deg,#ffffff,#cfe9f5);
+    animation:nodePulse 2.4s ease-in-out infinite;
+  }
+  .node.current .node-icon{ color:#0a0d14; }
+  @keyframes nodePulse{
+    0%,100%{ box-shadow:0 0 0 0 rgba(79,216,255,0.5), 0 10px 26px -8px rgba(0,0,0,0.9); }
+    50%    { box-shadow:0 0 0 14px rgba(79,216,255,0), 0 10px 26px -8px rgba(0,0,0,0.9); }
+  }
+  .node-flag{
+    position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+    background:var(--ink); color:#0a0d14; font-size:0.7rem; font-weight:600;
+    padding:0.26rem 0.6rem; border-radius:3px; white-space:nowrap;
+    animation:flagBob 2.4s ease-in-out infinite;
+  }
+  .node-flag::after{
+    content:''; position:absolute; bottom:-4px; left:50%; margin-left:-4px;
+    border-left:4px solid transparent; border-right:4px solid transparent; border-top:4px solid var(--ink);
+  }
+  @keyframes flagBob{ 0%,100%{ transform:translateX(-50%) translateY(0); } 50%{ transform:translateX(-50%) translateY(-4px); } }
+
+  .link{
+    grid-row:1; justify-self:center; align-self:center;
+    width:2px; height:44px; border-radius:2px;
+    background:rgba(255,255,255,0.07); position:relative; overflow:hidden;
+  }
+  .link.filled::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg, var(--accent), transparent); opacity:0.55;
+  }
+
+  .deco{
+    grid-row:1; justify-self:center; width:44px; opacity:0.45;
+    animation:drift 7s ease-in-out infinite; pointer-events:none;
+    filter:drop-shadow(0 6px 14px rgba(0,0,0,0.6));
+  }
+  .deco:nth-of-type(even){ animation-delay:-2.5s; }
+  @keyframes drift{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-8px); } }
+
+  /* lesson drawer */
+  .drawer{
+    position:fixed; z-index:110; right:0; top:0; bottom:0; width:min(420px, 92vw);
+    background:var(--panel); border-left:1px solid var(--line);
+    padding:3rem 2.4rem; overflow-y:auto;
+    transform:translateX(100%); transition:transform .38s cubic-bezier(0.16,1,0.3,1);
+  }
+  .drawer.is-open{ transform:translateX(0); }
+  .drawer-scrim{
+    position:fixed; inset:0; z-index:100; background:rgba(4,5,9,0.68);
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .drawer-scrim.is-open{ opacity:1; pointer-events:auto; }
+  .drawer-badge{ font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-dim); }
+  .drawer h3{ font-size:1.5rem; margin-top:0.7rem; }
+  .drawer-meta{ display:flex; gap:1.4rem; margin-top:1rem; font-size:0.82rem; color:var(--ink-dim); }
+  .drawer p.body{ margin-top:1.5rem; color:var(--ink-dim); line-height:1.65; font-size:0.95rem; }
+  .drawer h5{ font-size:0.76rem; color:var(--ink-dim); margin-top:2rem; margin-bottom:0.8rem; letter-spacing:0.06em; text-transform:uppercase; }
+  .drawer li{ list-style:none; font-size:0.9rem; color:var(--ink-dim); padding:0.6rem 0; border-top:1px solid var(--line); }
+  .drawer .btn-primary{ margin-top:2.2rem; width:100%; }
+  .drawer .btn-primary:disabled{ background:rgba(255,255,255,0.08); color:var(--ink-dim); cursor:not-allowed; box-shadow:none; transform:none; }
+
+  @media (max-width:600px){
+    .node{ width:64px; height:64px; }
+    .node-icon{ width:27px; height:27px; }
+    .deco{ width:34px; }
+    .sec-head h3{ font-size:1.4rem; }
+    .drawer{ padding:2.6rem 1.6rem; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .node, .sec-head{ opacity:1 !important; transform:none !important; transition:none; }
+    .node.current .node-face, .node-flag, .deco{ animation:none !important; }
+    .drawer, .drawer-scrim{ transition:none; }
+  }
+
+  /* ================= RESULTS ================= */
+  .results-grid{ display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+  .chart-wrap{ background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:2.2rem 2.2rem 1.6rem; }
+  .chart-label{ display:flex; justify-content:space-between; font-size:0.8rem; color:var(--ink-dim); margin-top:1rem; }
+  .quote{ font-family:'Fraunces', serif; font-size:1.5rem; line-height:1.45; font-weight:400; }
+  .quote-attr{ margin-top:1.4rem; font-size:0.9rem; color:var(--ink-dim); }
+  .quote-attr strong{ color:var(--ink); font-weight:500; }
+  @media (max-width:860px){ .results-grid{ grid-template-columns:1fr; } }
+
+  /* ================= CTA BAND ================= */
+  .cta-band{ padding:7rem 0; text-align:center; border-top:1px solid var(--line); }
+  .cta-band h2{ font-size:clamp(1.8rem, 3.4vw, 2.6rem); max-width:16ch; margin:0 auto; }
+  .cta-band .btn-primary{ margin-top:2.2rem; }
+
+  /* ================= FOOTER ================= */
+  footer{ border-top:1px solid var(--line); padding:4.5rem 0 2.5rem; }
+  .footer-top{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; }
+  .footer-brand p{ margin-top:1rem; color:var(--ink-dim); font-size:0.92rem; line-height:1.6; max-width:32ch; }
+  .footer-col h5{ font-size:0.82rem; color:var(--ink-dim); font-weight:500; margin-bottom:1rem; }
+  .footer-col a{ display:block; text-decoration:none; font-size:0.9rem; color:var(--ink); opacity:0.85; margin-bottom:0.75rem; }
+  .footer-col a:hover{ opacity:1; color:var(--cyan); }
+  .footer-bottom{ display:flex; justify-content:space-between; padding-top:2rem; border-top:1px solid var(--line); font-size:0.8rem; color:var(--ink-dim); flex-wrap:wrap; gap:1rem; }
+  @media (max-width:860px){ .footer-top{ grid-template-columns:1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><img src="assets/nexus-logo.png" alt="Nexus Chess Academy" width="100" height="36" decoding="async"></div>
+  <div class="nav-links">
+    <a href="#coaches">Coaches</a>
+    <a href="#honours">Honours</a>
+    <a href="#curriculum">Learning Path</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#results">Results</a>
+  </div>
+  <a href="school-dashboard.html" class="nav-cta">School login</a>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="hero">
+  <canvas id="particles"></canvas>
+
+  <div class="content-wrap">
+    <div class="text-col">
+      <div class="kicker">Invitation-only online academy</div>
+      <h1 class="headline">Think eighteen<br>moves <em>ahead.</em></h1>
+      <p class="sub">A training system built with grandmasters and refined by engines — for players who treat chess as the sharpest exercise for the mind they have.</p>
+
+      <div class="cta-row">
+        <button class="btn-primary">Begin your ascent</button>
+        <button class="btn-ghost">
+          <span class="play-ico"><svg viewBox="0 0 10 10" fill="none"><path d="M1 0.5L9 5L1 9.5V0.5Z" fill="white"/></svg></span>
+          Watch the academy
+        </button>
+      </div>
+
+      <div class="trust">
+        <div class="trust-item"><span class="trust-num">12</span><span class="trust-label">Resident grandmasters</span></div>
+        <div class="trust-item"><span class="trust-num">50,000+</span><span class="trust-label">Students trained</span></div>
+        <div class="trust-item"><span class="trust-num">2,400+</span><span class="trust-label">Avg. rating gain / yr</span></div>
+      </div>
+    </div>
+
+    <div class="board-col">
+      <div class="board-rig" id="boardRig">
+        <div class="board-base"></div>
+        <div class="board" id="board"></div>
+
+        <div class="pieces-layer">
+          <div class="piece-shadow shadow-king"></div>
+          <div class="piece-shadow shadow-knight"></div>
+          <div class="piece-shadow shadow-pawn"></div>
+
+          <div class="piece king">
+            <svg viewBox="0 0 64 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="glassKing" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#f2fbff" stop-opacity="0.95"/>
+                  <stop offset="50%" stop-color="#7fd8ff" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#4fd8ff" stop-opacity="0.6"/>
+                </linearGradient>
+              </defs>
+              <rect x="29" y="2" width="6" height="16" rx="1" fill="url(#glassKing)"/>
+              <rect x="23" y="8" width="18" height="5" rx="1" fill="url(#glassKing)"/>
+              <circle cx="32" cy="26" r="7" fill="url(#glassKing)" stroke="#d9f4ff" stroke-opacity="0.7" stroke-width="1"/>
+              <path d="M32 32C21 39 15 50 19 62C21 68 18 74 13 80H51C46 74 43 68 45 62C49 50 43 39 32 32Z" fill="url(#glassKing)" stroke="#d9f4ff" stroke-opacity="0.55" stroke-width="1"/>
+              <path d="M18 62H46" stroke="#d9f4ff" stroke-opacity="0.35" stroke-width="1"/>
+              <rect x="9" y="80" width="46" height="9" rx="2" fill="url(#glassKing)"/>
+            </svg>
+          </div>
+
+          <div class="piece knight">
+            <svg viewBox="0 0 64 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="glassKnight" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#f2fbff" stop-opacity="0.95"/>
+                  <stop offset="55%" stop-color="#7fd8ff" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#c9a66b" stop-opacity="0.45"/>
+                </linearGradient>
+              </defs>
+              <path d="M42 6C30 3 15 10 10 24C7 33 12 39 10 46C8 52 2 54 3 61C4 68 13 69 20 66L22 72H50C51 55 54 36 47 22C45 15 46 9 42 6Z"
+                fill="url(#glassKnight)" stroke="#d9f4ff" stroke-opacity="0.55" stroke-width="1"/>
+              <path d="M16 30C20 26 27 24 33 26" stroke="#d9f4ff" stroke-opacity="0.4" stroke-width="1.4" fill="none"/>
+              <circle cx="35" cy="22" r="2.2" fill="#0a0705"/>
+              <rect x="10" y="72" width="44" height="9" rx="2" fill="url(#glassKnight)"/>
+            </svg>
+          </div>
+
+          <div class="piece pawn">
+            <svg viewBox="0 0 64 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="glassPawn" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#f2fbff" stop-opacity="0.95"/>
+                  <stop offset="60%" stop-color="#7fd8ff" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#4fd8ff" stop-opacity="0.5"/>
+                </linearGradient>
+              </defs>
+              <circle cx="32" cy="24" r="12" fill="url(#glassPawn)" stroke="#d9f4ff" stroke-opacity="0.6" stroke-width="1"/>
+              <path d="M32 36C24 44 20 56 24 68H40C44 56 40 44 32 36Z" fill="url(#glassPawn)" stroke="#d9f4ff" stroke-opacity="0.5" stroke-width="1"/>
+              <rect x="17" y="68" width="30" height="9" rx="2" fill="url(#glassPawn)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span>SCROLL</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<!-- ================= THE NEXUS METHOD ================= -->
+<section class="block method" id="how-it-works" aria-labelledby="methodHeading">
+  <div class="method-bg" aria-hidden="true"></div>
+  <div class="wrap">
+
+    <header class="method-head" id="methodHead">
+      <div>
+        <p class="method-eyebrow">The Nexus Method</p>
+        <h2 id="methodHeading">Your next level starts<br>with <em>the right first move.</em></h2>
+      </div>
+      <p class="method-lede">An individual starting point. A clear training plan. A coach who understands how you learn.</p>
+    </header>
+
+    <div class="journey" id="journey">
+      <div class="rail" aria-hidden="true">
+        <span class="rail-line"></span>
+        <span class="rail-dot"></span>
+        <span class="rail-dot"></span>
+        <span class="rail-dot"></span>
+        <span class="rail-dot"></span>
+      </div>
+
+      <ol class="milestones">
+        <li class="milestone">
+          <div class="ms-inner" tabindex="0">
+            <div class="ms-art" aria-hidden="true">
+              <!-- a board position -->
+              <svg viewBox="0 0 60 56" role="presentation" focusable="false">
+                <rect class="wash" x="22" y="19" width="16" height="16" rx="4"/>
+                <rect class="ivory" x="8" y="5" width="44" height="44" rx="9"/>
+                <path class="ivory" d="M8 19h44M8 35h44M22 5v44M38 5v44"/>
+                <g class="anim-hop">
+                  <!-- a round, friendly pawn -->
+                  <circle class="gold-fill" cx="30" cy="24" r="4.2"/>
+                  <path class="gold" d="M26.6 32c0-2.4 1.5-4.2 3.4-4.2s3.4 1.8 3.4 4.2"/>
+                </g>
+              </svg>
+            </div>
+            <p class="ms-num">01</p>
+            <h3 class="ms-title">Discover your game</h3>
+            <p class="ms-copy">Start with a guided assessment game so we can understand your calculation, decision-making, and current strengths.</p>
+            <p class="ms-label">Your starting point</p>
+          </div>
+        </li>
+
+        <li class="milestone">
+          <div class="ms-inner" tabindex="0">
+            <div class="ms-art" aria-hidden="true">
+              <!-- ascending squares -->
+              <svg viewBox="0 0 60 56" role="presentation" focusable="false">
+                <!-- three rounded steps that climb in turn -->
+                <g class="anim-step">
+                  <rect class="ivory" x="5" y="34" width="15" height="15" rx="4.5"/>
+                </g>
+                <g class="anim-step anim-step-2">
+                  <rect class="ivory" x="22" y="22" width="15" height="15" rx="4.5"/>
+                </g>
+                <g class="anim-step anim-step-3">
+                  <rect class="wash" x="39" y="10" width="15" height="15" rx="4.5"/>
+                  <rect class="gold" x="39" y="10" width="15" height="15" rx="4.5"/>
+                  <path class="gold" d="M46.5 14.6l1.2 2.4 2.6.4-1.9 1.8.5 2.6-2.4-1.3-2.4 1.3.5-2.6-1.9-1.8 2.6-.4z"/>
+                </g>
+              </svg>
+            </div>
+            <p class="ms-num">02</p>
+            <h3 class="ms-title">Find your level</h3>
+            <p class="ms-copy">Enter our Beginner, Intermediate, or Advanced pathway based on your game, experience, and learning needs.</p>
+            <p class="ms-label">Your training path</p>
+          </div>
+        </li>
+
+        <li class="milestone">
+          <div class="ms-inner" tabindex="0">
+            <div class="ms-art" aria-hidden="true">
+              <!-- a knight -->
+              <svg viewBox="0 0 60 56" role="presentation" focusable="false">
+                <!-- a friendly coach, waving hello -->
+                <path class="ivory" d="M12 49c0-9.5 5.8-15 13-15s13 5.5 13 15"/>
+                <g class="anim-nod">
+                  <circle class="wash" cx="25" cy="18" r="9"/>
+                  <circle class="ivory" cx="25" cy="18" r="9"/>
+                  <circle class="gold-fill" cx="21.6" cy="17.2" r="1.6"/>
+                  <circle class="gold-fill" cx="28.4" cy="17.2" r="1.6"/>
+                  <path class="gold" d="M22.2 21.8c1.6 1.7 4 1.7 5.6 0"/>
+                </g>
+                <g class="anim-wave">
+                  <path class="gold" d="M37 36l7.5-7"/>
+                  <circle class="gold-fill" cx="45.6" cy="27.6" r="3"/>
+                </g>
+              </svg>
+            </div>
+            <p class="ms-num">03</p>
+            <h3 class="ms-title">Meet your coach</h3>
+            <p class="ms-copy">Work with a coach matched to your goals, learning pace, and availability.</p>
+            <p class="ms-label">Your personal guidance</p>
+          </div>
+        </li>
+
+        <li class="milestone">
+          <div class="ms-inner" tabindex="0">
+            <div class="ms-art" aria-hidden="true">
+              <!-- a circular practice motif -->
+              <svg viewBox="0 0 60 56" role="presentation" focusable="false">
+                <!-- a hand lowers the pawn onto the square: the opening move -->
+                <rect class="wash anim-land" x="19" y="38" width="22" height="16" rx="4.5"/>
+                <rect class="ivory" x="19" y="38" width="22" height="16" rx="4.5"/>
+                <g class="anim-play">
+                  <!-- a hand reaching down to the pawn: palm, three fingers, thumb -->
+                  <g class="ivory-fill">
+                    <rect x="20.5" y="6" width="20" height="17" rx="7"/>
+                    <rect x="22.2" y="19" width="5.2" height="12" rx="2.6"/>
+                    <rect x="27.9" y="19" width="5.2" height="15" rx="2.6"/>
+                    <rect x="33.6" y="19" width="5.2" height="12" rx="2.6"/>
+                    <rect x="16" y="11" width="6.5" height="5.4" rx="2.7"/>
+                  </g>
+                  <!-- the pawn it is placing -->
+                  <circle class="gold-fill" cx="30.8" cy="41.5" r="3.5"/>
+                  <path class="gold" d="M27.5 48.5c0-1.9 1.5-3.4 3.3-3.4s3.3 1.5 3.3 3.4"/>
+                </g>
+              </svg>
+            </div>
+            <p class="ms-num">04</p>
+            <h3 class="ms-title">Build your rhythm</h3>
+            <p class="ms-copy">Follow weekly coaching, focused practice, and regular game reviews to turn lessons into lasting progress.</p>
+            <p class="ms-label">Your ongoing growth</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="method-cta">
+      <p class="mc-lead">Every strong player starts somewhere.</p>
+      <div class="mc-right">
+        <!--
+          BOOKING DESTINATION — no booking system exists in this project yet, so this
+          points at the tuition section. Change the href here (or set
+          data-booking-href on the section above) when the real flow is ready.
+        -->
+        <a class="mc-btn" id="methodBookBtn" href="#pricing">
+          Book Your Assessment <span aria-hidden="true">&rarr;</span>
+        </a>
+        <p class="mc-sub">Let&rsquo;s find your starting point.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= MEET THE MENTORS ================= -->
+<section class="block mentors" id="coaches" tabindex="0" aria-labelledby="mentorsHeading">
+  <div class="wrap">
+    <div class="block-head">
+      <div class="eyebrow">Meet the mentors</div>
+      <h2 id="mentorsHeading">Three minds. One mission&mdash;to develop confident, strategic players.</h2>
+    </div>
+
+    <div class="mentor-stage">
+      <div class="mentor-track" id="mentorTrack"></div>
+    </div>
+
+    <div class="mentor-nav">
+      <p class="m-count"><b id="mCount">01</b> / <span id="mTotal">03</span></p>
+      <div class="m-markers" id="mMarkers" role="tablist" aria-label="Choose a mentor"></div>
+      <p class="m-hint" id="mHint"><span aria-hidden="true">&uarr;</span> Move to explore</p>
+    </div>
+
+    <p class="sr-only" aria-live="polite" id="mLive"></p>
+  </div>
+</section>
+
+<!-- ================= HONOURS ================= -->
+<section class="block honours" id="honours">
+  <div class="wrap">
+    <div class="hon-grid">
+      <div>
+        <div class="hon-frame">
+          <figure class="hon-photo">
+            <img src="assets/coaches/c_trophy.jpg" id="honImg" width="540" height="405" loading="lazy" decoding="async" alt="Trophy and medal won at the Sindh Games 2024 chess event">
+          </figure>
+        </div>
+        <div class="hon-cap">Sindh Games 2024 · Chess</div>
+      </div>
+
+      <div>
+        <div class="eyebrow">Honours</div>
+        <p class="hon-lead">A record built at the board, not on a brochure. Every title below was won in a rated, officiated event.</p>
+
+        <div class="hon-list" id="honList"></div>
+        <p class="hon-note">Placings marked [ ] are awaiting confirmation \u2014 replace with the official result before publishing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LEARNING PATH ================= -->
+<section class="block" id="curriculum">
+  <div class="wrap">
+    <div class="block-head">
+      <div class="eyebrow">The path</div>
+      <h2>Thirty lessons. One continuous climb.</h2>
+      <p>Every student moves through the same progression, paced to their rating rather than a fixed calendar. Select any lesson to see what it covers.</p>
+      <div class="path-progress">
+        <div class="path-progress-meta"><span>Sample student progress</span><span id="pctLabel">0%</span></div>
+        <div class="path-progress-track"><div class="path-progress-fill" id="progressFill"></div></div>
+      </div>
+    </div>
+
+    <div class="path-canvas" id="pathCanvas"></div>
+  </div>
+</section>
+
+<!-- ================= PRICING ================= -->
+<section class="block" id="pricing">
+  <div class="wrap">
+    <div class="block-head">
+      <div class="eyebrow">Tuition</div>
+      <h2>Three tracks, one seat per coach ratio.</h2>
+      <p>Places are limited by coaching capacity, not enrollment targets. Full tuition is confirmed after your evaluation game.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="path-num">01</div>
+        <h3>Foundations</h3>
+        <div class="price-figure">Apply for pricing</div>
+        <ul>
+          <li>Placement-matched group cohort</li>
+          <li>Weekly live session</li>
+          <li>Tactics and calculation drills</li>
+        </ul>
+        <button class="btn-ghost">Apply to Foundations</button>
+      </div>
+      <div class="price-card is-highlight">
+        <div class="path-num">02</div>
+        <h3>Competitive</h3>
+        <div class="price-figure">Apply for pricing</div>
+        <ul>
+          <li>Personal repertoire built with your coach</li>
+          <li>Weekly 1:1 session</li>
+          <li>Rated game review, every game</li>
+        </ul>
+        <button class="btn-ghost">Apply to Competitive</button>
+      </div>
+      <div class="price-card">
+        <div class="path-num">03</div>
+        <h3>Grandmaster Path</h3>
+        <div class="price-figure">Apply for pricing</div>
+        <ul>
+          <li>One-on-one with a resident GM</li>
+          <li>Tournament seconding</li>
+          <li>Engine-assisted deep game analysis</li>
+        </ul>
+        <button class="btn-ghost">Apply to Grandmaster Path</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESULTS ================= -->
+<section class="block" id="results">
+  <div class="wrap">
+    <div class="results-grid">
+      <div>
+        <div class="eyebrow">In their words</div>
+        <p class="quote">"I'd plateaued at 1650 for two years. Nexus didn't give me more openings to memorize — it taught me why my calculation kept breaking down under pressure. I passed 2000 eight months later."</p>
+        <div class="quote-attr"><strong>Jonah R.</strong> — Student since 2023</div>
+      </div>
+
+      <div class="chart-wrap">
+        <svg viewBox="0 0 400 180" width="100%" height="auto">
+          <polyline points="0,150 50,140 100,130 150,120 200,95 250,80 300,55 350,35 400,15"
+            fill="none" stroke="#4fd8ff" stroke-width="2"/>
+          <polyline points="0,150 50,140 100,130 150,120 200,95 250,80 300,55 350,35 400,15 400,180 0,180"
+            fill="url(#areaFill)" stroke="none" opacity="0.5"/>
+          <defs>
+            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4fd8ff" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#4fd8ff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="chart-label"><span>Month 1</span><span>Average student rating gain</span><span>Month 12</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA BAND ================= -->
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Your next move starts with an evaluation game.</h2>
+    <button class="btn-primary">Book your placement game</button>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand"><img src="assets/nexus-logo.png" alt="Nexus Chess Academy" width="133" height="48" loading="lazy" decoding="async"></div>
+        <p>An online academy for players who want to understand the game, not just play it.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Academy</h5>
+        <a href="#coaches">Coaches</a>
+        <a href="#honours">Honours</a>
+        <a href="#curriculum">Learning Path</a>
+        <a href="#results">Results</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href="school-dashboard.html">School dashboard</a>
+        <a href="#">Rating calculator</a>
+        <a href="#">Game archive</a>
+        <a href="#">Puzzle library</a>
+      </div>
+      <div class="footer-col">
+        <h5>Academy office</h5>
+        <a href="#">Admissions</a>
+        <a href="#">Support</a>
+        <a href="#">Press</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Nexus Chess Academy</span>
+      <span>Terms · Privacy</span>
+    </div>
+  </div>
+</footer>
+
+
+<div class="drawer-scrim" id="lessonScrim"></div>
+<aside class="drawer" id="lessonDrawer" role="dialog" aria-modal="true">
+  <button class="modal-close" id="lessonClose" aria-label="Close">&times;</button>
+  <div id="lessonBody"></div>
+</aside>
+
+<script>
+  const board = document.getElementById('board');
+  const glowSet = new Set(['2-4','3-3','5-2','6-5']);
+  for(let r=0;r<8;r++){
+    for(let c=0;c<8;c++){
+      const sq = document.createElement('div');
+      const isDark = (r+c)%2===0;
+      sq.className = 'sq ' + (isDark ? 'dark' : 'light');
+      if(glowSet.has(r+'-'+c)) sq.classList.add('glow');
+      board.appendChild(sq);
+    }
+  }
+
+  const rig = document.getElementById('boardRig');
+  const hero = document.getElementById('hero');
+  const baseRotX = 52, baseRotZ = 38;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // camera-settle entrance: board starts flat, eases into its final tilt once
+  if(!reduceMotion){
+    rig.style.transition = 'none';
+    rig.style.transform = 'rotateX(0deg) rotateZ(0deg)';
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        rig.style.transition = 'transform 0.9s cubic-bezier(0.16,1,0.3,1)';
+        rig.style.transform = `rotateX(${baseRotX}deg) rotateZ(${baseRotZ}deg)`;
+        rig.addEventListener('transitionend', function onSettle(){
+          rig.style.transition = 'transform 0.15s ease-out';
+          rig.removeEventListener('transitionend', onSettle);
+        });
+      });
+    });
+  }
+
+  if(window.matchMedia('(min-width:901px)').matches){
+    hero.addEventListener('mousemove', (e)=>{
+      const rect = hero.getBoundingClientRect();
+      const px = (e.clientX - rect.left)/rect.width - 0.5;
+      const py = (e.clientY - rect.top)/rect.height - 0.5;
+      rig.style.transform = `rotateX(${baseRotX - py*8}deg) rotateZ(${baseRotZ + px*10}deg)`;
+    });
+    hero.addEventListener('mouseleave', ()=>{
+      rig.style.transform = `rotateX(${baseRotX}deg) rotateZ(${baseRotZ}deg)`;
+    });
+  }
+
+  // pause board/particle motion when the hero is off screen
+  let heroVisible = true;
+  const heroObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      heroVisible = entry.isIntersecting;
+      hero.classList.toggle('is-offscreen', !heroVisible);
+    });
+  }, { threshold: 0.05 });
+  heroObserver.observe(hero);
+
+  const IMG = {"b_portrait": "assets/coaches/b_portrait.jpg", "b_award": "assets/coaches/b_award.jpg", "b_class": "assets/coaches/b_class.jpg", "b_room": "assets/coaches/b_room.jpg", "b_cheque": "assets/coaches/b_cheque.jpg", "c_trophy": "assets/coaches/c_trophy.jpg", "c_cheque": "assets/coaches/c_cheque.jpg", "c_varsity": "assets/coaches/c_varsity.jpg", "c_karachi": "assets/coaches/c_karachi.jpg", "a_portrait": "assets/coaches/a_portrait.jpg", "a_cert": "assets/coaches/a_cert.jpg", "a_teach": "assets/coaches/a_teach.jpg", "a_stage": "assets/coaches/a_stage.jpg", "c_portrait": "assets/coaches/c_portrait.jpg"};
+
+  /* ---- Escape closes the lesson drawer ---- */
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape'){
+      const ld = document.getElementById('lessonDrawer');
+      const ls = document.getElementById('lessonScrim');
+      if(ld) ld.classList.remove('is-open');
+      if(ls) ls.classList.remove('is-open');
+    }
+  });
+
+  /* ================= MEET THE COACHES =================
+     ⚠ ALL COACH CONTENT BELOW IS PLACEHOLDER.
+     Replace every name, rating, achievement, quote and record with real,
+     verified details before publishing. Each coach gets its own full
+     section, generated from this array — add a fourth object and a
+     fourth chapter appears, alternating sides automatically.
+  ==================================================== */
+  const COACHES = [
+    {
+      name:'[Coach 1 \u2014 name]',
+      role:'Founder & Head Coach',
+      rating:'[rating]',    ratingLabel:'FIDE rating',
+      experience:'[years]', experienceLabel:'Years coaching',
+      portrait: IMG.a_portrait,
+      portraitAlt:'Coach studying a position at the board',
+      strip:[
+        { src: IMG.a_cert,  cap:'Certificate \u2014 U.S. Consulate General Karachi' },
+        { src: IMG.a_stage, cap:'Award ceremony, Arts Council of Pakistan' },
+        { src: IMG.a_teach, cap:'Coaching a session at the academy' }
+      ],
+      achievements:['[Certified Instructor]','[Tournament Organizer]','[Arbiter]'],
+      quote:'\u201C[Coaching philosophy \u2014 replace.]\u201D',
+      bio:'[Short biography \u2014 replace.]',
+      record:['Students coached: [number]','Tournament winners: [number]','Average rating gain: [number]','Certifications: [replace]'],
+      gallery:[IMG.a_cert, IMG.a_stage, IMG.a_teach],
+      galleryAlt:['Certificate presentation at the U.S. Consulate General Karachi','Award ceremony at the Arts Council of Pakistan','Coaching students at the academy']
+    },
+    {
+      name:'[Coach 2 \u2014 name]',
+      role:'Coach \u00b7 Tournament Preparation',
+      rating:'[rating]',    ratingLabel:'FIDE rating',
+      experience:'[years]', experienceLabel:'Years coaching',
+      portrait: IMG.b_portrait,
+      portraitAlt:'Coach playing a rated game at a tournament',
+      strip:[
+        { src: IMG.b_award,  cap:'District South Sports Tournament 2025' },
+        { src: IMG.b_cheque, cap:'Winner \u2014 Denning Institute open' },
+        { src: IMG.b_class,  cap:'Teaching tournament rules at the academy' },
+        { src: IMG.b_room,   cap:'Rules session at the academy' }
+      ],
+      achievements:['[District South 2025]','[Denning Open Winner]','[Certified Instructor]','[Arbiter]'],
+      quote:'\u201C[Coaching philosophy \u2014 replace.]\u201D',
+      bio:'[Short biography \u2014 replace.]',
+      record:['Students coached: [number]','Tournament winners: [number]','Average rating gain: [number]','Certifications: [replace]'],
+      gallery:[IMG.b_award, IMG.b_cheque, IMG.b_class, IMG.b_room],
+      galleryAlt:['District South Sports Tournament 2025 prize presentation','Winner\u2019s cheque presented on stage','Teaching tournament rules at the academy','Rules session at the academy']
+    },
+    {
+      name:'[Coach 3 \u2014 name]',
+      role:'Coach \u00b7 Youth Program',
+      rating:'[rating]',    ratingLabel:'FIDE rating',
+      experience:'[years]', experienceLabel:'Years coaching',
+      portrait: IMG.c_portrait,
+      portraitAlt:'Coach with the Sindh Games 2024 trophy and medal',
+      strip:[
+        { src: IMG.c_trophy,  cap:'Sindh Games 2024 \u2014 Chess' },
+        { src: IMG.c_cheque,  cap:'All Pakistan Intervarsity 2024 \u2014 2nd position' },
+        { src: IMG.c_varsity, cap:'8th All Pakistan Intervarsity, May 2024' },
+        { src: IMG.c_karachi, cap:'Karachi Games 2023 \u2014 team trophy' }
+      ],
+      achievements:['[Sindh Games 2024]','[Intervarsity 2nd Position]','[Karachi Games 2023]','[Youth Specialist]'],
+      quote:'\u201C[Coaching philosophy \u2014 replace.]\u201D',
+      bio:'[Short biography \u2014 replace.]',
+      record:['Students coached: [number]','Tournament winners: [number]','Average rating gain: [number]','Certifications: [replace]'],
+      gallery:[IMG.c_trophy, IMG.c_cheque, IMG.c_varsity, IMG.c_karachi],
+      galleryAlt:['Sindh Games 2024 trophy and medal','Intervarsity 2024 prize presentation','8th All Pakistan Intervarsity Championship team','Karachi Games 2023 team trophy presentation']
+    }
+  ];
+
+  /* ================= THE NEXUS METHOD ================= */
+  (function(){
+    const methodSection = document.getElementById('how-it-works');
+    if(!methodSection) return;
+
+    /* Booking destination: overridable without touching this script.
+       Set data-booking-href on the section when a real flow exists. */
+    const bookBtn = document.getElementById('methodBookBtn');
+    const bookHref = methodSection.dataset.bookingHref;
+    if(bookBtn && bookHref) bookBtn.setAttribute('href', bookHref);
+
+    const journey    = document.getElementById('journey');
+    const milestones = methodSection.querySelectorAll('.milestone');
+    const methodHead = document.getElementById('methodHead');
+    const still      = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if(still){
+      /* static presentation — everything is already visible via the CSS */
+      if(journey) journey.classList.add('is-in');
+      milestones.forEach(m => m.classList.add('is-in'));
+      return;
+    }
+
+    /* header eases in */
+    if(methodHead){
+      methodHead.style.opacity = '0';
+      methodHead.style.transform = 'translateY(14px)';
+      methodHead.style.transition = 'opacity .7s ease, transform .7s cubic-bezier(0.22,1,0.36,1)';
+      const headObserver = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(!e.isIntersecting) return;
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+          headObserver.unobserve(e.target);
+        });
+      }, { threshold:0.25 });
+      headObserver.observe(methodHead);
+    }
+
+    /* the journey line draws once, then the panels stagger in behind it */
+    const journeyObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        milestones.forEach((m,i)=> setTimeout(()=> m.classList.add('is-in'), 180 + i * 110));
+        journeyObserver.unobserve(e.target);
+      });
+    }, { threshold:0.2 });
+    if(journey) journeyObserver.observe(journey);
+  })();
+
+  /* ---- Meet the mentors: 3D rotating stack ---- */
+  const mTrack   = document.getElementById('mentorTrack');
+  const mMarkers = document.getElementById('mMarkers');
+  const mCountEl = document.getElementById('mCount');
+  const mHint    = document.getElementById('mHint');
+  const mLive    = document.getElementById('mLive');
+  const mSection = document.getElementById('coaches');
+
+  const mReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const COOLDOWN_MS       = 950;   // one gesture, one transition
+  const POINTER_THRESHOLD = 78;    // sustained travel before rotating
+  const POINTER_IDLE_MS   = 260;
+  const WHEEL_THRESHOLD   = 28;
+  const SWIPE_THRESHOLD   = 56;
+  const PHOTO_MS          = 3100;
+
+  /* Four photos per mentor: the portrait, then the first three strip shots. */
+  const MENTORS = COACHES.map((c, i) => ({
+    name: c.name, role: c.role, bio: c.bio,
+    rating: c.rating, ratingLabel: c.ratingLabel,
+    experience: c.experience, experienceLabel: c.experienceLabel,
+    achievements: c.achievements,
+    accent: ['#c9a66b', '#b98f5a', '#d0a978'][i % 3],
+    specialties: [
+      ['Opening repertoire', 'Endgame technique', 'Tournament preparation'],
+      ['Rated-game preparation', 'Time management', 'Tournament rules'],
+      ['Junior development', 'Calculation drills', 'Team events']
+    ][i % 3],
+    ctaLabel: 'Book a session',
+    ctaHref: '#pricing',
+    photos: [{ src: c.portrait, alt: c.portraitAlt, cap: c.portraitAlt }]
+      .concat((c.strip || []).slice(0, 3).map(s => ({ src: s.src, alt: s.cap, cap: s.cap })))
+  }));
+
+  const mTotal = MENTORS.length;
+  document.getElementById('mTotal').textContent = String(mTotal).padStart(2, '0');
+
+  let mActive = 0;
+  let mLast = 0;                             // cooldown clock
+  let mAcc = 0, mPrevY = null, mPrevT = 0;   // pointer accumulator
+  const photoIndex  = new Array(mTotal).fill(0);
+  const photoTimers = new Array(mTotal).fill(null);
+
+  /* ---- build the cards once ---- */
+  mTrack.innerHTML = MENTORS.map(function (m, i) {
+    const shots = m.photos.map(function (p, k) {
+      const label = k === 0 ? p.alt : 'Show photograph: ' + p.alt;
+      const eager = (i === 0 && k === 0) ? 'eager' : 'lazy';
+      return '<button class="mshot" data-shot="' + k + '" data-d="' + k + '" aria-label="' + label + '">' +
+        '<img src="' + p.src + '" alt="' + (k === 0 ? p.alt : '') + '" width="540" height="675" ' +
+             'loading="' + eager + '" decoding="async" draggable="false"></button>';
+    }).join('');
+
+    return '<article class="mentor-card" data-card="' + i + '" style="--acc:' + m.accent + '">' +
+      '<div class="mc-inner">' +
+        '<div class="mc-glow"></div>' +
+        '<div class="mc-grid">' +
+          '<div>' +
+            '<p class="mc-role">' + m.role + '</p>' +
+            '<h3 class="mc-name">' + m.name + '</h3>' +
+            '<div class="mc-stats">' +
+              '<div><span class="v">' + m.rating + '</span><span class="l">' + m.ratingLabel + '</span></div>' +
+              '<div><span class="v">' + m.experience + '</span><span class="l">' + m.experienceLabel + '</span></div>' +
+            '</div>' +
+            '<p class="mc-bio">' + m.bio + '</p>' +
+            '<ul class="mc-chips">' +
+              m.achievements.slice(0, 3).map(function (a) { return '<li class="mc-chip">' + a + '</li>'; }).join('') +
+            '</ul>' +
+            '<p class="mc-spec-lab">Specialties</p>' +
+            '<p class="mc-spec">' + m.specialties.join('  &middot;  ') + '</p>' +
+            '<a class="mc-cta" href="' + m.ctaHref + '">' + m.ctaLabel + ' <span aria-hidden="true">&rarr;</span></a>' +
+          '</div>' +
+          '<div class="mstack-wrap">' +
+            '<div class="mstack" data-stack="' + i + '">' + shots + '</div>' +
+            '<p class="mcap" data-cap="' + i + '">' + m.photos[0].cap + '</p>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<button class="mc-pick" data-go="' + i + '" aria-label="Bring ' + m.name + ' to the front"></button>' +
+    '</article>';
+  }).join('');
+
+  mMarkers.innerHTML = MENTORS.map(function (m, i) {
+    return '<button class="m-marker" role="tab" data-go="' + i + '" aria-selected="' + (i === 0) +
+           '" aria-label="Show ' + m.name + '"></button>';
+  }).join('');
+
+  const cardEls = Array.prototype.slice.call(mTrack.querySelectorAll('.mentor-card'));
+
+  /* ---- painting ---- */
+  function paintStack(i) {
+    const stack = mTrack.querySelector('[data-stack="' + i + '"]');
+    if (!stack) return;
+    const n = MENTORS[i].photos.length;
+    const front = photoIndex[i];
+    stack.querySelectorAll('.mshot').forEach(function (el, k) {
+      const d = (k - front + n) % n;
+      el.dataset.d = String(d);
+      el.style.zIndex = String(n - d);
+      const img = el.querySelector('img');
+      // only the front photo is announced, so it is not read out four times
+      if (img) img.alt = d === 0 ? MENTORS[i].photos[k].alt : '';
+    });
+    const cap = mTrack.querySelector('[data-cap="' + i + '"]');
+    if (cap) {
+      cap.classList.add('swap');
+      setTimeout(function () {
+        cap.textContent = MENTORS[i].photos[photoIndex[i]].cap;
+        cap.classList.remove('swap');
+      }, 160);
+    }
+  }
+
+  function paintCards() {
+    cardEls.forEach(function (el, i) {
+      const pos = (i - mActive + mTotal) % mTotal;
+      el.dataset.pos = String(pos);
+      el.setAttribute('aria-hidden', pos === 0 ? 'false' : 'true');
+      el.style.zIndex = String(mTotal - pos);
+      // keep background cards out of the tab order
+      el.querySelectorAll('a, button').forEach(function (node) {
+        if (node.classList.contains('mc-pick')) return;
+        node.tabIndex = pos === 0 ? 0 : -1;
+      });
+    });
+    mCountEl.textContent = String(mActive + 1).padStart(2, '0');
+    mMarkers.querySelectorAll('.m-marker').forEach(function (b, i) {
+      b.setAttribute('aria-selected', String(i === mActive));
+    });
+    mLive.textContent = MENTORS[mActive].name + ', ' + MENTORS[mActive].role +
+      '. Mentor ' + (mActive + 1) + ' of ' + mTotal + '.';
+  }
+
+  /* ---- photo cycling: only the active card runs a timer ---- */
+  function stopPhotos(i) {
+    if (photoTimers[i]) { clearInterval(photoTimers[i]); photoTimers[i] = null; }
+  }
+  function startPhotos(i) {
+    stopPhotos(i);
+    if (mReduced) return;
+    const n = MENTORS[i].photos.length;
+    photoTimers[i] = setInterval(function () {
+      photoIndex[i] = (photoIndex[i] + 1) % n;
+      paintStack(i);
+    }, PHOTO_MS);
+  }
+  function stopAllPhotos() { MENTORS.forEach(function (_, i) { stopPhotos(i); }); }
+
+  /* ---- rotation ---- */
+  function goTo(index) {
+    const now = Date.now();
+    if (now - mLast < COOLDOWN_MS) return;
+    const next = ((index % mTotal) + mTotal) % mTotal;
+    if (next === mActive) return;
+    mLast = now; mAcc = 0;
+    stopAllPhotos();
+    photoIndex[next] = 0;          // reset the sequence for the incoming mentor
+    mActive = next;
+    paintCards();
+    paintStack(mActive);
+    startPhotos(mActive);
+    if (mHint) mHint.classList.add('gone');
+  }
+  function mNext() { goTo(mActive + 1); }
+  function mPrev() { goTo(mActive - 1); }
+
+  /* ---- gestures ---- */
+  mSection.addEventListener('pointermove', function (e) {
+    if (e.pointerType !== 'mouse') return;
+    const now = Date.now(), prev = mPrevY;
+    mPrevY = e.clientY;
+    if (prev === null || now - mPrevT > POINTER_IDLE_MS) { mPrevT = now; mAcc = 0; return; }
+    mPrevT = now;
+    const dy = e.clientY - prev;
+    if (Math.abs(dy) < 1) return;
+    if (Math.sign(dy) !== Math.sign(mAcc)) mAcc = 0;
+    mAcc += dy;
+    if (Math.abs(mAcc) >= POINTER_THRESHOLD) { (mAcc < 0 ? mNext : mPrev)(); }
+  });
+
+  mSection.addEventListener('wheel', function (e) {
+    if (Math.abs(e.deltaY) < WHEEL_THRESHOLD) return;
+    const r = mSection.getBoundingClientRect();
+    // only take over the wheel while the section really fills the viewport
+    if (!(r.top < innerHeight * 0.3 && r.bottom > innerHeight * 0.7)) return;
+    (e.deltaY < 0 ? mNext : mPrev)();
+  }, { passive: true });
+
+  mSection.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowRight') { e.preventDefault(); mNext(); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') { e.preventDefault(); mPrev(); }
+    else if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    else if (e.key === 'End') { e.preventDefault(); goTo(mTotal - 1); }
+  });
+
+  let mTouchY = null;
+  mSection.addEventListener('touchstart', function (e) {
+    mTouchY = e.touches[0].clientY;
+  }, { passive: true });
+  mSection.addEventListener('touchend', function (e) {
+    if (mTouchY === null) return;
+    const dy = e.changedTouches[0].clientY - mTouchY;
+    mTouchY = null;
+    if (Math.abs(dy) >= SWIPE_THRESHOLD) { (dy < 0 ? mNext : mPrev)(); }
+  });
+
+  /* markers, background cards, and individual photographs */
+  mTrack.addEventListener('click', function (e) {
+    const shot = e.target.closest('[data-shot]');
+    if (shot) {
+      const card = shot.closest('[data-card]');
+      const i = +card.dataset.card;
+      if (i === mActive) {
+        photoIndex[i] = +shot.dataset.shot;
+        paintStack(i);
+        startPhotos(i);            // restart the dwell from this photo
+      }
+      return;
+    }
+    const pick = e.target.closest('[data-go]');
+    if (pick) goTo(+pick.dataset.go);
+  });
+  mMarkers.addEventListener('click', function (e) {
+    const b = e.target.closest('[data-go]');
+    if (b) goTo(+b.dataset.go);
+  });
+
+  /* hovering a stack pauses its cycling */
+  mTrack.addEventListener('pointerover', function (e) {
+    const s = e.target.closest ? e.target.closest('.mstack') : null;
+    if (s) stopPhotos(+s.dataset.stack);
+  });
+  mTrack.addEventListener('pointerout', function (e) {
+    const s = e.target.closest ? e.target.closest('.mstack') : null;
+    if (!s) return;
+    const to = e.relatedTarget;
+    if (to && s.contains(to)) return;          // still inside the stack
+    if (+s.dataset.stack === mActive) startPhotos(mActive);
+  });
+
+  /* stop everything while the section is off screen */
+  new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) startPhotos(mActive); else stopAllPhotos();
+    });
+  }, { threshold: 0.15 }).observe(mSection);
+
+  /* first paint */
+  paintCards();
+  MENTORS.forEach(function (_, i) { paintStack(i); });
+  startPhotos(0);
+
+  /* ================= HONOURS ================= */
+  /* honImg src is set in the markup so it loads during HTML parse, not after JS runs */
+
+  const HONOURS = [
+    { year:'2024', name:'Sindh Games \u2014 Chess (Men & Women)', sub:'Provincial games, Sindh', place:'[placing]' },
+    { year:'2024', name:'8th All Pakistan Intervarsity Chess Championship', sub:'HEC \u00b7 Rawalpindi Women University, May 8\u201311', place:'[placing]' },
+    { year:'2023\u201324', name:'All Pakistan Intervarsity Chess Championship', sub:'Prize presentation, January', place:'2nd position' },
+    { year:'2023', name:'Karachi Games \u2014 Chess', sub:'Team trophy presentation', place:'[placing]' },
+    { year:'2025', name:'District South Sports Tournament', sub:'Youth Development Centre South, Karachi', place:'[placing]' }
+  ];
+
+  const honList = document.getElementById('honList');
+  honList.innerHTML = HONOURS.map(h => `
+    <div class="hon-row">
+      <span class="hon-year">${h.year}</span>
+      <span class="hon-name">${h.name}<span class="hon-sub">${h.sub}</span></span>
+      <span class="hon-place">${h.place}</span>
+    </div>`).join('');
+
+  const honReveal = new IntersectionObserver((entries)=>{
+    entries.forEach((e, i)=>{
+      if(e.isIntersecting){
+        setTimeout(()=> e.target.classList.add('is-in'), i * 90);
+        honReveal.unobserve(e.target);
+      }
+    });
+  }, { threshold:0.2 });
+  honList.querySelectorAll('.hon-row').forEach(el => honReveal.observe(el));
+
+  const ICONS = {
+    board:'<path d="M3 3h18v18H3z"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>',
+    pawn:'<circle cx="12" cy="7" r="3"/><path d="M12 10c-3 3-3 6-2 8h4c1-2 1-5-2-8z"/><path d="M7 21h10"/>',
+    rook:'<path d="M6 4h12v3l-2 2v8l2 4H6l2-4V9L6 7z"/><path d="M10 4v2M14 4v2"/>',
+    crown:'<path d="M4 8l3 9h10l3-9-4.5 3L12 5 8.5 11z"/>',
+    target:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>',
+    swap:'<path d="M4 8h11l-3-3M20 16H9l3 3"/>',
+    shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+    clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    search:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>',
+    bolt:'<path d="M13 2L5 14h6l-1 8 8-12h-6z"/>',
+    flag:'<path d="M6 3v18M6 4h11l-2 4 2 4H6"/>',
+    eye:'<path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.5"/>',
+    layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+    grad:'<path d="M12 4L2 9l10 5 10-5z"/><path d="M6 12v4c0 1.5 3 3 6 3s6-1.5 6-3v-4"/>'
+  };
+  const ICON_ATTRS = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"';
+  const lessonIcon = k => `<svg class="node-icon" ${ICON_ATTRS}>${ICONS[k]||ICONS.board}</svg>`;
+
+  const DECO = {
+    pawn:'<svg viewBox="0 0 64 92"><circle cx="32" cy="24" r="11" fill="#e8eef7" opacity="0.85"/><path d="M32 36c-8 8-11 20-8 30h16c3-10 0-22-8-30z" fill="#dbe4f0" opacity="0.85"/><rect x="18" y="66" width="28" height="8" rx="2" fill="#cbd6e6" opacity="0.85"/></svg>',
+    knight:'<svg viewBox="0 0 64 92"><path d="M42 8C30 5 15 12 10 26c-3 9 2 15 0 22-2 6-8 8-7 15 1 7 10 8 17 5l2 6h28c1-17 4-36-3-50-2-7-1-13-5-16z" fill="#e2eaf5" opacity="0.85"/><rect x="10" y="74" width="44" height="8" rx="2" fill="#cbd6e6" opacity="0.85"/></svg>',
+    rook:'<svg viewBox="0 0 64 92"><path d="M14 8h36v10l-6 6v34H20V24l-6-6z" fill="#e2eaf5" opacity="0.85"/><rect x="12" y="58" width="40" height="9" rx="2" fill="#cbd6e6" opacity="0.85"/></svg>',
+    queen:'<svg viewBox="0 0 64 92"><path d="M12 16l6 20h28l6-20-9 8-11-14-11 14z" fill="#e8eef7" opacity="0.85"/><path d="M18 38c-2 10-1 18 2 24h24c3-6 4-14 2-24z" fill="#dbe4f0" opacity="0.85"/><rect x="14" y="62" width="36" height="9" rx="2" fill="#cbd6e6" opacity="0.85"/></svg>'
+  };
+
+  const SECTIONS = [
+    { name:'Learn the Board', eyebrow:'Stage 00', blurb:'The geometry before the game.', accent:'#4fd8ff',
+      lessons:[
+        {t:'The board and its language', i:'board', d:'How files, ranks and squares are named \u2014 and why notation is the first tool, not the last.', m:'8 min'},
+        {t:'How each piece moves', i:'pawn', d:'Movement rules for all six pieces, with the constraints that make each one useful.', m:'12 min'},
+        {t:'Capturing and check', i:'target', d:'What it means to attack a square, and why check is a constraint rather than a threat.', m:'10 min'},
+        {t:'Castling and en passant', i:'swap', d:'The two special moves, and the positions where each one genuinely matters.', m:'9 min'},
+        {t:'Checkmate and stalemate', i:'crown', d:'The difference between a won game and a drawn one, drilled on simple positions.', m:'11 min'},
+        {t:'Stage assessment', i:'grad', d:'A short assessment confirming board fluency before you move to Foundations.', m:'15 min'}
+      ]},
+    { name:'Foundations', eyebrow:'Stage 01', blurb:'Rated 800 \u2013 1400.', accent:'#c9a66b',
+      lessons:[
+        {t:'Controlling the centre', i:'target', d:'Why central squares are worth more, and how to contest them from move one.', m:'14 min'},
+        {t:'Developing with purpose', i:'layers', d:'Getting pieces out is not the goal \u2014 getting them onto squares that do work is.', m:'13 min'},
+        {t:'King safety', i:'shield', d:'When to castle, when to delay, and how to read an exposed king.', m:'12 min'},
+        {t:'Basic tactical patterns', i:'bolt', d:'Forks, pins and skewers as recurring shapes rather than isolated tricks.', m:'18 min'},
+        {t:'Trading pieces well', i:'swap', d:'Every exchange changes the position\u2019s character \u2014 learn to choose which change you want.', m:'15 min'},
+        {t:'Basic endgames', i:'flag', d:'King and pawn endings: the foundation every other endgame is measured against.', m:'20 min'},
+        {t:'Stage assessment', i:'grad', d:'Rated assessment game with written review from your coach.', m:'45 min'}
+      ]},
+    { name:'Competitive', eyebrow:'Stage 02', blurb:'Rated 1400 \u2013 2000.', accent:'#d08a52',
+      lessons:[
+        {t:'Building a repertoire', i:'layers', d:'Choosing openings that match how you actually like to play, then narrowing them.', m:'22 min'},
+        {t:'Pawn structures', i:'board', d:'The handful of structures that decide most middlegames, and the plans each one implies.', m:'25 min'},
+        {t:'Calculation under pressure', i:'clock', d:'Structured calculation: candidate moves, forcing lines, and knowing when to stop.', m:'28 min'},
+        {t:'Prophylactic thinking', i:'eye', d:'Reading your opponent\u2019s plan before it arrives, and the moves that quietly stop it.', m:'24 min'},
+        {t:'Converting advantages', i:'crown', d:'Why won positions get drawn, and the technique that prevents it.', m:'26 min'},
+        {t:'Rook endgames', i:'rook', d:'The most common endgame in practice, and the positions worth knowing exactly.', m:'30 min'},
+        {t:'Stage assessment', i:'grad', d:'Two rated games plus a full engine-assisted review session.', m:'90 min'}
+      ]},
+    { name:'Advanced', eyebrow:'Stage 03', blurb:'Rated 2000+.', accent:'#8b7fe8',
+      lessons:[
+        {t:'Deep opening preparation', i:'search', d:'Preparing lines against a specific opponent, not a general audience.', m:'35 min'},
+        {t:'Dynamic vs static advantage', i:'bolt', d:'When to play for a lasting edge and when a temporary one has to be cashed immediately.', m:'32 min'},
+        {t:'Sacrificial attack', i:'crown', d:'Evaluating material sacrifices by compensation rather than by count.', m:'34 min'},
+        {t:'Complex endgame technique', i:'flag', d:'Multi-piece endings where general principles stop being enough.', m:'38 min'},
+        {t:'Time management', i:'clock', d:'Allocating clock time across a game\u2019s phases, and recovering from time trouble.', m:'26 min'},
+        {t:'Stage assessment', i:'grad', d:'Classical game against a resident coach with full post-game analysis.', m:'2 hrs'}
+      ]},
+    { name:'Grandmaster Path', eyebrow:'Stage 04', blurb:'By invitation.', accent:'#dfe6f2',
+      lessons:[
+        {t:'Opponent-specific preparation', i:'search', d:'Building a game plan from an opponent\u2019s full database history.', m:'1 hr'},
+        {t:'Tournament seconding', i:'shield', d:'Working with a second: what to prepare, what to delegate, what to ignore.', m:'1 hr'},
+        {t:'Norm campaign planning', i:'flag', d:'Selecting events, pacing a campaign, and managing form across a season.', m:'45 min'},
+        {t:'Engine-assisted deep analysis', i:'eye', d:'Using evaluation as an argument to interrogate, not a verdict to accept.', m:'1 hr'}
+      ]}
+  ];
+
+  const COMPLETED = 9;
+  const pathCanvas = document.getElementById('pathCanvas');
+  const COLS = [1, 2, 3, 2, 1, 2, 3];
+  const DECO_COLS = { 1:3, 3:1, 5:4 };
+  const DECO_KEYS = ['knight','pawn','rook','queen'];
+
+  let lessonIndex = 0;
+  const pathNodes = [];
+
+  SECTIONS.forEach((sec, si)=>{
+    const head = document.createElement('div');
+    head.className = 'sec-head';
+    head.innerHTML = `
+      <div class="sec-eyebrow">${sec.eyebrow}</div>
+      <h3 style="color:${sec.accent}">${sec.name}</h3>
+      <p>${sec.blurb}</p>
+      <div class="sec-rule"></div>`;
+    pathCanvas.appendChild(head);
+
+    const lattice = document.createElement('div');
+    lattice.className = 'lattice';
+    lattice.style.setProperty('--accent', sec.accent);
+
+    sec.lessons.forEach((les, li)=>{
+      const state = lessonIndex < COMPLETED ? 'done' : (lessonIndex === COMPLETED ? 'current' : 'locked');
+      const col = COLS[li % COLS.length];
+
+      if(li > 0){
+        const linkRow = document.createElement('div');
+        linkRow.className = 'node-row';
+        const link = document.createElement('div');
+        link.className = 'link' + (lessonIndex <= COMPLETED ? ' filled' : '');
+        link.style.gridColumn = Math.round((col + COLS[(li-1) % COLS.length]) / 2) + 1;
+        linkRow.appendChild(link);
+        lattice.appendChild(linkRow);
+      }
+
+      const row = document.createElement('div');
+      row.className = 'node-row';
+
+      const node = document.createElement('div');
+      node.className = `node ${state}`;
+      node.style.gridColumn = col + 1;
+      node.dataset.section = si;
+      node.dataset.lesson = li;
+      node.innerHTML = `<div class="node-face"></div>${lessonIcon(les.i)}` +
+        (state === 'current' ? '<div class="node-flag">Next</div>' : '');
+      row.appendChild(node);
+      pathNodes.push(node);
+
+      if(DECO_COLS[li] !== undefined){
+        const d = document.createElement('div');
+        d.className = 'deco';
+        d.style.gridColumn = DECO_COLS[li] + 1;
+        d.innerHTML = DECO[DECO_KEYS[(si + li) % DECO_KEYS.length]];
+        row.appendChild(d);
+      }
+
+      lattice.appendChild(row);
+      lessonIndex++;
+    });
+
+    pathCanvas.appendChild(lattice);
+  });
+
+  const TOTAL_LESSONS = SECTIONS.reduce((n,s)=> n + s.lessons.length, 0);
+  const pctValue = Math.round((COMPLETED / TOTAL_LESSONS) * 100);
+
+  const pathReveal = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('is-in'); pathReveal.unobserve(e.target); } });
+  }, { threshold:0.2, rootMargin:'0px 0px -60px 0px' });
+  document.querySelectorAll('.node, .sec-head').forEach(el=> pathReveal.observe(el));
+
+  // fill the progress bar only once the path section is reached
+  const progressObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        document.getElementById('progressFill').style.width = pctValue + '%';
+        document.getElementById('pctLabel').textContent = pctValue + '%';
+        progressObserver.disconnect();
+      }
+    });
+  }, { threshold:0.4 });
+  progressObserver.observe(document.querySelector('.path-progress'));
+
+  const lessonDrawer = document.getElementById('lessonDrawer');
+  const lessonScrim = document.getElementById('lessonScrim');
+  const lessonBody = document.getElementById('lessonBody');
+
+  function openLesson(si, li){
+    const sec = SECTIONS[si], les = sec.lessons[li];
+    let n = 0;
+    for(let s=0; s<si; s++) n += SECTIONS[s].lessons.length;
+    n += li;
+    const state = n < COMPLETED ? 'Completed' : (n === COMPLETED ? 'Up next' : 'Locked');
+
+    lessonBody.innerHTML = `
+      <div class="drawer-badge" style="color:${sec.accent}">${sec.name} · ${state}</div>
+      <h3>${les.t}</h3>
+      <div class="drawer-meta"><span>Lesson ${li+1} of ${sec.lessons.length}</span><span>${les.m}</span></div>
+      <p class="body">${les.d}</p>
+      <h5>What this session includes</h5>
+      <ul>
+        <li>Guided walkthrough with annotated positions</li>
+        <li>Drill set calibrated to your last three games</li>
+        <li>Coach notes added after your attempt</li>
+      </ul>
+      <button class="btn-primary" ${state === 'Locked' ? 'disabled' : ''}>
+        ${state === 'Completed' ? 'Review lesson' : state === 'Locked' ? 'Complete earlier lessons first' : 'Begin lesson'}
+      </button>`;
+    lessonDrawer.classList.add('is-open');
+    lessonScrim.classList.add('is-open');
+  }
+  function closeLesson(){ lessonDrawer.classList.remove('is-open'); lessonScrim.classList.remove('is-open'); }
+
+  pathNodes.forEach(n=>{
+    n.addEventListener('click', ()=> openLesson(+n.dataset.section, +n.dataset.lesson));
+  });
+  document.getElementById('lessonClose').addEventListener('click', closeLesson);
+  lessonScrim.addEventListener('click', closeLesson);
+
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let w,h,nodes;
+  function resize(){ w = canvas.width = hero.offsetWidth; h = canvas.height = hero.offsetHeight; }
+  function initNodes(){
+    nodes = Array.from({length: Math.min(60, Math.floor(w/24))}, ()=>({
+      x: Math.random()*w, y: Math.random()*h,
+      vx: (Math.random()-0.5)*0.15, vy: (Math.random()-0.5)*0.15,
+      r: Math.random()*1.4+0.4
+    }));
+  }
+  function tick(){
+    ctx.clearRect(0,0,w,h);
+    for(const n of nodes){
+      n.x += n.vx; n.y += n.vy;
+      if(n.x<0||n.x>w) n.vx*=-1;
+      if(n.y<0||n.y>h) n.vy*=-1;
+    }
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a=nodes[i], b=nodes[j];
+        const d = Math.hypot(a.x-b.x, a.y-b.y);
+        if(d<120){
+          ctx.strokeStyle = `rgba(79,216,255,${0.12*(1-d/120)})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+    }
+    for(const n of nodes){
+      ctx.fillStyle = 'rgba(199,208,224,0.5)';
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.fill();
+    }
+    if(heroVisible) requestAnimationFrame(tick);
+  }
+  window.addEventListener('resize', ()=>{ resize(); initNodes(); });
+  resize(); initNodes(); tick();
+
+  // resume the canvas loop when the hero re-enters view
+  const canvasObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting) requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.05 });
+  canvasObserver.observe(hero);
+</script>
+
+</body>
+</html>

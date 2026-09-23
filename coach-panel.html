@@ -1,0 +1,1990 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coach Panel · Nexus Chess Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-0:#07090f;
+  --bg-1:#0b0e18;
+  --panel:#0e1220;
+  --cyan:#4fd8ff;
+  --cyan-dim:rgba(79,216,255,0.32);
+  --gold:#c9a66b;
+  --violet:#8b7fe8;
+  --amber:#d08a52;
+  --green:#5ac8a0;
+  --rose:#e0748a;
+  --ink:#f3f6fb;
+  --ink-dim:#8d99b2;
+  --line:rgba(255,255,255,0.09);
+  --line-2:rgba(255,255,255,0.05);
+  --ease-lux:cubic-bezier(0.22, 1, 0.36, 1);
+  --rail:246px;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+html,body{
+  background:var(--bg-0); color:var(--ink);
+  font-family:'Space Grotesk', sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block; max-width:100%;}
+a{color:inherit; text-decoration:none;}
+button{font:inherit; color:inherit; background:none; border:none; cursor:pointer;}
+h1,h2,h3,h4{font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.01em;}
+:focus-visible{outline:2px solid var(--cyan); outline-offset:3px; border-radius:2px;}
+::selection{background:rgba(79,216,255,0.25);}
+
+*::-webkit-scrollbar{width:10px; height:10px;}
+*::-webkit-scrollbar-track{background:transparent;}
+*::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.10); border-radius:6px; border:3px solid var(--bg-0);}
+*::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.18);}
+
+/* ================= APP SHELL ================= */
+.app{display:grid; grid-template-columns:var(--rail) 1fr; min-height:100vh;}
+
+.rail{
+  position:sticky; top:0; height:100vh;
+  background:linear-gradient(180deg, var(--bg-1), var(--bg-0));
+  border-right:1px solid var(--line);
+  display:flex; flex-direction:column; padding:1.6rem 0 1.2rem;
+  z-index:40;
+}
+.rail-brand{padding:0 1.5rem 1.7rem; border-bottom:1px solid var(--line); margin-bottom:1.4rem;}
+.rail-brand img{height:34px; width:auto;}
+.rail-school{
+  margin:0 1rem 1.5rem; padding:0.9rem 1rem;
+  border:1px solid var(--line); border-radius:4px;
+  background:linear-gradient(180deg, rgba(201,166,107,0.07), transparent 70%);
+}
+.rail-school .rs-lab{font-size:0.66rem; letter-spacing:0.13em; text-transform:uppercase; color:var(--gold);}
+.rail-school .rs-name{font-family:'Fraunces',serif; font-size:1.02rem; margin-top:0.35rem; line-height:1.25;}
+.rail-school .rs-meta{font-size:0.74rem; color:var(--ink-dim); margin-top:0.4rem;}
+
+.rail-sec{padding:0 1.5rem; font-size:0.66rem; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--ink-dim); opacity:0.65; margin:1.4rem 0 0.6rem;}
+.rail-nav{display:flex; flex-direction:column; gap:1px; padding:0 0.75rem;}
+.rail-link{
+  display:flex; align-items:center; gap:0.8rem;
+  padding:0.68rem 0.75rem; border-radius:3px; font-size:0.9rem;
+  color:var(--ink-dim); position:relative;
+  transition:color .22s ease, background .22s ease;
+}
+.rail-link svg{width:17px; height:17px; flex:none; stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
+.rail-link:hover{color:var(--ink); background:rgba(255,255,255,0.035);}
+.rail-link.active{color:var(--ink); background:rgba(79,216,255,0.07);}
+.rail-link.active::before{
+  content:''; position:absolute; left:-0.75rem; top:50%; transform:translateY(-50%);
+  width:2px; height:20px; background:var(--cyan); border-radius:0 2px 2px 0;
+  box-shadow:0 0 12px var(--cyan-dim);
+}
+.rail-link .pip{
+  margin-left:auto; font-size:0.68rem; padding:0.1rem 0.42rem; border-radius:20px;
+  background:rgba(255,255,255,0.07); color:var(--ink-dim);
+}
+.rail-link.active .pip{background:var(--cyan-dim); color:var(--ink);}
+
+/* ================= LOGIN GATE ================= */
+/* NOTE: this is a front-end demo gate, not real authentication. See the
+   comment above USERS in the script for what that means. */
+.gate{
+  position:fixed; inset:0; z-index:200; display:flex; justify-content:center;
+  /* Centring with align-items puts the overflow out of reach at BOTH ends when
+     the card is taller than the window - the logo and the footer link get
+     clipped away. margin:auto on the card centres it when there is room and
+     lets it scroll when there is not. */
+  align-items:flex-start; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:1.5rem; background:var(--bg-0);
+}
+.gate-card{ margin:auto; }
+.gate::before{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 0%, rgba(79,216,255,0.06), transparent 65%),
+    radial-gradient(ellipse 50% 45% at 50% 100%, rgba(201,166,107,0.06), transparent 70%);
+}
+.gate[hidden]{ display:none; }
+.gate-card{
+  position:relative; width:100%; max-width:380px;
+  background:var(--panel); border:1px solid var(--line); border-radius:5px;
+  padding:2.4rem 2.2rem 2.1rem;
+  box-shadow:0 40px 90px -40px rgba(0,0,0,0.95);
+}
+.gate-card img{ height:34px; width:auto; margin-bottom:1.8rem; }
+@media (max-height:760px){
+  .gate{ padding:1rem; }
+  .gate-card{ padding:1.7rem 2.2rem 1.6rem; }
+  .gate-card img{ height:28px; margin-bottom:1.1rem; }
+  .gate-field{ margin-top:0.95rem; }
+  .gate-foot{ margin-top:1.1rem; padding-top:0.9rem; }
+}
+.gate-card h1{ font-size:1.35rem; }
+.gate-card .gate-sub{ font-size:0.85rem; color:var(--ink-dim); margin-top:0.4rem; line-height:1.55; }
+.gate-field{ margin-top:1.3rem; }
+.gate-field label{
+  display:block; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--ink-dim); margin-bottom:0.5rem;
+}
+.gate-field input{
+  width:100%; padding:0.72rem 0.9rem; border-radius:3px;
+  border:1px solid var(--line); background:rgba(255,255,255,0.03);
+  color:var(--ink); font-family:inherit; font-size:0.92rem; outline:none;
+  transition:border-color .25s ease, background .25s ease;
+}
+.gate-field input:focus{ border-color:var(--cyan); background:rgba(79,216,255,0.05); }
+.gate-field input[aria-invalid="true"]{ border-color:var(--rose); }
+.gate-err{
+  min-height:1.2rem; margin-top:0.9rem; font-size:0.8rem; color:var(--rose);
+}
+.gate-btn{
+  width:100%; margin-top:0.4rem; padding:0.82rem 1rem; border-radius:2px;
+  background:var(--cyan); color:var(--bg-0); font-size:0.92rem; font-weight:500;
+  transition:box-shadow .35s ease, transform .25s ease;
+}
+.gate-btn:hover{ box-shadow:0 0 28px 2px var(--cyan-dim); transform:translateY(-1px); }
+.gate-foot{ margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid var(--line); }
+.gate-foot a{ font-size:0.8rem; color:var(--ink-dim); }
+.gate-foot a:hover{ color:var(--ink); }
+.app[hidden]{ display:none; }
+
+/* the demo way in, under the sign-in button */
+.gate-or{
+  display:flex; align-items:center; gap:0.8rem; margin:1.3rem 0 1rem;
+  font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim);
+}
+.gate-or::before, .gate-or::after{content:''; height:1px; flex:1; background:var(--line);}
+.gate-demo{
+  width:100%; padding:0.78rem 1rem; border-radius:2px;
+  border:1px solid rgba(201,166,107,0.45); background:rgba(201,166,107,0.08);
+  color:var(--gold); font-size:0.88rem;
+  transition:background .25s ease, border-color .25s ease;
+}
+.gate-demo:hover{background:rgba(201,166,107,0.16); border-color:var(--gold);}
+.gate-note{font-size:0.72rem; color:var(--ink-dim); margin-top:0.7rem; line-height:1.55; text-align:center;}
+
+/* a standing reminder that none of these figures are real */
+.demobar{
+  display:flex; align-items:center; gap:0.6rem; justify-content:center;
+  padding:0.55rem 1rem; font-size:0.76rem; color:var(--gold);
+  background:rgba(201,166,107,0.09); border-bottom:1px solid rgba(201,166,107,0.28);
+}
+.demobar svg{width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.8; flex:none;}
+.demobar[hidden]{display:none;}
+
+.rail-signout{
+  display:flex; align-items:center; gap:0.55rem; width:100%; margin-top:1rem;
+  font-size:0.8rem; color:var(--ink-dim); transition:color .22s ease;
+}
+.rail-signout svg{ width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.rail-signout:hover{ color:var(--rose); }
+
+.rail-foot{margin-top:auto; padding:1.2rem 1.5rem 0; border-top:1px solid var(--line);}
+.rail-back{
+  display:flex; align-items:center; gap:0.55rem; font-size:0.8rem;
+  color:var(--ink-dim); margin-bottom:1.1rem; transition:color .22s ease;
+}
+.rail-back svg{width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;}
+.rail-back:hover{color:var(--gold);}
+.rail-user{display:flex; align-items:center; gap:0.7rem;}
+.rail-user .av{
+  width:34px; height:34px; border-radius:50%; flex:none;
+  background:linear-gradient(140deg, var(--gold), var(--amber));
+  color:#0a0d14; display:flex; align-items:center; justify-content:center;
+  font-size:0.78rem; font-weight:600;
+}
+.rail-user .ru-name{font-size:0.85rem; line-height:1.2;}
+.rail-user .ru-role{font-size:0.72rem; color:var(--ink-dim);}
+
+.main{min-width:0; display:flex; flex-direction:column;}
+.topbar{
+  position:sticky; top:0; z-index:30;
+  display:flex; align-items:center; gap:1.2rem;
+  padding:1.15rem 2.2rem;
+  background:rgba(7,9,15,0.82); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.tb-title h1{font-size:1.28rem;}
+.tb-title p{font-size:0.8rem; color:var(--ink-dim); margin-top:0.18rem;}
+.tb-spacer{flex:1;}
+.search{
+  display:flex; align-items:center; gap:0.6rem;
+  border:1px solid var(--line); border-radius:3px;
+  padding:0.5rem 0.85rem; min-width:250px;
+  background:rgba(255,255,255,0.025);
+  transition:border-color .25s ease, background .25s ease;
+}
+.search:focus-within{border-color:var(--cyan); background:rgba(79,216,255,0.04);}
+.search svg{width:15px; height:15px; stroke:var(--ink-dim); fill:none; stroke-width:1.7; flex:none;}
+.search input{
+  border:none; background:none; outline:none; color:var(--ink);
+  font-family:inherit; font-size:0.87rem; width:100%;
+}
+.search input::placeholder{color:var(--ink-dim);}
+.sel{
+  border:1px solid var(--line); border-radius:3px; background:rgba(255,255,255,0.025);
+  color:var(--ink); font-family:inherit; font-size:0.84rem;
+  padding:0.53rem 0.8rem; cursor:pointer; outline:none;
+  transition:border-color .25s ease;
+}
+.sel:hover{border-color:rgba(255,255,255,0.2);}
+.sel option{background:var(--panel); color:var(--ink);}
+.live{
+  display:flex; align-items:center; gap:0.45rem;
+  font-size:0.74rem; color:var(--ink-dim);
+  border:1px solid var(--line); border-radius:20px; padding:0.35rem 0.75rem;
+}
+.live i{width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1; box-shadow:0 0 0 0 rgba(90,200,160,0.5);} 50%{opacity:0.6; box-shadow:0 0 0 5px rgba(90,200,160,0);}}
+
+.view{padding:2.2rem; display:none; animation:fadeUp .45s var(--ease-lux);}
+.view.active{display:block;}
+@keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
+
+.eyebrow{
+  font-size:0.72rem; letter-spacing:0.13em; text-transform:uppercase; color:var(--gold);
+  display:flex; align-items:center; gap:0.55rem; margin-bottom:0.75rem;
+}
+.eyebrow::before{content:''; width:18px; height:1px; background:var(--gold); opacity:0.7;}
+.card{
+  background:var(--panel); border:1px solid var(--line); border-radius:4px;
+  padding:1.5rem 1.6rem;
+}
+.card-head{display:flex; align-items:flex-start; gap:1rem; margin-bottom:1.3rem;}
+.card-head h3{font-size:1.05rem;}
+.card-head p{font-size:0.8rem; color:var(--ink-dim); margin-top:0.28rem; line-height:1.5;}
+.card-head .spacer{flex:1;}
+.chip{
+  font-size:0.72rem; padding:0.28rem 0.62rem; border-radius:2px;
+  border:1px solid var(--line); color:var(--ink-dim); white-space:nowrap;
+}
+.chip.gold{border-color:rgba(201,166,107,0.45); color:var(--gold); background:rgba(201,166,107,0.07);}
+.chip.cyan{border-color:rgba(79,216,255,0.4); color:var(--cyan); background:rgba(79,216,255,0.06);}
+.chip.green{border-color:rgba(90,200,160,0.4); color:var(--green); background:rgba(90,200,160,0.06);}
+.grid{display:grid; gap:1.1rem;}
+.g-4{grid-template-columns:repeat(4,1fr);}
+.g-2{grid-template-columns:repeat(2,1fr); align-items:start;}
+.g-32{grid-template-columns:1.55fr 1fr; align-items:start;}
+.mt{margin-top:1.1rem;}
+
+.kpi{
+  background:var(--panel); border:1px solid var(--line); border-radius:4px;
+  padding:1.35rem 1.45rem; position:relative; overflow:hidden;
+  transition:border-color .3s ease, transform .3s var(--ease-lux);
+}
+.kpi:hover{border-color:rgba(255,255,255,0.18); transform:translateY(-2px);}
+.kpi::after{
+  content:''; position:absolute; left:0; right:0; top:0; height:1px;
+  background:linear-gradient(90deg, transparent, var(--kc), transparent);
+  opacity:0.55;
+}
+.kpi-lab{font-size:0.74rem; letter-spacing:0.06em; color:var(--ink-dim); display:flex; align-items:center; gap:0.5rem;}
+.kpi-lab svg{width:14px; height:14px; stroke:var(--kc); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;}
+.kpi-val{font-family:'Fraunces',serif; font-size:2.2rem; line-height:1.05; margin-top:0.75rem; font-variant-numeric:tabular-nums;}
+.kpi-val .u{font-size:1.05rem; color:var(--ink-dim); margin-left:0.15rem;}
+.kpi-sub{font-size:0.76rem; color:var(--ink-dim); margin-top:0.5rem; display:flex; align-items:center; gap:0.4rem;}
+.delta{font-size:0.74rem; padding:0.1rem 0.4rem; border-radius:2px;}
+.delta.up{color:var(--green); background:rgba(90,200,160,0.1);}
+.delta.dn{color:var(--rose); background:rgba(224,116,138,0.1);}
+
+.bar{height:4px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden;}
+.bar > i{
+  display:block; height:100%; width:0; border-radius:3px;
+  background:linear-gradient(90deg, var(--gold), var(--cyan));
+  transition:width 1.1s var(--ease-lux);
+}
+.bar.solid > i{background:var(--bc); box-shadow:0 0 10px -2px var(--bc);}
+
+.clsrow{
+  display:grid; grid-template-columns:104px 1fr 66px; gap:1.1rem; align-items:center;
+  padding:0.85rem 0; border-top:1px solid var(--line-2); cursor:pointer;
+  transition:background .2s ease;
+}
+.clsrow:first-child{border-top:none;}
+.clsrow:hover{background:rgba(255,255,255,0.022);}
+.clsrow .cn{font-size:0.88rem;}
+.clsrow .cs{font-size:0.72rem; color:var(--ink-dim); margin-top:0.15rem;}
+.clsrow .cv{font-family:'Fraunces',serif; font-size:0.98rem; text-align:right; font-variant-numeric:tabular-nums;}
+
+.tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:4px; background:var(--panel);}
+table{width:100%; border-collapse:collapse; font-size:0.87rem; min-width:940px;}
+thead th{
+  text-align:left; font-weight:500; font-size:0.72rem; letter-spacing:0.09em;
+  text-transform:uppercase; color:var(--ink-dim);
+  padding:0.95rem 1.1rem; border-bottom:1px solid var(--line);
+  background:#10141f; white-space:nowrap;
+  position:sticky; top:0; z-index:2;
+}
+thead th.sortable{cursor:pointer; user-select:none;}
+thead th.sortable:hover{color:var(--ink);}
+thead th .car{opacity:0; margin-left:0.35rem; font-size:0.62rem;}
+thead th.sorted{color:var(--ink);}
+thead th.sorted .car{opacity:1; color:var(--cyan);}
+tbody td{padding:0.85rem 1.1rem; border-bottom:1px solid var(--line-2); vertical-align:middle;}
+tbody tr{cursor:pointer; transition:background .18s ease;}
+tbody tr:hover{background:rgba(255,255,255,0.028);}
+tbody tr:last-child td{border-bottom:none;}
+td.num{font-family:'Fraunces',serif; font-variant-numeric:tabular-nums;}
+.who{display:flex; align-items:center; gap:0.72rem;}
+.who .av{
+  width:32px; height:32px; border-radius:50%; flex:none;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.72rem; font-weight:600; color:#0a0d14;
+}
+.who .wn{font-size:0.88rem;}
+.who .wm{font-size:0.72rem; color:var(--ink-dim); margin-top:0.1rem;}
+.pillstage{font-size:0.72rem; padding:0.22rem 0.55rem; border-radius:2px; white-space:nowrap;
+  border:1px solid currentColor;}
+.progcell{display:flex; align-items:center; gap:0.7rem; min-width:150px;}
+.progcell .bar{flex:1;}
+.progcell .pv{font-family:'Fraunces',serif; font-size:0.82rem; width:34px; text-align:right; font-variant-numeric:tabular-nums;}
+.dotstat{display:inline-flex; align-items:center; gap:0.42rem; font-size:0.8rem; white-space:nowrap;}
+.dotstat i{width:6px; height:6px; border-radius:50%; flex:none;}
+.empty{padding:3.5rem 1rem; text-align:center; color:var(--ink-dim); font-size:0.9rem;}
+
+.lb{display:flex; flex-direction:column;}
+.lbrow{
+  display:grid; grid-template-columns:34px 1fr auto; gap:0.9rem; align-items:center;
+  padding:0.78rem 0.7rem; border-top:1px solid var(--line-2); border-radius:3px;
+  transition:background .2s ease;
+}
+.lbrow:first-child{border-top:none;}
+.lbrow:hover{background:rgba(255,255,255,0.025);}
+.lbrow.us{
+  background:linear-gradient(90deg, rgba(201,166,107,0.13), rgba(201,166,107,0.03));
+  border:1px solid rgba(201,166,107,0.42);
+  box-shadow:0 0 26px -12px rgba(201,166,107,0.5);
+}
+.lbrow .rk{font-family:'Fraunces',serif; font-size:0.95rem; color:var(--ink-dim); text-align:center; font-variant-numeric:tabular-nums;}
+.lbrow.us .rk{color:var(--gold);}
+.lbrow .nm{font-size:0.88rem;}
+.lbrow .sb{font-size:0.72rem; color:var(--ink-dim); margin-top:0.14rem;}
+.lbrow .pt{font-family:'Fraunces',serif; font-size:0.98rem; text-align:right; font-variant-numeric:tabular-nums;}
+.lbrow .pt small{display:block; font-family:'Space Grotesk',sans-serif; font-size:0.68rem; color:var(--ink-dim); font-weight:400;}
+.medal{width:22px; height:22px; border-radius:50%; margin:0 auto; display:flex; align-items:center;
+  justify-content:center; font-size:0.68rem; font-weight:600; color:#0a0d14; font-family:'Space Grotesk',sans-serif;}
+
+.stage{margin-bottom:1.4rem;}
+.stage:last-child{margin-bottom:0;}
+.stage-head{display:flex; align-items:baseline; gap:0.7rem; margin-bottom:0.6rem;}
+.stage-head .sname{font-family:'Fraunces',serif; font-size:0.94rem;}
+.stage-head .sblurb{font-size:0.73rem; color:var(--ink-dim);}
+.stage-head .spct{margin-left:auto; font-family:'Fraunces',serif; font-size:0.86rem; font-variant-numeric:tabular-nums;}
+/* fixed 7 columns — the longest stage — so chapters line up across stages */
+#stages{max-width:860px;}
+.cells{display:grid; grid-template-columns:repeat(7,1fr); gap:6px;}
+.cell{
+  height:32px; border-radius:2px;
+  background:rgba(255,255,255,0.055); border:1px solid transparent;
+  position:relative; cursor:pointer;
+  transition:transform .2s ease, border-color .2s ease;
+}
+.cell:hover{transform:translateY(-2px); border-color:rgba(255,255,255,0.3); z-index:3;}
+.cell[data-tip]:hover::after{
+  content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+  background:var(--ink); color:#0a0d14; font-size:0.72rem; padding:0.42rem 0.65rem; border-radius:3px;
+  white-space:nowrap; z-index:20; pointer-events:none; font-family:'Space Grotesk',sans-serif;
+  box-shadow:0 8px 24px -8px rgba(0,0,0,0.8);
+}
+.legend{display:flex; gap:1.2rem; flex-wrap:wrap; margin-top:1.3rem; padding-top:1.1rem; border-top:1px solid var(--line-2);}
+.legend span{display:flex; align-items:center; gap:0.45rem; font-size:0.74rem; color:var(--ink-dim);}
+.legend i{width:11px; height:11px; border-radius:2px; flex:none;}
+
+.feed{display:flex; flex-direction:column; max-height:430px; overflow-y:auto; margin:0 -0.4rem; padding:0 0.4rem;}
+.fitem{display:grid; grid-template-columns:26px 1fr; gap:0.85rem; padding:0.75rem 0; border-top:1px solid var(--line-2);}
+.fitem:first-child{border-top:none;}
+.fico{
+  width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--line); flex:none;
+}
+.fico svg{width:12px; height:12px; fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round;}
+.ftext{font-size:0.83rem; line-height:1.5;}
+.ftext b{font-weight:500;}
+.ftime{font-size:0.71rem; color:var(--ink-dim); margin-top:0.22rem;}
+
+.chartbox svg{width:100%; height:auto; overflow:visible;}
+.axis{font-size:9.5px; fill:var(--ink-dim); font-family:'Space Grotesk',sans-serif;}
+.gridline{stroke:rgba(255,255,255,0.06); stroke-width:1;}
+
+.donutwrap{display:flex; align-items:center; gap:1.6rem;}
+.donut{position:relative; width:150px; height:150px; flex:none;}
+.donut svg{transform:rotate(-90deg);}
+.donut-mid{
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center;
+}
+.donut-mid .dv{font-family:'Fraunces',serif; font-size:1.75rem; line-height:1;}
+.donut-mid .dl{font-size:0.68rem; color:var(--ink-dim); margin-top:0.28rem;}
+.dkey{display:flex; flex-direction:column; gap:0.7rem; flex:1;}
+.dkey-row{display:flex; align-items:center; gap:0.6rem; font-size:0.82rem;}
+.dkey-row i{width:9px; height:9px; border-radius:2px; flex:none;}
+.dkey-row .v{margin-left:auto; font-family:'Fraunces',serif; font-variant-numeric:tabular-nums;}
+
+.split{display:grid; grid-template-columns:1fr 1fr; gap:1.1rem;}
+.splitcard{border:1px solid var(--line); border-radius:4px; overflow:hidden; background:var(--panel);}
+.splitcard .sc-top{padding:1.6rem 1.6rem 1.3rem; border-bottom:1px solid var(--line-2);}
+.splitcard h3{font-size:1.08rem;}
+.splitcard .sc-sub{font-size:0.79rem; color:var(--ink-dim); margin-top:0.3rem;}
+.sc-list{padding:0.6rem 1.6rem 1.5rem; list-style:none;}
+.sc-list li{
+  display:grid; grid-template-columns:14px 1fr; gap:0.75rem; align-items:start;
+  font-size:0.86rem; color:var(--ink-dim); padding:0.68rem 0; border-top:1px solid var(--line-2);
+  line-height:1.5;
+}
+.sc-list li:first-child{border-top:none;}
+.sc-mark{width:11px; height:11px; margin-top:0.32rem; flex:none;}
+
+.scrim{
+  position:fixed; inset:0; z-index:100; background:rgba(4,5,9,0.7);
+  opacity:0; pointer-events:none; transition:opacity .3s ease;
+}
+.scrim.is-open{opacity:1; pointer-events:auto;}
+.drawer{
+  position:fixed; z-index:110; right:0; top:0; bottom:0; width:min(470px, 94vw);
+  background:var(--panel); border-left:1px solid var(--line);
+  padding:2.4rem 2.1rem; overflow-y:auto;
+  transform:translateX(100%); transition:transform .4s var(--ease-lux);
+}
+.drawer.is-open{transform:translateX(0);}
+.dclose{
+  position:absolute; top:1.1rem; right:1.2rem; width:32px; height:32px; border-radius:50%;
+  border:1px solid var(--line); font-size:1.15rem; line-height:1; color:var(--ink-dim);
+  display:flex; align-items:center; justify-content:center;
+  transition:border-color .25s ease, color .25s ease;
+}
+.dclose:hover{border-color:var(--gold); color:var(--ink);}
+.dhero{display:flex; align-items:center; gap:1rem; margin-bottom:1.6rem;}
+.dhero .av{width:54px; height:54px; border-radius:50%; flex:none; display:flex; align-items:center;
+  justify-content:center; font-size:1.1rem; font-weight:600; color:#0a0d14;}
+.dhero h3{font-size:1.32rem;}
+.dhero .dm{font-size:0.8rem; color:var(--ink-dim); margin-top:0.25rem;}
+.dstats{display:grid; grid-template-columns:repeat(3,1fr); gap:0.9rem; margin-bottom:1.7rem;}
+.dstat{border:1px solid var(--line); border-radius:3px; padding:0.85rem 0.9rem;}
+.dstat .dv{font-family:'Fraunces',serif; font-size:1.3rem; font-variant-numeric:tabular-nums;}
+.dstat .dl{font-size:0.7rem; color:var(--ink-dim); margin-top:0.22rem;}
+.dsec{margin-bottom:1.7rem;}
+.dsec h5{font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim);
+  font-weight:500; margin-bottom:0.85rem; font-family:'Space Grotesk',sans-serif;}
+.dlist{list-style:none;}
+.dlist li{display:flex; align-items:center; gap:0.7rem; font-size:0.84rem;
+  padding:0.6rem 0; border-top:1px solid var(--line-2); color:var(--ink-dim);}
+.dlist li:first-child{border-top:none;}
+.dlist li .rt{margin-left:auto; font-size:0.76rem;}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:0.55rem;
+  padding:0.8rem 1.5rem; font-size:0.88rem; border-radius:2px;
+  background:var(--cyan); color:var(--bg-0); font-weight:500;
+  box-shadow:0 0 0 0 var(--cyan-dim); transition:box-shadow .4s ease, transform .25s ease;
+}
+.btn:hover{box-shadow:0 0 30px 3px var(--cyan-dim); transform:translateY(-1px);}
+.btn.ghost{background:none; color:var(--ink); border:1px solid var(--line); box-shadow:none;}
+.btn.ghost:hover{border-color:var(--gold); background:rgba(201,166,107,0.06); transform:none;}
+.btn.full{width:100%;}
+.btnrow{display:flex; gap:0.7rem;}
+
+.toolbar{display:flex; align-items:center; gap:0.7rem; flex-wrap:wrap; margin-bottom:1.1rem;}
+.toolbar .count{font-size:0.8rem; color:var(--ink-dim); margin-left:auto;}
+
+.burger{
+  display:none; width:34px; height:34px; border:1px solid var(--line); border-radius:3px;
+  align-items:center; justify-content:center; flex:none;
+}
+.burger svg{width:16px; height:16px; stroke:var(--ink); fill:none; stroke-width:1.8; stroke-linecap:round;}
+
+@media (max-width:1180px){
+  .g-4{grid-template-columns:repeat(2,1fr);}
+  .g-32{grid-template-columns:1fr;}
+}
+@media (max-width:980px){
+  :root{--rail:0px;}
+  .app{grid-template-columns:1fr;}
+  .rail{position:fixed; left:0; top:0; width:250px; transform:translateX(-100%);
+    transition:transform .35s var(--ease-lux);}
+  .rail.is-open{transform:translateX(0); box-shadow:0 0 80px rgba(0,0,0,0.8);}
+  .burger{display:flex;}
+  .split, .g-2{grid-template-columns:1fr;}
+  .view{padding:1.4rem;}
+  .topbar{padding:1rem 1.4rem; flex-wrap:wrap;}
+  .search{min-width:0; flex:1;}
+}
+@media (max-width:620px){
+  .g-4{grid-template-columns:1fr;}
+  .donutwrap{flex-direction:column; align-items:flex-start;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important; transition:none !important;}
+}
+
+/* ================= COACH PANEL =================
+   The syllabus as a working list: one row per session, filtered by module and
+   by session number, the way the coaches already read it. Everything above is
+   shared with the two dashboards. */
+
+/* the draft state, said plainly and never hidden */
+.statebar{
+  display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;
+  padding:0.62rem 2.2rem; font-size:0.78rem;
+  border-bottom:1px solid var(--line); background:rgba(255,255,255,0.02);
+}
+.statebar .dot{width:7px; height:7px; border-radius:50%; background:var(--ink-dim); flex:none;}
+.statebar.is-dirty{ background:rgba(201,166,107,0.09); border-bottom-color:rgba(201,166,107,0.3); color:var(--gold); }
+.statebar.is-dirty .dot{ background:var(--gold); }
+.statebar.is-clean{ color:var(--ink-dim); }
+.statebar .sb-spacer{flex:1;}
+.statebar button{
+  padding:0.36rem 0.75rem; border-radius:2px; font-size:0.76rem;
+  border:1px solid var(--line); color:var(--ink-dim);
+  transition:border-color .25s ease, color .25s ease;
+}
+.statebar button:hover:not([disabled]){ border-color:rgba(255,255,255,0.26); color:var(--ink); }
+.statebar button[disabled]{ opacity:0.35; pointer-events:none; }
+
+/* ---- the two-column working area: list, then filters ---- */
+.worksplit{ display:grid; grid-template-columns:1fr 268px; gap:1.4rem; align-items:start; }
+/* a grid child is min-width:auto by default, so the 720px table would push the
+   whole page wide instead of scrolling inside its own box */
+.worksplit > *{ min-width:0; }
+
+.toolrow{
+  display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap; margin-bottom:1rem;
+}
+.toolrow .grow{ flex:1; }
+
+/* the bulk bar only exists while something is ticked */
+.bulkbar{
+  display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;
+  padding:0.7rem 1rem; margin-bottom:1rem; border-radius:3px;
+  background:rgba(79,216,255,0.08); border:1px solid rgba(79,216,255,0.32);
+  font-size:0.82rem; color:var(--ink);
+}
+.bulkbar[hidden]{ display:none; }
+.bulkbar .bb-n{ font-family:'Fraunces',serif; }
+.bulkbar .sp{ flex:1; }
+.bulkbar select{
+  border:1px solid var(--line); border-radius:2px; background:var(--panel);
+  color:var(--ink); font-family:inherit; font-size:0.8rem; padding:0.38rem 0.6rem; outline:none;
+}
+
+/* the table itself */
+.syl-wrap{ border:1px solid var(--line); border-radius:4px; background:var(--panel); overflow-x:auto; }
+table.syl{ width:100%; border-collapse:collapse; font-size:0.87rem; min-width:720px; }
+table.syl thead th{
+  text-align:left; font-weight:500; font-size:0.72rem; letter-spacing:0.09em;
+  text-transform:uppercase; color:var(--ink-dim);
+  padding:0.9rem 1rem; border-bottom:1px solid var(--line);
+  background:#10141f; white-space:nowrap; position:sticky; top:0; z-index:2;
+}
+table.syl thead th.sortable{ cursor:pointer; user-select:none; }
+table.syl thead th.sortable:hover{ color:var(--ink); }
+table.syl thead th .car{ opacity:0; margin-left:0.3rem; font-size:0.62rem; }
+table.syl thead th.sorted{ color:var(--ink); }
+table.syl thead th.sorted .car{ opacity:1; color:var(--cyan); }
+table.syl td{ padding:0.78rem 1rem; border-bottom:1px solid var(--line-2); vertical-align:middle; }
+table.syl tr:last-child td{ border-bottom:none; }
+table.syl tbody tr{ transition:background .18s ease; }
+table.syl tbody tr:hover{ background:rgba(255,255,255,0.028); }
+table.syl tbody tr.is-picked{ background:rgba(79,216,255,0.07); }
+.col-pick{ width:44px; }
+.col-sess{ width:96px; }
+.col-act{ width:84px; }
+
+.modtag{
+  display:inline-flex; align-items:center; gap:0.45rem;
+  font-size:0.8rem; color:var(--ink); white-space:nowrap;
+}
+.modtag i{ width:3px; height:15px; border-radius:2px; background:var(--mc, var(--cyan)); flex:none; }
+.sessno{ font-family:'Fraunces',serif; font-variant-numeric:tabular-nums; }
+.topiccell .tt{ font-size:0.88rem; }
+.topiccell .tn{ font-size:0.72rem; color:var(--ink-dim); margin-top:0.16rem; }
+.topiccell .tr{ font-size:0.7rem; color:var(--cyan); margin-top:0.2rem; }
+
+/* a checkbox that matches the rest of the panel */
+.tick{
+  appearance:none; width:16px; height:16px; border-radius:2px; cursor:pointer;
+  border:1px solid rgba(255,255,255,0.28); background:rgba(255,255,255,0.03);
+  display:grid; place-items:center; transition:border-color .2s ease, background .2s ease;
+}
+.tick:hover{ border-color:var(--cyan); }
+.tick:checked{ background:var(--cyan); border-color:var(--cyan); }
+.tick:checked::after{
+  content:''; width:9px; height:5px; border-left:2px solid #0b0f18; border-bottom:2px solid #0b0f18;
+  transform:rotate(-45deg) translate(0.5px, -1px);
+}
+
+/* paging, worded like the list it belongs to */
+.pager{
+  display:flex; align-items:center; gap:0.55rem; flex-wrap:wrap;
+  padding:1rem 0.2rem 0; font-size:0.82rem; color:var(--ink-dim);
+}
+.pager button{
+  min-width:32px; height:32px; padding:0 0.55rem; border-radius:2px;
+  border:1px solid var(--line); color:var(--ink-dim); font-size:0.82rem;
+  transition:border-color .2s ease, color .2s ease, background .2s ease;
+}
+.pager button:hover:not([disabled]){ border-color:rgba(255,255,255,0.26); color:var(--ink); }
+.pager button.on{ background:var(--cyan); border-color:var(--cyan); color:var(--bg-0); }
+.pager button[disabled]{ opacity:0.3; pointer-events:none; }
+.pager .count{ margin-left:0.4rem; }
+.pager .showall{ color:var(--cyan); border:none; padding:0; height:auto; }
+.pager .showall:hover{ text-decoration:underline; }
+
+/* ---- the filter column ---- */
+.filters{ position:sticky; top:84px; }
+.filt{ border:1px solid var(--line); border-radius:4px; overflow:hidden; background:var(--panel); }
+.filt-head{
+  padding:0.75rem 1rem; font-size:0.72rem; letter-spacing:0.13em; text-transform:uppercase;
+  background:rgba(79,216,255,0.1); color:var(--cyan); border-bottom:1px solid var(--line);
+}
+.filt-sec{ padding:0.9rem 1rem 1rem; border-top:1px solid var(--line-2); }
+.filt-sec:first-of-type{ border-top:none; }
+.filt-sec h4{
+  font-family:'Space Grotesk',sans-serif; font-size:0.72rem; font-weight:500;
+  letter-spacing:0.09em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:0.7rem;
+}
+.filt-opt{
+  display:flex; align-items:center; gap:0.6rem; width:100%;
+  padding:0.38rem 0.5rem; border-radius:2px; font-size:0.83rem; color:var(--ink-dim);
+  border-left:2px solid transparent; text-align:left;
+  transition:color .2s ease, background .2s ease, border-color .2s ease;
+}
+.filt-opt:hover{ color:var(--ink); background:rgba(255,255,255,0.03); }
+.filt-opt.on{ color:var(--cyan); border-left-color:var(--cyan); background:rgba(79,216,255,0.06); }
+.filt-opt .n{ margin-left:auto; font-size:0.72rem; font-variant-numeric:tabular-nums; opacity:0.75; }
+.filt-sec input[type=number]{
+  width:100%; padding:0.45rem 0.6rem; border-radius:2px; font-size:0.82rem;
+  border:1px solid var(--line); background:rgba(255,255,255,0.03); color:var(--ink);
+  font-family:inherit; outline:none;
+}
+.filt-sec input:focus{ border-color:var(--cyan); }
+.filt-range{ display:grid; grid-template-columns:1fr auto 1fr; gap:0.5rem; align-items:center; }
+.filt-range span{ font-size:0.75rem; color:var(--ink-dim); }
+.filt-clear{
+  width:100%; padding:0.55rem; font-size:0.78rem; color:var(--ink-dim);
+  border-top:1px solid var(--line);
+  transition:color .2s ease, background .2s ease;
+}
+.filt-clear:hover{ color:var(--ink); background:rgba(255,255,255,0.03); }
+
+/* ---- the search box ---- */
+.searchbox{
+  display:flex; align-items:center; gap:0.55rem; min-width:220px;
+  border:1px solid var(--line); border-radius:3px; padding:0.5rem 0.8rem;
+  background:rgba(255,255,255,0.025);
+  transition:border-color .22s ease, background .22s ease;
+}
+.searchbox:focus-within{ border-color:var(--cyan); background:rgba(79,216,255,0.04); }
+.searchbox svg{ width:15px; height:15px; stroke:var(--ink-dim); fill:none; stroke-width:1.7; flex:none; }
+.searchbox input{
+  border:none; background:none; outline:none; color:var(--ink);
+  font-family:inherit; font-size:0.86rem; width:100%;
+}
+.searchbox input::placeholder{ color:var(--ink-dim); }
+
+/* ---- the row editor ---- */
+.drawer{
+  position:fixed; top:0; right:0; bottom:0; width:min(520px, 100%); z-index:120;
+  background:var(--bg-1); border-left:1px solid var(--line);
+  box-shadow:-30px 0 80px -40px rgba(0,0,0,0.9);
+  display:flex; flex-direction:column;
+  transform:translateX(100%); transition:transform .38s var(--ease-lux);
+}
+.drawer.is-open{ transform:none; }
+.drawer[hidden]{ display:none; }
+.dw-scrim{
+  position:fixed; inset:0; z-index:110; background:rgba(5,8,13,0.55);
+  opacity:0; pointer-events:none; transition:opacity .38s ease;
+}
+.dw-scrim.is-open{ opacity:1; pointer-events:auto; }
+.dw-head{ display:flex; align-items:flex-start; gap:1rem; padding:1.5rem 1.6rem 1.2rem; border-bottom:1px solid var(--line); }
+.dw-head .dw-lab{ font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); }
+.dw-head h3{ font-size:1.12rem; margin-top:0.4rem; }
+.dw-body{ padding:1.4rem 1.6rem 2rem; overflow-y:auto; flex:1; }
+.dw-foot{ display:flex; gap:0.7rem; align-items:center; padding:1rem 1.6rem; border-top:1px solid var(--line); background:var(--bg-0); }
+.dw-foot .sp{ flex:1; }
+
+.field{ margin-bottom:1.15rem; }
+.field label{
+  display:block; font-size:0.72rem; letter-spacing:0.11em; text-transform:uppercase;
+  color:var(--ink-dim); margin-bottom:0.45rem;
+}
+.field input[type=text], .field input[type=url], .field input[type=number], .field textarea, .field select{
+  width:100%; padding:0.66rem 0.85rem; border-radius:3px;
+  border:1px solid var(--line); background:rgba(255,255,255,0.03);
+  color:var(--ink); font-family:inherit; font-size:0.88rem; outline:none;
+  transition:border-color .22s ease, background .22s ease;
+}
+.field textarea{ min-height:88px; resize:vertical; line-height:1.6; }
+.field select option{ background:var(--panel); color:var(--ink); }
+.field input:focus, .field textarea:focus, .field select:focus{ border-color:var(--cyan); background:rgba(79,216,255,0.05); }
+.field .hint{ font-size:0.72rem; color:var(--ink-dim); margin-top:0.4rem; line-height:1.5; }
+.field-row{ display:grid; grid-template-columns:1fr 1fr; gap:0.9rem; }
+
+.reslist{ display:flex; flex-direction:column; gap:0.5rem; }
+.resrow{
+  display:grid; grid-template-columns:auto 1fr auto; gap:0.7rem; align-items:center;
+  padding:0.6rem 0.75rem; border:1px solid var(--line); border-radius:3px;
+  background:rgba(255,255,255,0.02); font-size:0.82rem;
+}
+.resrow .rt{
+  font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase;
+  padding:0.16rem 0.42rem; border-radius:2px; white-space:nowrap;
+  border:1px solid rgba(79,216,255,0.4); color:var(--cyan); background:rgba(79,216,255,0.07);
+}
+.resrow .rt.file{ border-color:rgba(201,166,107,0.45); color:var(--gold); background:rgba(201,166,107,0.07); }
+.resrow .rn{ min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.resrow .rn small{ display:block; color:var(--ink-dim); font-size:0.7rem; margin-top:0.12rem; }
+.resempty{ font-size:0.8rem; color:var(--ink-dim); padding:0.8rem 0; }
+
+.drop{
+  border:1px dashed var(--line); border-radius:4px; padding:1.4rem 1.2rem;
+  text-align:center; color:var(--ink-dim); font-size:0.83rem; line-height:1.6; cursor:pointer;
+  transition:border-color .25s ease, background .25s ease, color .25s ease;
+}
+.drop:hover, .drop.is-over{ border-color:var(--cyan); background:rgba(79,216,255,0.05); color:var(--ink); }
+.drop b{ color:var(--cyan); font-weight:500; }
+.drop svg{ width:22px; height:22px; margin:0 auto 0.7rem; stroke:currentColor; fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+
+/* ---- bulk entry ---- */
+.paste{
+  width:100%; min-height:230px; resize:vertical; line-height:1.7;
+  padding:0.9rem 1rem; border-radius:3px; border:1px solid var(--line);
+  background:rgba(255,255,255,0.03); color:var(--ink); outline:none;
+  font-family:ui-monospace, Menlo, Consolas, monospace; font-size:0.82rem;
+}
+.paste:focus{ border-color:var(--cyan); background:rgba(79,216,255,0.04); }
+.previewnote{ font-size:0.82rem; color:var(--ink-dim); margin:0.9rem 0; line-height:1.6; }
+.previewnote b{ color:var(--ink); font-weight:500; }
+.previewnote .bad{ color:var(--rose); }
+
+/* ---- publish ---- */
+.steps{ counter-reset:s; list-style:none; }
+.steps li{ counter-increment:s; position:relative; padding:0 0 1.2rem 2.6rem; font-size:0.86rem; line-height:1.65; color:var(--ink-dim); }
+.steps li::before{
+  content:counter(s); position:absolute; left:0; top:-0.1rem;
+  width:26px; height:26px; border-radius:50%; display:grid; place-items:center;
+  border:1px solid var(--line); color:var(--gold); font-family:'Fraunces',serif; font-size:0.8rem;
+}
+.steps li b{ color:var(--ink); font-weight:500; }
+.steps code, .previewnote code{
+  font-family:ui-monospace, Menlo, Consolas, monospace; font-size:0.82rem;
+  background:rgba(255,255,255,0.06); padding:0.1rem 0.36rem; border-radius:2px; color:var(--ink);
+}
+.diff{ display:flex; flex-direction:column; max-height:440px; overflow-y:auto; }
+.dfrow{ display:grid; grid-template-columns:78px 1fr; gap:0.9rem; align-items:baseline;
+  padding:0.6rem 0; border-top:1px solid var(--line-2); font-size:0.84rem; }
+.dfrow:first-child{ border-top:none; }
+.dfrow .dk{ font-size:0.66rem; letter-spacing:0.09em; text-transform:uppercase; }
+.dfrow.add .dk{ color:var(--green); }
+.dfrow.del .dk{ color:var(--rose); }
+.dfrow.chg .dk{ color:var(--gold); }
+.dfrow .dv{ color:var(--ink-dim); line-height:1.5; }
+.dfrow .dv b{ color:var(--ink); font-weight:500; }
+
+.btn-key{
+  padding:0.68rem 1.15rem; border-radius:2px; background:var(--cyan); color:var(--bg-0);
+  font-size:0.86rem; font-weight:500; transition:box-shadow .35s ease, transform .25s ease;
+}
+.btn-key:hover{ box-shadow:0 0 26px 2px var(--cyan-dim); transform:translateY(-1px); }
+.btn-quiet{
+  padding:0.68rem 1.1rem; border-radius:2px; border:1px solid var(--line);
+  font-size:0.86rem; color:var(--ink-dim); transition:border-color .25s ease, color .25s ease;
+}
+.btn-quiet:hover{ border-color:rgba(255,255,255,0.24); color:var(--ink); }
+.btn-warn{ color:var(--rose); border-color:rgba(224,116,138,0.35); }
+.btn-warn:hover{ border-color:var(--rose); color:var(--rose); }
+.btnrow{ display:flex; gap:0.7rem; flex-wrap:wrap; align-items:center; }
+
+.toast{
+  position:fixed; left:50%; bottom:2rem; transform:translate(-50%, 1.2rem); z-index:300;
+  padding:0.7rem 1.2rem; border-radius:3px; font-size:0.84rem;
+  background:var(--ink); color:var(--bg-0); box-shadow:0 20px 50px -20px rgba(0,0,0,0.9);
+  opacity:0; pointer-events:none; transition:opacity .3s ease, transform .3s var(--ease-lux);
+}
+.toast.is-up{ opacity:1; transform:translate(-50%, 0); }
+
+/* the demo way in */
+.gate-or{
+  display:flex; align-items:center; gap:0.8rem; margin:1.3rem 0 1rem;
+  font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim);
+}
+.gate-or::before, .gate-or::after{content:''; height:1px; flex:1; background:var(--line);}
+.gate-demo{
+  width:100%; padding:0.78rem 1rem; border-radius:2px;
+  border:1px solid rgba(201,166,107,0.45); background:rgba(201,166,107,0.08);
+  color:var(--gold); font-size:0.88rem;
+  transition:background .25s ease, border-color .25s ease;
+}
+.gate-demo:hover{background:rgba(201,166,107,0.16); border-color:var(--gold);}
+.gate-note{font-size:0.72rem; color:var(--ink-dim); margin-top:0.7rem; line-height:1.55; text-align:center;}
+.demobar{
+  display:flex; align-items:center; gap:0.6rem; justify-content:center;
+  padding:0.55rem 1rem; font-size:0.76rem; color:var(--gold);
+  background:rgba(201,166,107,0.09); border-bottom:1px solid rgba(201,166,107,0.28);
+}
+.demobar svg{width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.8; flex:none;}
+.demobar[hidden]{display:none;}
+
+@media (max-width:1100px){
+  .worksplit{ grid-template-columns:1fr; }
+  .filters{ position:static; }
+  .filt-sec{ display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); gap:0.2rem 0.8rem; }
+  .filt-sec h4{ grid-column:1 / -1; }
+}
+@media (max-width:980px){
+  .statebar{ padding-left:1.4rem; padding-right:1.4rem; }
+  .field-row{ grid-template-columns:1fr; }
+}
+@media (prefers-reduced-motion:reduce){
+  .drawer, .dw-scrim, .toast{ transition:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN GATE ================= -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <img src="assets/nexus-logo.png" alt="Nexus Chess Academy">
+    <h1>Coach panel</h1>
+    <p class="gate-sub">Sign in to work on the syllabus.</p>
+
+    <form id="loginForm" novalidate>
+      <div class="gate-field">
+        <label for="gateEmail">Email</label>
+        <input type="email" id="gateEmail" name="email" autocomplete="username"
+               required spellcheck="false" placeholder="you@nexuschess.pk">
+      </div>
+      <div class="gate-field">
+        <label for="gatePass">Password</label>
+        <input type="password" id="gatePass" name="password"
+               autocomplete="current-password" required placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+      </div>
+      <p class="gate-err" id="gateErr" role="alert" aria-live="assertive"></p>
+      <button type="submit" class="gate-btn">Sign in</button>
+    </form>
+
+    <div class="gate-or">or</div>
+    <button type="button" class="gate-demo" id="gateDemo">View the demo</button>
+    <p class="gate-note">Edits are kept in this browser. Nothing reaches the live site until the file is published.</p>
+
+    <div class="gate-foot">
+      <a href="index.html">&larr; Back to academy site</a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div class="app" id="app" hidden>
+
+  <aside class="rail" id="rail">
+    <div class="rail-brand">
+      <a href="index.html" title="Back to the academy site"><img src="assets/nexus-logo.png" alt="Nexus Chess Academy"></a>
+    </div>
+
+    <div class="rail-school">
+      <div class="rs-lab">Editing</div>
+      <div class="rs-name">The Nexus<br>syllabus</div>
+      <div class="rs-meta" id="rsMeta">&mdash;</div>
+    </div>
+
+    <div class="rail-sec">Syllabus</div>
+    <nav class="rail-nav" id="railNav">
+      <a href="#" class="rail-link active" data-view="list">
+        <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        All syllabuses <span class="pip" id="pipAll">0</span></a>
+      <a href="#" class="rail-link" data-view="modules">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Modules <span class="pip" id="pipMod">0</span></a>
+      <a href="#" class="rail-link" data-view="bulk">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Bulk entry</a>
+      <a href="#" class="rail-link" data-view="publish">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Publish <span class="pip" id="pipDiff">0</span></a>
+    </nav>
+
+    <div class="rail-sec">Elsewhere</div>
+    <nav class="rail-nav">
+      <a href="school-dashboard.html" class="rail-link">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        School dashboard</a>
+      <a href="student-dashboard.html" class="rail-link">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+        Student dashboard</a>
+    </nav>
+
+    <div class="rail-foot">
+      <a href="index.html" class="rail-back">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Back to academy site</a>
+      <div class="rail-user">
+        <div class="av" id="ruAvatar">&mdash;</div>
+        <div>
+          <div class="ru-name" id="ruName">&mdash;</div>
+          <div class="ru-role" id="ruRole">&mdash;</div>
+        </div>
+      </div>
+      <button class="rail-signout" id="signOut">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign out
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="demobar" id="demoBar" hidden>
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16.5v.01"/></svg>
+      Demo account &mdash; edits are kept in this browser only.
+    </div>
+
+    <header class="topbar">
+      <button class="burger" id="burger" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="tb-title">
+        <h1 id="tbHeading">All syllabuses</h1>
+        <p id="tbSub">One row per session. Filter down the side, edit any row.</p>
+      </div>
+      <div class="tb-spacer"></div>
+      <button class="btn-key" id="addRow">Add a syllabus</button>
+    </header>
+
+    <div class="statebar is-clean" id="stateBar">
+      <span class="dot"></span>
+      <span id="stateText">Matches the published syllabus.</span>
+      <span class="sb-spacer"></span>
+      <button type="button" id="undoBtn" disabled>Undo</button>
+      <button type="button" id="revertBtn">Discard my changes</button>
+    </div>
+
+    <!-- ---------- THE LIST ---------- -->
+    <section class="view active" id="view-list">
+      <div class="worksplit">
+        <div>
+          <div class="toolrow">
+            <label class="searchbox">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input type="search" id="search" placeholder="Search topics&hellip;" aria-label="Search topics">
+            </label>
+            <span class="grow"></span>
+            <span class="chip" id="shownChip">&mdash;</span>
+          </div>
+
+          <div class="bulkbar" id="bulkBar" hidden>
+            <span><b class="bb-n" id="bulkN">0</b> selected</span>
+            <span class="sp"></span>
+            <select id="bulkModule" aria-label="Move selected to module"><option value="">Move to module&hellip;</option></select>
+            <button class="btn-quiet" id="bulkRenumber">Renumber sessions</button>
+            <button class="btn-quiet btn-warn" id="bulkDelete">Delete</button>
+          </div>
+
+          <div class="syl-wrap">
+            <table class="syl">
+              <thead>
+                <tr>
+                  <th class="col-pick"><input type="checkbox" class="tick" id="tickAll" aria-label="Select everything shown"></th>
+                  <th class="sortable" data-sort="module">Module <span class="car">&#9650;</span></th>
+                  <th class="sortable col-sess" data-sort="session">Session <span class="car">&#9650;</span></th>
+                  <th class="sortable" data-sort="topic">Topic <span class="car">&#9650;</span></th>
+                  <th class="col-act"></th>
+                </tr>
+              </thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+          <p class="empty" id="listEmpty" hidden>Nothing matches those filters.</p>
+
+          <div class="pager" id="pager"></div>
+        </div>
+
+        <aside class="filters">
+          <div class="filt">
+            <div class="filt-head">Filter</div>
+            <div class="filt-sec">
+              <h4>By module</h4>
+              <div id="modFilters"></div>
+            </div>
+            <div class="filt-sec">
+              <h4>By session number</h4>
+              <div class="filt-range">
+                <input type="number" id="sessFrom" min="1" placeholder="from" aria-label="Session from">
+                <span>to</span>
+                <input type="number" id="sessTo" min="1" placeholder="to" aria-label="Session to">
+              </div>
+            </div>
+            <button class="filt-clear" id="clearFilters">Clear all filters</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ---------- MODULES ---------- -->
+    <section class="view" id="view-modules">
+      <div class="eyebrow">Modules</div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3>The levels a syllabus can belong to</h3>
+            <p>Renaming one renames it everywhere. A module has to be empty before it can be removed.</p>
+          </div>
+          <div class="spacer"></div>
+          <button class="btn-quiet" id="addModule">Add a module</button>
+        </div>
+        <div class="tbl-wrap" style="border:none">
+          <table class="syl">
+            <thead><tr><th>Module</th><th class="col-sess">Syllabuses</th><th class="col-sess">Sessions</th><th class="col-act"></th></tr></thead>
+            <tbody id="modRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- BULK ENTRY ---------- -->
+    <section class="view" id="view-bulk">
+      <div class="eyebrow">Bulk entry</div>
+      <div class="grid g-32">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h3>Paste the whole list</h3>
+              <p>One syllabus per line. Copying straight out of a spreadsheet works &mdash; tabs, commas and semicolons are all read as separators.</p>
+            </div>
+          </div>
+          <textarea class="paste" id="pasteBox" spellcheck="false"
+            placeholder="Module, Session, Topic&#10;Intermediate (Level 2), 32, London System&#10;Intermediate (Level 2), 31, D4d5 as Black 1&#10;Advance (Level 1), 3, Piece Coordination 1"></textarea>
+          <p class="previewnote" id="pastePreview">Nothing pasted yet.</p>
+          <div class="btnrow">
+            <button class="btn-key" id="pasteAdd">Add to the syllabus</button>
+            <button class="btn-quiet btn-warn" id="pasteReplace">Replace everything</button>
+            <button class="btn-quiet" id="pasteClear">Clear the box</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div><h3>How a line is read</h3><p>Three fields, in this order.</p></div></div>
+          <ol class="steps">
+            <li><b>Module</b> &mdash; the level name, e.g. <code>Advance (Level 1)</code>. A name that does not exist yet is created as a new module.</li>
+            <li><b>Session number</b> &mdash; a whole number. Left out, it carries on from the last session in that module.</li>
+            <li><b>Topic</b> &mdash; everything after the second separator, so a topic containing a comma is still safe.</li>
+          </ol>
+          <p class="previewnote">Lines that cannot be read are listed above and skipped &mdash; nothing is imported until you press a button.</p>
+          <div class="btnrow">
+            <button class="btn-quiet" id="csvBtn">Load a CSV file</button>
+            <button class="btn-quiet" id="exportCsv">Export as CSV</button>
+            <input type="file" id="csvFile" accept=".csv,.tsv,.txt,text/csv,text/plain" hidden>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PUBLISH ---------- -->
+    <section class="view" id="view-publish">
+      <div class="eyebrow">Publish</div>
+      <div class="grid g-32">
+        <div class="card">
+          <div class="card-head">
+            <div><h3>What you have changed</h3><p>Your working copy against the syllabus on the site.</p></div>
+            <div class="spacer"></div>
+            <span class="chip" id="diffChip">&mdash;</span>
+          </div>
+          <div class="diff" id="diffList"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div><h3>Making it live</h3><p>The site is static, so a change becomes public when the file is uploaded.</p></div></div>
+          <ol class="steps">
+            <li>Press <b>Download syllabus.json</b>. Your browser saves the file.</li>
+            <li>In cPanel &rarr; File Manager, open <code>public_html/assets/</code>.</li>
+            <li>Upload it, replacing the <code>syllabus.json</code> already there.</li>
+            <li>Any syllabus with a <b>file</b> attached needs that file in <code>public_html/assets/syllabus/</code> too.</li>
+            <li>Hard-refresh once. Students and the school see the new syllabus.</li>
+          </ol>
+          <div class="btnrow">
+            <button class="btn-key" id="downloadBtn">Download syllabus.json</button>
+            <button class="btn-quiet" id="importBtn">Import a .json</button>
+            <input type="file" id="importFile" accept="application/json,.json" hidden>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ================= ROW EDITOR ================= -->
+<div class="dw-scrim" id="dwScrim"></div>
+<aside class="drawer" id="drawer" hidden aria-label="Syllabus editor">
+  <div class="dw-head">
+    <div>
+      <div class="dw-lab" id="dwLab">Syllabus</div>
+      <h3 id="dwTitle">&mdash;</h3>
+    </div>
+    <div style="flex:1"></div>
+    <button class="icobtn" id="dwClose" aria-label="Close editor" style="width:28px;height:28px;display:grid;place-items:center;color:var(--ink-dim)">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="dw-body">
+    <div class="field-row">
+      <div class="field">
+        <label for="fModule">Module</label>
+        <select id="fModule"></select>
+      </div>
+      <div class="field">
+        <label for="fSession">Session number</label>
+        <input type="number" id="fSession" min="1" max="999" step="1">
+      </div>
+    </div>
+    <div class="field">
+      <label for="fTopic">Topic</label>
+      <input type="text" id="fTopic" maxlength="120" placeholder="e.g. Ruy Lopez as Black 2">
+    </div>
+    <div class="field">
+      <label for="fNotes">What it covers</label>
+      <textarea id="fNotes" maxlength="600" placeholder="A sentence or two, in the words you would use with a student."></textarea>
+      <p class="hint">Shown to students under the topic.</p>
+    </div>
+    <div class="field">
+      <label for="fMinutes">Length in minutes</label>
+      <input type="number" id="fMinutes" min="5" max="240" step="5">
+    </div>
+
+    <div class="field">
+      <label>Resources</label>
+      <div class="reslist" id="resList"></div>
+      <p class="resempty" id="resEmpty">Nothing attached yet.</p>
+    </div>
+
+    <div class="field">
+      <label for="fResName">Add a link</label>
+      <input type="text" id="fResName" placeholder="What it is — e.g. Lichess study: London System">
+      <input type="url" id="fResUrl" placeholder="https://…" style="margin-top:0.55rem">
+      <button class="btn-quiet" id="addLink" style="margin-top:0.6rem">Add link</button>
+    </div>
+
+    <div class="field">
+      <label>Add a file</label>
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a file to attach">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Drop a PDF, PGN or slide deck here, or <b>choose one</b>.
+      </div>
+      <input type="file" id="fileInput" hidden>
+      <p class="hint">The panel records the file&rsquo;s name so the row can point at it. The file itself goes into <code>assets/syllabus/</code> on the host &mdash; see Publish.</p>
+    </div>
+  </div>
+
+  <div class="dw-foot">
+    <button class="btn-quiet btn-warn" id="dwDelete">Delete</button>
+    <span class="sp"></span>
+    <button class="btn-quiet" id="dwCancel">Cancel</button>
+    <button class="btn-key" id="dwSave">Save</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+
+<script>
+/* ============================================================
+   LOGIN GATE
+   ------------------------------------------------------------
+   IMPORTANT - a DEMO GATE, not real authentication. Everything runs in the
+   browser, so anyone who opens dev tools can read this and get past it.
+   Passwords are kept as a salted hash rather than plain text, which keeps
+   them out of the page source, but that is obfuscation, not security.
+
+   It is acceptable here because the panel edits a copy held in this browser.
+   Nothing it does can write to the server: a change reaches the site only
+   when someone with host access uploads the exported file.
+
+   To add or change an account: run hash(email + ':' + password) in the
+   console and paste the result as `h`.
+   ============================================================ */
+(function () {
+  function hash(s) {
+    let h = 2166136261;
+    for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return (h >>> 0).toString(36);
+  }
+
+  const USERS = [
+    { email: 'shehroz@nexuschess.pk', name: 'Shehroz',         role: 'Founder & Head Coach', h: 'boc8yx' },
+    { email: 'tayyab@nexuschess.pk',  name: 'Tayyab Ali',      role: 'Coach',                h: '1nplnvw' },
+    { email: 'mustafa@nexuschess.pk', name: 'M. Mustafa Adil', role: 'Coach',                h: 'raqreh' }
+  ];
+  const DEMO = { email: 'demo', name: 'Sample Coach', role: 'Coach', demo: true };
+
+  const KEY  = 'nexus.coach.session';
+  const gate = document.getElementById('gate');
+  const app  = document.getElementById('app');
+  const form = document.getElementById('loginForm');
+  const email = document.getElementById('gateEmail');
+  const pass  = document.getElementById('gatePass');
+  const err   = document.getElementById('gateErr');
+
+  const initials = n => n.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+
+  function enter(user) {
+    document.getElementById('ruName').textContent   = user.name;
+    document.getElementById('ruRole').textContent   = user.role;
+    document.getElementById('ruAvatar').textContent = initials(user.name);
+    document.getElementById('demoBar').hidden       = !user.demo;
+    gate.hidden = true;
+    app.hidden  = false;
+    if (window.NexusPanel) window.NexusPanel.start();
+  }
+
+  function leave() {
+    try { sessionStorage.removeItem(KEY); } catch (e) {}
+    app.hidden = true;
+    gate.hidden = false;
+    form.reset();
+    err.textContent = '';
+    email.focus();
+  }
+
+  let restored = null;
+  try {
+    const saved = sessionStorage.getItem(KEY);
+    if (saved === 'demo') restored = DEMO;
+    else if (saved) restored = USERS.find(u => u.email === saved) || null;
+  } catch (e) {}
+
+  /* The panel module below is defined later in this same script, so entering
+     straight away would call it before it exists and the page would come back
+     signed in and empty. A microtask runs once the script has finished. */
+  queueMicrotask(function () {
+    if (restored) enter(restored);
+    else { gate.hidden = false; app.hidden = true; email.focus(); }
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const addr = email.value.trim().toLowerCase();
+    const user = USERS.find(u => u.email === addr && u.h === hash(u.email + ':' + pass.value));
+    if (!user) {
+      err.textContent = 'That email and password combination was not recognised.';
+      email.setAttribute('aria-invalid', 'true');
+      pass.setAttribute('aria-invalid', 'true');
+      pass.value = ''; pass.focus();
+      return;
+    }
+    err.textContent = '';
+    email.setAttribute('aria-invalid', 'false');
+    pass.setAttribute('aria-invalid', 'false');
+    try { sessionStorage.setItem(KEY, user.email); } catch (e) {}
+    enter(user);
+  });
+
+  document.getElementById('gateDemo').addEventListener('click', function () {
+    try { sessionStorage.setItem(KEY, 'demo'); } catch (e) {}
+    enter(DEMO);
+  });
+
+  [email, pass].forEach(el => el.addEventListener('input', function () {
+    if (err.textContent) {
+      err.textContent = '';
+      email.setAttribute('aria-invalid', 'false');
+      pass.setAttribute('aria-invalid', 'false');
+    }
+  }));
+
+  document.getElementById('signOut').addEventListener('click', leave);
+})();
+
+
+/* ============================================================
+   THE SYLLABUS
+   One row per session: module, session number, topic. The published list is
+   assets/syllabus.json; the panel edits a copy in this browser and can only
+   change the site by exporting a file someone uploads.
+   ============================================================ */
+window.NexusPanel = (function () {
+
+  const DRAFT_KEY = 'nexus.syllabus.draft.v2';
+  const PAGE = 25;
+  const MAX_UNDO = 40;
+
+  /* carried in the page so the panel still works from a file:// copy, where
+     fetch cannot read the JSON */
+  const FALLBACK = {
+    version: 2, updated: '',
+    modules: [
+      { id:'b1', name:'Beginner (Level 1)',     accent:'#4fd8ff' },
+      { id:'b2', name:'Beginner (Level 2)',     accent:'#5ac8a0' },
+      { id:'b3', name:'Beginner (Level 3)',     accent:'#9fd77f' },
+      { id:'i1', name:'Intermediate (Level 1)', accent:'#c9a66b' },
+      { id:'i2', name:'Intermediate (Level 2)', accent:'#d08a52' },
+      { id:'a1', name:'Advance (Level 1)',      accent:'#8b7fe8' },
+      { id:'a2', name:'Advance (Level 2)',      accent:'#dfe6f2' }
+    ],
+    entries: []
+  };
+
+  const PALETTE = ['#4fd8ff','#5ac8a0','#9fd77f','#c9a66b','#d08a52','#8b7fe8','#dfe6f2','#e0748a'];
+
+  let published = null;
+  let draft = null;
+  let undo = [];
+  let open = null;          // id of the row in the drawer, or 'new'
+  let picked = new Set();
+  let page = 1;
+  let sortKey = 'module', sortDir = 1;
+  let fModules = new Set();  // empty means "all"
+  let query = '';
+  let fresh = 0;
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const clone = o => JSON.parse(JSON.stringify(o));
+  const newId = p => p + Date.now().toString(36) + (fresh++).toString(36);
+
+  let toastTimer = 0;
+  function say(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('is-up');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('is-up'), 2800);
+  }
+
+  function remember() {
+    undo.push(clone(draft));
+    if (undo.length > MAX_UNDO) undo.shift();
+  }
+  function commit(msg) {
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch (e) {}
+    render();
+    if (msg) say(msg);
+  }
+
+  /* every path assumes this shape, so anything loaded is forced into it */
+  function normalise(d) {
+    const out = { version: 2, updated: (d && d.updated) || '', modules: [], entries: [] };
+    const mods = (d && Array.isArray(d.modules)) ? d.modules : [];
+    out.modules = mods.map((m, i) => ({
+      id: String((m && m.id) || ('m' + i)),
+      name: String((m && m.name) || ('Module ' + (i + 1))),
+      accent: /^#[0-9a-f]{3,8}$/i.test(m && m.accent || '') ? m.accent : PALETTE[i % PALETTE.length]
+    }));
+    if (!out.modules.length) out.modules = clone(FALLBACK.modules);
+    const known = new Set(out.modules.map(m => m.id));
+
+    const rows = (d && Array.isArray(d.entries)) ? d.entries : [];
+    out.entries = rows.map((e, i) => ({
+      id: String((e && e.id) || ('e' + i)),
+      module: known.has(String(e && e.module)) ? String(e.module) : out.modules[0].id,
+      session: Math.max(1, Math.min(999, parseInt(e && e.session, 10) || (i + 1))),
+      topic: String((e && e.topic) || 'Untitled'),
+      notes: String((e && e.notes) || ''),
+      minutes: Math.max(5, Math.min(240, parseInt(e && e.minutes, 10) || 45)),
+      resources: (Array.isArray(e && e.resources) ? e.resources : []).map(r => ({
+        kind: r && r.kind === 'file' ? 'file' : 'link',
+        name: String((r && r.name) || 'Untitled'),
+        href: String((r && r.href) || '')
+      }))
+    }));
+    return out;
+  }
+
+  async function load() {
+    let live = null;
+    try {
+      const r = await fetch('assets/syllabus.json', { cache: 'no-store' });
+      if (r.ok) live = await r.json();
+    } catch (e) { /* opened from disk, or not uploaded yet */ }
+    published = normalise(live || FALLBACK);
+
+    let saved = null;
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (raw) saved = normalise(JSON.parse(raw));
+    } catch (e) {}
+    draft = saved || clone(published);
+
+    $('rsMeta').textContent = published.updated ? 'Published ' + published.updated : 'Not yet published';
+  }
+
+  const moduleOf = id => draft.modules.find(m => m.id === id) || draft.modules[0];
+  const modIndex = id => draft.modules.findIndex(m => m.id === id);
+
+  /* ---- which rows the filters leave ---- */
+  function visible() {
+    const from = parseInt($('sessFrom').value, 10);
+    const to   = parseInt($('sessTo').value, 10);
+    const q = query.trim().toLowerCase();
+    let rows = draft.entries.filter(e => {
+      if (fModules.size && !fModules.has(e.module)) return false;
+      if (!isNaN(from) && e.session < from) return false;
+      if (!isNaN(to) && e.session > to) return false;
+      if (q) {
+        const hay = (e.topic + ' ' + e.notes + ' ' + moduleOf(e.module).name).toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+    rows.sort((a, b) => {
+      let v;
+      if (sortKey === 'session') v = a.session - b.session;
+      else if (sortKey === 'topic') v = a.topic.localeCompare(b.topic);
+      else {
+        v = modIndex(a.module) - modIndex(b.module);
+        if (v === 0) v = a.session - b.session;
+      }
+      return v * sortDir;
+    });
+    return rows;
+  }
+
+  /* ---- the list ---- */
+  function renderList() {
+    const rows = visible();
+    const pages = Math.max(1, Math.ceil(rows.length / PAGE));
+    if (page > pages) page = pages;
+    const slice = PAGE === Infinity ? rows : rows.slice((page - 1) * PAGE, page * PAGE);
+
+    $('rows').innerHTML = slice.map(e => {
+      const m = moduleOf(e.module);
+      const res = e.resources.length;
+      return '<tr data-id="' + e.id + '"' + (picked.has(e.id) ? ' class="is-picked"' : '') + '>' +
+        '<td class="col-pick"><input type="checkbox" class="tick" data-pick="' + e.id + '"' +
+          (picked.has(e.id) ? ' checked' : '') + ' aria-label="Select ' + esc(e.topic) + '"></td>' +
+        '<td><span class="modtag" style="--mc:' + esc(m.accent) + '"><i></i>' + esc(m.name) + '</span></td>' +
+        '<td class="col-sess"><span class="sessno">' + e.session + '</span></td>' +
+        '<td class="topiccell"><div class="tt">' + esc(e.topic) + '</div>' +
+          (e.notes ? '<div class="tn">' + esc(e.notes) + '</div>' : '') +
+          (res ? '<div class="tr">' + res + ' resource' + (res === 1 ? '' : 's') + '</div>' : '') + '</td>' +
+        '<td class="col-act"><button class="btn-quiet" data-edit="' + e.id + '" ' +
+          'style="padding:0.35rem 0.7rem;font-size:0.78rem">Edit</button></td>' +
+      '</tr>';
+    }).join('');
+
+    $('listEmpty').hidden = rows.length > 0;
+    $('shownChip').textContent = rows.length === draft.entries.length
+      ? draft.entries.length + ' syllabuses'
+      : rows.length + ' of ' + draft.entries.length;
+    $('pipAll').textContent = draft.entries.length;
+    $('pipMod').textContent = draft.modules.length;
+
+    const shown = slice.map(e => e.id);
+    $('tickAll').checked = shown.length > 0 && shown.every(id => picked.has(id));
+
+    /* paging, worded the way the list is */
+    const pg = [];
+    if (rows.length > PAGE || page > 1) {
+      pg.push('<button data-page="' + (page - 1) + '"' + (page === 1 ? ' disabled' : '') + '>&lsaquo;</button>');
+      for (let i = 1; i <= pages; i++) {
+        if (pages > 7 && i > 2 && i < pages - 1 && Math.abs(i - page) > 1) {
+          if (pg[pg.length - 1] !== '<span>&hellip;</span>') pg.push('<span>&hellip;</span>');
+          continue;
+        }
+        pg.push('<button data-page="' + i + '"' + (i === page ? ' class="on"' : '') + '>' + i + '</button>');
+      }
+      pg.push('<button data-page="' + (page + 1) + '"' + (page === pages ? ' disabled' : '') + '>&rsaquo;</button>');
+    }
+    pg.push('<span class="count">' + rows.length + ' syllabus' + (rows.length === 1 ? '' : 'es') + '</span>');
+    $('pager').innerHTML = pg.join('');
+
+    /* the module filter, with a count beside each one */
+    const counts = {};
+    draft.entries.forEach(e => { counts[e.module] = (counts[e.module] || 0) + 1; });
+    $('modFilters').innerHTML =
+      '<button class="filt-opt' + (fModules.size === 0 ? ' on' : '') + '" data-mod="">All' +
+        '<span class="n">' + draft.entries.length + '</span></button>' +
+      draft.modules.map(m =>
+        '<button class="filt-opt' + (fModules.has(m.id) ? ' on' : '') + '" data-mod="' + m.id + '">' +
+          esc(m.name) + '<span class="n">' + (counts[m.id] || 0) + '</span></button>').join('');
+
+    document.querySelectorAll('.syl thead th.sortable').forEach(th => {
+      const on = th.dataset.sort === sortKey;
+      th.classList.toggle('sorted', on);
+      th.querySelector('.car').innerHTML = on && sortDir < 0 ? '&#9660;' : '&#9650;';
+    });
+
+    $('bulkBar').hidden = picked.size === 0;
+    $('bulkN').textContent = picked.size;
+  }
+
+  /* ---- modules ---- */
+  function renderModules() {
+    $('modRows').innerHTML = draft.modules.map(m => {
+      const mine = draft.entries.filter(e => e.module === m.id);
+      const span = mine.length ? Math.min(...mine.map(e => e.session)) + '–' + Math.max(...mine.map(e => e.session)) : '—';
+      return '<tr>' +
+        '<td><span class="modtag" style="--mc:' + esc(m.accent) + '"><i></i>' + esc(m.name) + '</span></td>' +
+        '<td class="col-sess"><span class="sessno">' + mine.length + '</span></td>' +
+        '<td class="col-sess" style="color:var(--ink-dim)">' + span + '</td>' +
+        '<td class="col-act" style="white-space:nowrap">' +
+          '<button class="btn-quiet" data-mrename="' + m.id + '" style="padding:0.3rem 0.6rem;font-size:0.76rem">Rename</button> ' +
+          '<button class="btn-quiet btn-warn" data-mdel="' + m.id + '" style="padding:0.3rem 0.6rem;font-size:0.76rem"' +
+            (mine.length ? ' disabled title="Move its syllabuses out first"' : '') + '>Delete</button>' +
+        '</td></tr>';
+    }).join('');
+
+    const opts = draft.modules.map(m => '<option value="' + m.id + '">' + esc(m.name) + '</option>').join('');
+    $('fModule').innerHTML = opts;
+    $('bulkModule').innerHTML = '<option value="">Move to module&hellip;</option>' + opts;
+  }
+
+  /* ---- what changed ---- */
+  function diff() {
+    const was = new Map(published.entries.map(e => [e.id, e]));
+    const now = new Map(draft.entries.map(e => [e.id, e]));
+    const mWas = new Map(published.modules.map(m => [m.id, m.name]));
+    const mNow = new Map(draft.modules.map(m => [m.id, m.name]));
+    const out = [];
+
+    draft.modules.forEach(m => { if (!mWas.has(m.id)) out.push({ k:'add', t:'Added', v:'Module: ' + m.name }); });
+    published.modules.forEach(m => { if (!mNow.has(m.id)) out.push({ k:'del', t:'Removed', v:'Module: ' + m.name }); });
+    draft.modules.forEach(m => {
+      if (mWas.has(m.id) && mWas.get(m.id) !== m.name)
+        out.push({ k:'chg', t:'Renamed', v:'Module: ' + mWas.get(m.id) + ' → ' + m.name });
+    });
+
+    draft.entries.forEach(e => {
+      if (!was.has(e.id)) { out.push({ k:'add', t:'Added', v:e.topic + ' — ' + (mNow.get(e.module) || '') + ' #' + e.session }); return; }
+      const o = was.get(e.id);
+      if (o.topic !== e.topic)     out.push({ k:'chg', t:'Renamed', v:o.topic + ' → ' + e.topic });
+      if (o.module !== e.module)   out.push({ k:'chg', t:'Moved',   v:e.topic + ' → ' + (mNow.get(e.module) || '') });
+      if (o.session !== e.session) out.push({ k:'chg', t:'Renumbered', v:e.topic + ' — session ' + o.session + ' → ' + e.session });
+      if (o.notes !== e.notes)     out.push({ k:'chg', t:'Edited', v:e.topic + ' — description' });
+      if (o.minutes !== e.minutes) out.push({ k:'chg', t:'Edited', v:e.topic + ' — ' + o.minutes + ' to ' + e.minutes + ' min' });
+      if (o.resources.length !== e.resources.length) out.push({ k:'chg', t:'Edited', v:e.topic + ' — resources' });
+    });
+    published.entries.forEach(e => {
+      if (!now.has(e.id)) out.push({ k:'del', t:'Removed', v:e.topic + ' — ' + (mWas.get(e.module) || '') });
+    });
+    return out;
+  }
+
+  function renderPublish() {
+    const d = diff();
+    $('pipDiff').textContent = d.length;
+    $('diffChip').textContent = d.length ? d.length + ' change' + (d.length === 1 ? '' : 's') : 'No changes';
+    $('diffList').innerHTML = d.length
+      ? d.map(x => '<div class="dfrow ' + x.k + '"><span class="dk">' + x.t + '</span><span class="dv">' + esc(x.v) + '</span></div>').join('')
+      : '<p class="empty">Your working copy matches what the site is serving.</p>';
+
+    const bar = $('stateBar');
+    bar.classList.toggle('is-dirty', d.length > 0);
+    bar.classList.toggle('is-clean', d.length === 0);
+    $('stateText').textContent = d.length
+      ? d.length + ' unpublished change' + (d.length === 1 ? '' : 's') + ' — saved in this browser, not yet on the site.'
+      : 'Matches the published syllabus.';
+    $('undoBtn').disabled = undo.length === 0;
+  }
+
+  function render() { renderModules(); renderList(); renderPublish(); }
+
+  /* ---- the row editor ---- */
+  function openRow(id) {
+    open = id;
+    const e = id === 'new'
+      ? { module: draft.modules[0].id, session: nextSession(draft.modules[0].id), topic: '', notes: '', minutes: 45, resources: [] }
+      : draft.entries.find(x => x.id === id);
+    if (!e) return;
+    $('dwLab').textContent = id === 'new' ? 'New syllabus' : 'Editing';
+    $('dwTitle').textContent = e.topic || 'New syllabus';
+    $('fModule').value = e.module;
+    $('fSession').value = e.session;
+    $('fTopic').value = e.topic;
+    $('fNotes').value = e.notes;
+    $('fMinutes').value = e.minutes;
+    $('dwDelete').hidden = id === 'new';
+    drawResources(e);
+    editing = clone(e);
+    $('drawer').hidden = false;
+    requestAnimationFrame(() => {
+      $('drawer').classList.add('is-open');
+      $('dwScrim').classList.add('is-open');
+      $('fTopic').focus();
+    });
+  }
+  let editing = null;
+
+  function nextSession(mod) {
+    const mine = draft.entries.filter(e => e.module === mod);
+    return mine.length ? Math.max(...mine.map(e => e.session)) + 1 : 1;
+  }
+
+  function drawResources(e) {
+    $('resEmpty').hidden = e.resources.length > 0;
+    $('resList').innerHTML = e.resources.map((r, i) =>
+      '<div class="resrow">' +
+        '<span class="rt' + (r.kind === 'file' ? ' file' : '') + '">' + r.kind + '</span>' +
+        '<span class="rn">' + esc(r.name) + '<small>' + esc(r.href || 'upload to assets/syllabus/') + '</small></span>' +
+        '<button class="btn-quiet btn-warn" data-res="' + i + '" style="padding:0.25rem 0.5rem;font-size:0.72rem">Remove</button>' +
+      '</div>').join('');
+  }
+
+  function closeDrawer() {
+    $('drawer').classList.remove('is-open');
+    $('dwScrim').classList.remove('is-open');
+    setTimeout(() => { $('drawer').hidden = true; }, 380);
+    open = null; editing = null;
+  }
+
+  function saveRow() {
+    if (!open) return;
+    const topic = $('fTopic').value.trim();
+    if (!topic) { say('A syllabus needs a topic.'); $('fTopic').focus(); return; }
+    remember();
+    const patch = {
+      module: $('fModule').value,
+      session: Math.max(1, Math.min(999, parseInt($('fSession').value, 10) || 1)),
+      topic,
+      notes: $('fNotes').value.trim(),
+      minutes: Math.max(5, Math.min(240, parseInt($('fMinutes').value, 10) || 45)),
+      resources: editing.resources
+    };
+    if (open === 'new') draft.entries.push({ id: newId('e'), ...patch });
+    else Object.assign(draft.entries.find(x => x.id === open), patch);
+    closeDrawer();
+    commit('Saved.');
+  }
+
+  /* ---- reading a pasted list ---- */
+  function parseLines(text) {
+    const rows = [], bad = [];
+    const known = draft.modules.slice();
+    const seen = {};
+    text.split(/\r?\n/).forEach((raw, n) => {
+      const line = raw.trim();
+      if (!line) return;
+      if (/^module\b/i.test(line) && /topic/i.test(line)) return;      // a header row
+      const parts = line.split(/\t|;|,/);
+      if (parts.length < 2) { bad.push(n + 1); return; }
+      const modName = parts[0].trim();
+      if (!modName) { bad.push(n + 1); return; }
+
+      let session = null, topicFrom = 1;
+      const maybe = (parts[1] || '').trim();
+      if (/^\d{1,3}$/.test(maybe)) { session = parseInt(maybe, 10); topicFrom = 2; }
+      const topic = parts.slice(topicFrom).join(',').trim();
+      if (!topic) { bad.push(n + 1); return; }
+
+      let mod = known.find(m => m.name.toLowerCase() === modName.toLowerCase());
+      if (!mod) {
+        mod = { id: newId('m'), name: modName, accent: PALETTE[known.length % PALETTE.length], isNew: true };
+        known.push(mod);
+      }
+      if (session == null) { seen[mod.id] = (seen[mod.id] || nextSession(mod.id) - 1) + 1; session = seen[mod.id]; }
+      rows.push({ module: mod, session, topic });
+    });
+    return { rows, bad, modules: known.filter(m => m.isNew) };
+  }
+
+  function previewPaste() {
+    const text = $('pasteBox').value;
+    if (!text.trim()) { $('pastePreview').textContent = 'Nothing pasted yet.'; return null; }
+    const r = parseLines(text);
+    $('pastePreview').innerHTML =
+      '<b>' + r.rows.length + '</b> syllabus' + (r.rows.length === 1 ? '' : 'es') + ' read' +
+      (r.modules.length ? ', creating <b>' + r.modules.length + '</b> new module' + (r.modules.length === 1 ? '' : 's') +
+        ' (' + r.modules.map(m => esc(m.name)).join(', ') + ')' : '') +
+      (r.bad.length ? ' &middot; <span class="bad">' + r.bad.length + ' line' + (r.bad.length === 1 ? '' : 's') +
+        ' skipped (' + r.bad.slice(0, 8).join(', ') + (r.bad.length > 8 ? '…' : '') + ')</span>' : '') + '.';
+    return r;
+  }
+
+  function applyPaste(replace) {
+    const r = previewPaste();
+    if (!r || !r.rows.length) { say('Nothing readable in the box.'); return; }
+    if (replace && !confirm('Replace all ' + draft.entries.length + ' syllabuses with these ' + r.rows.length + '? You can undo this.')) return;
+    remember();
+    r.modules.forEach(m => draft.modules.push({ id: m.id, name: m.name, accent: m.accent }));
+    const rows = r.rows.map(x => ({
+      id: newId('e'), module: x.module.id, session: x.session,
+      topic: x.topic, notes: '', minutes: 45, resources: []
+    }));
+    draft.entries = replace ? rows : draft.entries.concat(rows);
+    page = 1;
+    commit(replace ? 'Replaced with ' + rows.length + ' syllabuses.' : 'Added ' + rows.length + ' syllabuses.');
+  }
+
+  /* ---- wiring ---- */
+  let wired = false;
+  function start() { load().then(() => { render(); wire(); }); }
+
+  function wire() {
+    if (wired) return;
+    wired = true;
+
+    /* the list */
+    $('rows').addEventListener('click', function (e) {
+      const ed = e.target.closest('[data-edit]');
+      if (ed) { openRow(ed.dataset.edit); return; }
+      const pk = e.target.closest('[data-pick]');
+      if (pk) {
+        const id = pk.dataset.pick;
+        if (pk.checked) picked.add(id); else picked.delete(id);
+        renderList();
+      }
+    });
+
+    $('tickAll').addEventListener('change', function () {
+      const rows = visible();
+      const slice = rows.slice((page - 1) * PAGE, page * PAGE);
+      slice.forEach(e => { if (this.checked) picked.add(e.id); else picked.delete(e.id); });
+      renderList();
+    });
+
+    $('pager').addEventListener('click', function (e) {
+      const b = e.target.closest('[data-page]');
+      if (!b) return;
+      page = Math.max(1, +b.dataset.page);
+      renderList();
+    });
+
+    document.querySelectorAll('.syl thead th.sortable').forEach(th => th.addEventListener('click', function () {
+      const k = this.dataset.sort;
+      if (sortKey === k) sortDir *= -1; else { sortKey = k; sortDir = 1; }
+      renderList();
+    }));
+
+    $('search').addEventListener('input', function () { query = this.value; page = 1; renderList(); });
+    $('modFilters').addEventListener('click', function (e) {
+      const b = e.target.closest('[data-mod]');
+      if (!b) return;
+      const id = b.dataset.mod;
+      if (!id) fModules.clear();
+      else if (fModules.has(id)) fModules.delete(id);
+      else fModules.add(id);
+      page = 1; renderList();
+    });
+    ['sessFrom', 'sessTo'].forEach(id => $(id).addEventListener('input', () => { page = 1; renderList(); }));
+    $('clearFilters').addEventListener('click', function () {
+      fModules.clear(); query = ''; $('search').value = '';
+      $('sessFrom').value = ''; $('sessTo').value = '';
+      page = 1; renderList();
+    });
+
+    /* bulk */
+    $('bulkModule').addEventListener('change', function () {
+      if (!this.value || !picked.size) return;
+      const target = this.value;
+      remember();
+      let n = nextSession(target) - 1;
+      draft.entries.forEach(e => { if (picked.has(e.id)) { e.module = target; e.session = ++n; } });
+      this.value = '';
+      picked.clear();
+      commit('Moved into ' + moduleOf(target).name + '.');
+    });
+    $('bulkRenumber').addEventListener('click', function () {
+      if (!picked.size) return;
+      remember();
+      const byMod = {};
+      visible().filter(e => picked.has(e.id)).forEach(e => {
+        byMod[e.module] = (byMod[e.module] || 0) + 1;
+        e.session = byMod[e.module];
+      });
+      commit('Renumbered from 1 within each module.');
+    });
+    $('bulkDelete').addEventListener('click', function () {
+      if (!picked.size) return;
+      if (!confirm('Delete ' + picked.size + ' syllabus(es)? You can undo this.')) return;
+      remember();
+      draft.entries = draft.entries.filter(e => !picked.has(e.id));
+      picked.clear();
+      commit('Deleted.');
+    });
+
+    $('addRow').addEventListener('click', () => openRow('new'));
+
+    /* modules */
+    $('modRows').addEventListener('click', function (e) {
+      const rn = e.target.closest('[data-mrename]');
+      if (rn) {
+        const m = draft.modules.find(x => x.id === rn.dataset.mrename);
+        const name = prompt('Module name', m.name);
+        if (name === null) return;
+        if (!name.trim()) { say('A module needs a name.'); return; }
+        remember(); m.name = name.trim(); commit('Module renamed.');
+        return;
+      }
+      const dl = e.target.closest('[data-mdel]');
+      if (dl) {
+        const m = draft.modules.find(x => x.id === dl.dataset.mdel);
+        if (draft.entries.some(x => x.module === m.id)) { say('Move its syllabuses out first.'); return; }
+        if (draft.modules.length === 1) { say('There has to be at least one module.'); return; }
+        if (!confirm('Delete the module "' + m.name + '"?')) return;
+        remember();
+        draft.modules = draft.modules.filter(x => x.id !== m.id);
+        commit('Module deleted.');
+      }
+    });
+    $('addModule').addEventListener('click', function () {
+      const name = prompt('Name for the new module', 'Beginner (Level 4)');
+      if (name === null || !name.trim()) return;
+      remember();
+      draft.modules.push({ id: newId('m'), name: name.trim(), accent: PALETTE[draft.modules.length % PALETTE.length] });
+      commit('Module added.');
+    });
+
+    /* the drawer */
+    $('dwSave').addEventListener('click', saveRow);
+    $('dwCancel').addEventListener('click', closeDrawer);
+    $('dwClose').addEventListener('click', closeDrawer);
+    $('dwScrim').addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && open) closeDrawer(); });
+
+    $('dwDelete').addEventListener('click', function () {
+      if (!open || open === 'new') return;
+      const e = draft.entries.find(x => x.id === open);
+      if (!confirm('Delete "' + e.topic + '"? You can undo this.')) return;
+      remember();
+      draft.entries = draft.entries.filter(x => x.id !== open);
+      closeDrawer();
+      commit('Deleted.');
+    });
+
+    $('fModule').addEventListener('change', function () {
+      if (open === 'new') $('fSession').value = nextSession(this.value);
+    });
+
+    $('addLink').addEventListener('click', function () {
+      if (!editing) return;
+      const name = $('fResName').value.trim(), href = $('fResUrl').value.trim();
+      if (!name || !href) { say('A link needs both a name and an address.'); return; }
+      if (!/^https?:\/\//i.test(href)) { say('The address should start with http:// or https://'); return; }
+      editing.resources.push({ kind: 'link', name, href });
+      $('fResName').value = ''; $('fResUrl').value = '';
+      drawResources(editing);
+      say('Link added — press Save to keep it.');
+    });
+    $('resList').addEventListener('click', function (e) {
+      const t = e.target.closest('[data-res]');
+      if (!t || !editing) return;
+      editing.resources.splice(+t.dataset.res, 1);
+      drawResources(editing);
+    });
+
+    /* a file is recorded by name; a static page cannot write to the server */
+    function takeFile(file) {
+      if (!file || !editing) return;
+      editing.resources.push({ kind: 'file', name: file.name, href: 'assets/syllabus/' + file.name });
+      drawResources(editing);
+      say('File noted — upload it too, see Publish.');
+    }
+    $('drop').addEventListener('click', () => $('fileInput').click());
+    $('drop').addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('fileInput').click(); }
+    });
+    $('fileInput').addEventListener('change', e => { takeFile(e.target.files[0]); e.target.value = ''; });
+    ['dragenter','dragover'].forEach(n => $('drop').addEventListener(n, e => { e.preventDefault(); $('drop').classList.add('is-over'); }));
+    ['dragleave','drop'].forEach(n => $('drop').addEventListener(n, e => { e.preventDefault(); $('drop').classList.remove('is-over'); }));
+    $('drop').addEventListener('drop', e => takeFile(e.dataTransfer.files[0]));
+
+    /* bulk entry */
+    $('pasteBox').addEventListener('input', previewPaste);
+    $('pasteAdd').addEventListener('click', () => applyPaste(false));
+    $('pasteReplace').addEventListener('click', () => applyPaste(true));
+    $('pasteClear').addEventListener('click', () => { $('pasteBox').value = ''; previewPaste(); });
+
+    $('csvBtn').addEventListener('click', () => $('csvFile').click());
+    $('csvFile').addEventListener('change', function (e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      const rd = new FileReader();
+      rd.onload = () => { $('pasteBox').value = rd.result; previewPaste(); say('Loaded — check the count, then choose Add or Replace.'); };
+      rd.readAsText(f);
+      e.target.value = '';
+    });
+    $('exportCsv').addEventListener('click', function () {
+      const q = s => /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+      const lines = ['Module,Session,Topic'].concat(
+        draft.entries.map(e => [q(moduleOf(e.module).name), e.session, q(e.topic)].join(',')));
+      download(lines.join('\n'), 'syllabus.csv', 'text/csv');
+      say('CSV downloaded.');
+    });
+
+    /* history */
+    $('undoBtn').addEventListener('click', function () {
+      if (!undo.length) return;
+      draft = undo.pop();
+      picked.clear();
+      commit('Undone.');
+    });
+    $('revertBtn').addEventListener('click', function () {
+      if (!confirm('Throw away your changes and go back to the published syllabus?')) return;
+      remember();
+      draft = clone(published);
+      picked.clear();
+      commit('Back to the published syllabus.');
+    });
+
+    /* publish */
+    function download(text, name, type) {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([text], { type: type }));
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    }
+    $('downloadBtn').addEventListener('click', function () {
+      const out = clone(draft);
+      out.version = 2;
+      out.updated = new Date().toISOString().slice(0, 10);
+      out.note = 'The single source for the Nexus syllabus. Edited in coach-panel.html; upload this file to make a change live.';
+      download(JSON.stringify(out, null, 2), 'syllabus.json', 'application/json');
+      say('Downloaded. Upload it to assets/ on the host.');
+    });
+    $('importBtn').addEventListener('click', () => $('importFile').click());
+    $('importFile').addEventListener('change', function (e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      const rd = new FileReader();
+      rd.onload = function () {
+        try {
+          const parsed = normalise(JSON.parse(rd.result));
+          if (!parsed.entries.length) throw new Error('empty');
+          remember();
+          draft = parsed;
+          picked.clear(); page = 1;
+          commit('Imported ' + draft.entries.length + ' syllabuses.');
+        } catch (err) { say('That file could not be read as a syllabus.'); }
+      };
+      rd.readAsText(f);
+      e.target.value = '';
+    });
+
+    /* views */
+    const TITLES = {
+      list:    ['All syllabuses', 'One row per session. Filter down the side, edit any row.'],
+      modules: ['Modules',        'The levels a syllabus can belong to.'],
+      bulk:    ['Bulk entry',     'Paste or load the whole list at once.'],
+      publish: ['Publish',        'What you changed, and how to put it live.']
+    };
+    $('railNav').addEventListener('click', function (e) {
+      const a = e.target.closest('[data-view]');
+      if (!a) return;
+      e.preventDefault();
+      const v = a.dataset.view;
+      document.querySelectorAll('.view').forEach(x => x.classList.toggle('active', x.id === 'view-' + v));
+      document.querySelectorAll('#railNav .rail-link').forEach(x => x.classList.toggle('active', x.dataset.view === v));
+      $('tbHeading').textContent = TITLES[v][0];
+      $('tbSub').textContent = TITLES[v][1];
+      $('addRow').hidden = v !== 'list';
+      $('rail').classList.remove('open');
+    });
+
+    $('burger').addEventListener('click', () => $('rail').classList.toggle('open'));
+    window.addEventListener('beforeunload', function (e) {
+      if (open) { e.preventDefault(); e.returnValue = ''; }
+    });
+  }
+
+  return { start: start };
+})();
+</script>
+</body>
+</html>

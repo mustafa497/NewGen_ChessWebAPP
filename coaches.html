@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coaches, Honours &amp; About · Nexus Chess Academy</title>
+<meta name="description" content="Meet the mentors behind Nexus Chess Academy — their titles, the honours won at the board, and what the academy is for.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/site.css?v=b70a09ab">
+<link rel="stylesheet" href="assets/booking.css?v=74bdc325">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><a href="index.html"><img src="assets/nexus-logo.png" alt="Nexus Chess Academy" width="100" height="36" decoding="async"></a></div>
+  <div class="nav-links">
+    <a href="coaches.html" aria-current="page">Coaches</a>
+    <a href="learning-path.html">Learning Path</a>
+    <a href="results.html">Results</a>
+
+    <div class="nav-drop" data-nav-drop>
+      <button class="nav-drop-btn" type="button" aria-expanded="false" aria-controls="toolsPanel">
+        Tools<span class="nav-caret" aria-hidden="true"></span>
+      </button>
+      <div class="nav-panel" id="toolsPanel" role="menu" aria-label="Tools">
+        <a class="nav-panel-item" role="menuitem" href="tools.html#opening-preparation">
+          <span class="npi-label">Opening Preparation</span>
+          <span class="npi-desc">build a repertoire that fits you</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="puzzles.html">
+          <span class="npi-label">Puzzles</span>
+          <span class="npi-desc">a new position every day</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="rush.html">
+          <span class="npi-label">Tactics Rush</span>
+          <span class="npi-desc">beat the clock, three mistakes out</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="tools.html#group-studies">
+          <span class="npi-label">Group Studies</span>
+          <span class="npi-desc">shared boards and lines</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="tools.html#books">
+          <span class="npi-label">Books</span>
+          <span class="npi-desc">reading list by level</span>
+        </a>
+      </div>
+    </div>
+
+    <a href="why-nexus.html">Why Nexus</a>
+  </div>
+  <div class="nav-actions">
+    <!-- two ways in, one button; the link is the fallback without JavaScript -->
+    <div class="nav-login" data-nav-login>
+      <a href="school-dashboard.html" class="nav-cta" aria-expanded="false" aria-controls="loginPanel">
+        Log in
+        <svg class="nav-cta-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </a>
+      <div class="nav-login-panel" id="loginPanel" role="menu" aria-label="Log in">
+        <a class="nav-login-item" role="menuitem" href="student-dashboard.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 10L12 5 2 10l10 5 10-5z"></path><path d="M6 12v5c3 2 9 2 12 0v-5"></path>
+          </svg>
+          <span><b>Student</b><i>Your chapters, points and rank</i></span>
+        </a>
+        <a class="nav-login-item" role="menuitem" href="school-dashboard.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 21h18"></path><path d="M5 21V8l7-5 7 5v13"></path><path d="M9 21v-5h6v5"></path>
+          </svg>
+          <span><b>School</b><i>Every class, at a glance</i></span>
+        </a>
+      </div>
+    </div>
+    <!--
+      The demo form (assets/booking.js) intercepts this button and opens the
+      modal. The href is the fallback for anyone without JavaScript, so it must
+      stay a real destination.
+    -->
+    <a href="index.html" class="nav-demo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+        <path d="M3 10h18M8 3v4M16 3v4"></path>
+        <path d="m9.6 15.4 1.7 1.7 3.3-3.4"></path>
+      </svg>
+      Book a free trial
+    </a>
+  </div>
+</nav>
+
+<section class="block roster" id="coaches" aria-labelledby="mentorsHeading">
+  <div class="wrap">
+
+    <div class="rs-intro">
+      <p class="rs-eyebrow"><span class="rs-checker" aria-hidden="true"></span> Meet the mentors</p>
+      <div class="rs-head-row">
+        <h2 id="mentorsHeading">Three minds. One <em>mission</em>.</h2>
+        <div class="rs-aside">
+          <div class="rs-sticker" aria-hidden="true">
+            <b id="rsCount">03</b><span>coaches<br>on the floor</span>
+          </div>
+          <p>Every player is taught by someone who still competes. Open a card to read what each coach works on and how they teach it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rs-label">
+      <span>The roster</span>
+      <span>Tap a card for the full profile</span>
+    </div>
+
+    <!-- cards are generated from the COACHES array in assets/site.js, so a
+         fourth coach added there becomes a fourth card here -->
+    <div class="rs-grid" id="rsGrid"></div>
+
+  </div>
+</section>
+
+<!-- the profile, raised over the page -->
+<dialog class="rs-dialog" id="rsDialog" aria-labelledby="rsDialogName">
+  <div class="rs-d-layout">
+    <div class="rs-d-visual" id="rsDialogVisual">
+      <p class="rs-d-cap" id="rsDialogCap"></p>
+    </div>
+    <div class="rs-d-body">
+      <button type="button" class="rs-close" id="rsClose" aria-label="Close profile">&times;</button>
+      <p class="rs-d-role" id="rsDialogRole"></p>
+      <h3 id="rsDialogName"></h3>
+      <p class="rs-d-bio" id="rsDialogBio"></p>
+      <dl class="rs-facts" id="rsDialogFacts"></dl>
+      <div class="rs-d-nav">
+        <button type="button" id="rsPrev">&larr; Previous</button>
+        <p class="rs-d-count" id="rsDialogCount"></p>
+        <button type="button" id="rsNext">Next &rarr;</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<!-- Absorbed from the old standalone Honours page: the coaches' titles and
+     tournament record now live alongside their profiles. -->
+<section class="block honours" id="honours">
+  <div class="wrap">
+    <div class="hon-grid">
+      <div>
+        <div class="hon-frame">
+          <figure class="hon-photo">
+            <img src="assets/coaches/coach-3/2-trophy.jpg" id="honImg" width="540" height="405" loading="lazy" decoding="async" alt="Coach holding the trophy won at the Sindh Games 2024 chess event">
+          </figure>
+        </div>
+        <div class="hon-cap">Sindh Games 2024 &middot; Chess</div>
+      </div>
+
+      <div>
+        <div class="eyebrow">Honours</div>
+        <h2 style="font-size:clamp(1.7rem, 2.6vw, 2.3rem); line-height:1.2; margin-bottom:1.2rem;">Titles won at the board.</h2>
+        <p class="hon-lead">A record built at the board, not on a brochure. Every title below was won in a rated, officiated event.</p>
+
+        <div class="hon-list" id="honList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Absorbed from the old standalone About page; it is no longer in the nav.
+     TO DO: every bracketed string below still needs real copy. -->
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="block-head">
+      <div class="eyebrow">About us</div>
+      <h2>[Headline — replace. One line on why the academy exists.]</h2>
+      <p>[Supporting sentence — replace.]</p>
+    </div>
+
+    <div class="results-grid">
+      <div>
+        <p style="color:var(--ink-dim); line-height:1.75; max-width:52ch;">
+          [Opening paragraph — replace. Who founded the academy, when, and what problem it set out to solve.]
+        </p>
+        <p style="color:var(--ink-dim); line-height:1.75; max-width:52ch; margin-top:1.2rem;">
+          [Second paragraph — replace. How the academy teaches, and what makes the approach different.]
+        </p>
+        <p style="color:var(--ink-dim); line-height:1.75; max-width:52ch; margin-top:1.2rem;">
+          [Third paragraph — replace. Where students come from, and what they go on to do.]
+        </p>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="eyebrow" style="margin-bottom:1.2rem;">Academy office</div>
+        <ul style="list-style:none;">
+          <li style="padding:0.7rem 0; border-top:1px solid var(--line); color:var(--ink-dim); font-size:0.9rem;">
+            <strong style="color:var(--ink); font-weight:500;">Admissions</strong><br>[email — replace]</li>
+          <li style="padding:0.7rem 0; border-top:1px solid var(--line); color:var(--ink-dim); font-size:0.9rem;">
+            <strong style="color:var(--ink); font-weight:500;">Support</strong><br>[email — replace]</li>
+          <li style="padding:0.7rem 0; border-top:1px solid var(--line); color:var(--ink-dim); font-size:0.9rem;">
+            <strong style="color:var(--ink); font-weight:500;">Press</strong><br>[email — replace]</li>
+          <li style="padding:0.7rem 0; border-top:1px solid var(--line); color:var(--ink-dim); font-size:0.9rem;">
+            <strong style="color:var(--ink); font-weight:500;">Location</strong><br>[address — replace]</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="steps-strip" style="margin-top:5rem;">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <h4>[Value — replace]</h4>
+        <p>[One or two sentences — replace.]</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <h4>[Value — replace]</h4>
+        <p>[One or two sentences — replace.]</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <h4>[Value — replace]</h4>
+        <p>[One or two sentences — replace.]</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <h4>[Value — replace]</h4>
+        <p>[One or two sentences — replace.]</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <!-- real students from assets/faces/ — 160px crops of the photographs
+         in assets/students/. The row is duplicated so the loop is seamless. -->
+    <div class="cta-faces" aria-hidden="true">
+      <div class="cta-faces-row">
+        <span class="cta-face"><img src="assets/faces/inter-divisional-champion.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/star-trophy.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/open-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/rapid-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/stage-award.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/award-presentation.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/sindh-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/defence-day-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/youth-rapid-tournament.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/inter-divisional-champion.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/star-trophy.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/open-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/rapid-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/stage-award.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/award-presentation.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/sindh-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/defence-day-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/youth-rapid-tournament.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+      </div>
+    </div>
+
+    <div class="cta-steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <p class="cta-script">it started in one room</p>
+    <h2>
+      <span class="rv-line"><span class="rv-in">Every strong player</span></span>
+      <span class="rv-line"><span class="rv-in">started with <em>one move.</em></span></span>
+    </h2>
+    <p class="cta-sub">Sit down with a coach, play a game, and find out where you actually stand. No commitment until you know.</p>
+    <!-- opens the trial form; the href is the fallback without JavaScript -->
+    <a class="btn-primary" href="index.html" data-book-demo>Begin your journey</a>
+    <p class="cta-fine">Takes two minutes to arrange &middot; no card, no commitment</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand"><img src="assets/nexus-logo.png" alt="Nexus Chess Academy" width="133" height="48" loading="lazy" decoding="async"></div>
+        <p>An online academy for players who want to understand the game, not just play it.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Academy</h5>
+        <a href="coaches.html">Coaches</a>
+        <a href="learning-path.html">Learning Path</a>
+        <a href="results.html">Results</a>
+        <a href="why-nexus.html">Why Nexus</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href="tools.html">Tools</a>
+        <a href="school-dashboard.html">School dashboard</a>
+        <a href="coaches.html#about">About</a>
+      </div>
+      <div class="footer-col">
+        <h5>Academy office</h5>
+        <a href="coaches.html#about">Admissions</a>
+        <a href="coaches.html#about">Support</a>
+        <a href="coaches.html#about">Press</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="ft-mark">© 2026 Nexus Chess Academy</span>
+      <span>Terms · Privacy</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js?v=48092abe" defer></script>
+<script src="assets/booking.js?v=382adf0c" defer></script>
+</body>
+</html>

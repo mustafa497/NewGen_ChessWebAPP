@@ -1,0 +1,65 @@
+# Nexus Chess Academy — Apache config for cPanel hosting (Namecheap etc.)
+# Netlify reads netlify.toml; Apache reads this file. Keeping both means the
+# site behaves the same wherever it is hosted.
+
+# ---- default document ----
+DirectoryIndex index.html
+
+# ---- force https (Namecheap includes a free AutoSSL certificate) ----
+# If you have not issued the certificate yet in cPanel > SSL/TLS Status,
+# comment these three lines out or the site will fail to load.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ---- tidy URLs ----
+<IfModule mod_rewrite.c>
+  # /dashboard -> the school dashboard
+  RewriteRule ^dashboard/?$ school-dashboard.html [L]
+</IfModule>
+
+# The Honours page was folded into Coaches; keep any old links working.
+Redirect 301 /honours.html /coaches.html#honours
+# About was folded in the same way.
+Redirect 301 /about.html /coaches.html#about
+# The tuition page was removed; the demo form replaced it. A few links on
+# Learning Path and Why Nexus still name it, and so will old bookmarks.
+Redirect 301 /pricing.html /index.html
+
+# ---- caching ----
+# Images, CSS and JS are safe to cache hard because the filenames are stable
+# and you will be re-uploading the whole folder when you change them. If you
+# edit site.css and do not see the change, hard-refresh (Ctrl+F5) once.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg              "access plus 1 year"
+  ExpiresByType image/png               "access plus 1 year"
+  ExpiresByType image/x-icon            "access plus 1 year"
+  ExpiresByType text/css                "access plus 1 month"
+  ExpiresByType application/javascript  "access plus 1 month"
+  ExpiresByType text/html               "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  # ---- security ----
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ---- compression ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ---- keep the notes out of the public site ----
+<FilesMatch "\.(md|toml)$">
+  Require all denied
+</FilesMatch>

@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puzzles · Nexus Chess Academy</title>
+<meta name="description" content="A puzzle trainer for Nexus students — mating patterns by theme, piece and rating, with every solution machine-verified.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/site.css?v=b70a09ab">
+<link rel="stylesheet" href="assets/booking.css?v=74bdc325">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><a href="index.html"><img src="assets/nexus-logo.png" alt="Nexus Chess Academy" width="100" height="36" decoding="async"></a></div>
+  <div class="nav-links">
+    <a href="coaches.html">Coaches</a>
+    <a href="learning-path.html">Learning Path</a>
+    <a href="results.html">Results</a>
+
+    <div class="nav-drop" data-nav-drop>
+      <button class="nav-drop-btn" type="button" aria-expanded="false" aria-controls="toolsPanel">
+        Tools<span class="nav-caret" aria-hidden="true"></span>
+      </button>
+      <div class="nav-panel" id="toolsPanel" role="menu" aria-label="Tools">
+        <a class="nav-panel-item" role="menuitem" href="tools.html#opening-preparation">
+          <span class="npi-label">Opening Preparation</span>
+          <span class="npi-desc">build a repertoire that fits you</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="puzzles.html" aria-current="page">
+          <span class="npi-label">Puzzles</span>
+          <span class="npi-desc">a new position every day</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="rush.html">
+          <span class="npi-label">Tactics Rush</span>
+          <span class="npi-desc">beat the clock, three mistakes out</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="tools.html#group-studies">
+          <span class="npi-label">Group Studies</span>
+          <span class="npi-desc">shared boards and lines</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="tools.html#books">
+          <span class="npi-label">Books</span>
+          <span class="npi-desc">reading list by level</span>
+        </a>
+      </div>
+    </div>
+
+    <a href="why-nexus.html">Why Nexus</a>
+  </div>
+  <div class="nav-actions">
+    <!-- two ways in, one button; the link is the fallback without JavaScript -->
+    <div class="nav-login" data-nav-login>
+      <a href="school-dashboard.html" class="nav-cta" aria-expanded="false" aria-controls="loginPanel">
+        Log in
+        <svg class="nav-cta-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </a>
+      <div class="nav-login-panel" id="loginPanel" role="menu" aria-label="Log in">
+        <a class="nav-login-item" role="menuitem" href="student-dashboard.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 10L12 5 2 10l10 5 10-5z"></path><path d="M6 12v5c3 2 9 2 12 0v-5"></path>
+          </svg>
+          <span><b>Student</b><i>Your chapters, points and rank</i></span>
+        </a>
+        <a class="nav-login-item" role="menuitem" href="school-dashboard.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 21h18"></path><path d="M5 21V8l7-5 7 5v13"></path><path d="M9 21v-5h6v5"></path>
+          </svg>
+          <span><b>School</b><i>Every class, at a glance</i></span>
+        </a>
+      </div>
+    </div>
+    <!--
+      The demo form (assets/booking.js) intercepts this button and opens the
+      modal. The href is the fallback for anyone without JavaScript, so it must
+      stay a real destination.
+    -->
+    <a href="index.html" class="nav-demo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+        <path d="M3 10h18M8 3v4M16 3v4"></path>
+        <path d="m9.6 15.4 1.7 1.7 3.3-3.4"></path>
+      </svg>
+      Book a free trial
+    </a>
+  </div>
+</nav>
+
+<section class="block lab" id="puzzleLab">
+  <div class="wrap">
+
+    <header class="lab-head">
+      <p class="lab-eyebrow">Tools &middot; Puzzles</p>
+      <h1>Train the pattern, <em>not the move.</em></h1>
+      <p>Every position here ends in mate. Find it, and the idea behind it goes into your notes &mdash; then the same idea comes back in a position you have not seen.</p>
+    </header>
+
+    <!-- the timed arena lives on its own page -->
+    <a class="lab-rush" href="rush.html">
+      <span class="lab-rush-l">
+        <b>Nexus Tactics Rush</b>
+        <span>Beat the clock &mdash; three minutes, five minutes, or survival. Three mistakes and you are out.</span>
+      </span>
+      <span class="lab-rush-go">Start a run <span aria-hidden="true">&rarr;</span></span>
+    </a>
+
+    <!-- the two entry points -->
+    <div class="lab-cards">
+      <article class="lab-card">
+        <span class="lab-tag">&#9733; Featured</span>
+        <span class="lab-card-ico" aria-hidden="true">&#129513;</span>
+        <h2>Puzzles</h2>
+        <p><b>Daily puzzles</b> plus Healthy Mix, Themes, Pieces and Rating &mdash; every way to train, in one place.</p>
+        <div class="lab-chips">
+          <span class="lab-chip">&#9819; Every solution verified</span>
+          <span class="lab-chip">&#128293; <b id="pzTotal">22</b>&nbsp;positions</span>
+        </div>
+        <a class="lab-go" href="#pzBoard">Start Solving <span aria-hidden="true">&rarr;</span></a>
+      </article>
+
+      <article class="lab-card">
+        <span class="lab-tag is-live">Active now</span>
+        <span class="lab-card-ico" aria-hidden="true">&#127919;</span>
+        <h2>Focus Challenge</h2>
+        <p>Work one theme until it is automatic &mdash; pick a theme below and the set narrows to just those positions.</p>
+        <div class="lab-chips">
+          <span class="lab-chip">Streak tracking</span>
+          <span class="lab-chip">First-try accuracy</span>
+        </div>
+        <button class="lab-go" type="button" data-mode="theme">Start Challenge <span aria-hidden="true">&rarr;</span></button>
+      </article>
+    </div>
+
+    <!-- your dashboard -->
+    <div class="lab-stats">
+      <div class="lab-stat"><b id="pzStatSolved">0</b><span>Solved</span></div>
+      <div class="lab-stat"><b id="pzStatStreak">0</b><span>Current streak</span></div>
+      <div class="lab-stat"><b id="pzStatBest">0</b><span>Best streak</span></div>
+      <div class="lab-stat"><b id="pzStatAcc">0%</b><span>First-try accuracy</span></div>
+      <p class="lab-stat-note">Your figures, counted as you solve and kept in this browser only. Nothing is uploaded.</p>
+    </div>
+
+    <!-- how you want to train -->
+    <div class="lab-modes" role="group" aria-label="Choose how to train">
+      <button type="button" class="pz-mode is-on" data-mode="mix">Healthy Mix</button>
+      <button type="button" class="pz-mode" data-mode="theme">Themes</button>
+      <button type="button" class="pz-mode" data-mode="piece">Pieces</button>
+      <button type="button" class="pz-mode" data-mode="rating">Rating</button>
+    </div>
+    <div class="lab-filters" id="pzFilters" hidden></div>
+
+    <!-- the board -->
+    <div class="lab-solve">
+      <div class="pz-board" id="pzBoard" role="group" aria-label="Puzzle board"></div>
+
+      <div class="pz-side">
+        <div class="pz-meta">
+          <span class="pz-turn is-w" id="pzTurn">White to play</span>
+          <span class="pz-tag">Theme <b id="pzTheme">&mdash;</b></span>
+          <span class="pz-tag">Rating <b id="pzRating">&mdash;</b></span>
+          <span class="pz-counter" id="pzCounter">1 / 12</span>
+        </div>
+
+        <p class="pz-status" id="pzStatus" role="status" aria-live="polite"></p>
+        <p class="pz-idea" id="pzIdea" hidden></p>
+
+        <div class="pz-controls">
+          <button type="button" class="pz-btn" id="pzHint">Hint</button>
+          <button type="button" class="pz-btn" id="pzSolve">Show solution</button>
+          <button type="button" class="pz-btn" id="pzReset">Reset</button>
+        </div>
+        <div class="pz-controls">
+          <button type="button" class="pz-btn" id="pzPrev">&larr; Previous</button>
+          <button type="button" class="pz-btn is-key" id="pzNext">Next puzzle &rarr;</button>
+        </div>
+
+        <div id="pzSimilar"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <!-- real students from assets/faces/ — 160px crops of the photographs
+         in assets/students/. The row is duplicated so the loop is seamless. -->
+    <div class="cta-faces" aria-hidden="true">
+      <div class="cta-faces-row">
+        <span class="cta-face"><img src="assets/faces/inter-divisional-champion.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/star-trophy.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/open-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/rapid-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/stage-award.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/award-presentation.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/sindh-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/defence-day-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/youth-rapid-tournament.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/inter-divisional-champion.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/star-trophy.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/open-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/rapid-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/stage-award.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/award-presentation.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/sindh-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/defence-day-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/youth-rapid-tournament.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+      </div>
+    </div>
+
+    <div class="cta-steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <p class="cta-script">it started in one room</p>
+    <h2>
+      <span class="rv-line"><span class="rv-in">Every strong player</span></span>
+      <span class="rv-line"><span class="rv-in">started with <em>one move.</em></span></span>
+    </h2>
+    <p class="cta-sub">Sit down with a coach, play a game, and find out where you actually stand. No commitment until you know.</p>
+    <!-- opens the trial form; the href is the fallback without JavaScript -->
+    <a class="btn-primary" href="index.html" data-book-demo>Begin your journey</a>
+    <p class="cta-fine">Takes two minutes to arrange &middot; no card, no commitment</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand"><img src="assets/nexus-logo.png" alt="Nexus Chess Academy" width="133" height="48" loading="lazy" decoding="async"></div>
+        <p>An online academy for players who want to understand the game, not just play it.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Academy</h5>
+        <a href="coaches.html">Coaches</a>
+        <a href="learning-path.html">Learning Path</a>
+        <a href="results.html">Results</a>
+        <a href="why-nexus.html">Why Nexus</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href="tools.html">Tools</a>
+        <a href="school-dashboard.html">School dashboard</a>
+        <a href="coaches.html#about">About</a>
+      </div>
+      <div class="footer-col">
+        <h5>Academy office</h5>
+        <a href="coaches.html#about">Admissions</a>
+        <a href="coaches.html#about">Support</a>
+        <a href="coaches.html#about">Press</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="ft-mark">© 2026 Nexus Chess Academy</span>
+      <span>Terms · Privacy</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js?v=48092abe" defer></script>
+<script src="assets/booking.js?v=382adf0c" defer></script>
+<script src="assets/puzzles.js?v=e3d2453f" defer></script>
+</body>
+</html>

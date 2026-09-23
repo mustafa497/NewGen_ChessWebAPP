@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where Chess Meets Confidence, Curiosity, Creativity · Nexus Chess Academy</title>
+<meta name="description" content="An invitation-only online chess academy built with grandmasters and refined by engines.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/site.css?v=b70a09ab">
+<link rel="stylesheet" href="assets/booking.css?v=74bdc325">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><a href="index.html"><img src="assets/nexus-logo.png" alt="Nexus Chess Academy" width="100" height="36" decoding="async"></a></div>
+  <div class="nav-links">
+    <a href="coaches.html">Coaches</a>
+    <a href="learning-path.html">Learning Path</a>
+    <a href="results.html">Results</a>
+
+    <div class="nav-drop" data-nav-drop>
+      <button class="nav-drop-btn" type="button" aria-expanded="false" aria-controls="toolsPanel">
+        Tools<span class="nav-caret" aria-hidden="true"></span>
+      </button>
+      <div class="nav-panel" id="toolsPanel" role="menu" aria-label="Tools">
+        <a class="nav-panel-item" role="menuitem" href="tools.html#opening-preparation">
+          <span class="npi-label">Opening Preparation</span>
+          <span class="npi-desc">build a repertoire that fits you</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="puzzles.html">
+          <span class="npi-label">Puzzles</span>
+          <span class="npi-desc">a new position every day</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="rush.html">
+          <span class="npi-label">Tactics Rush</span>
+          <span class="npi-desc">beat the clock, three mistakes out</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="tools.html#group-studies">
+          <span class="npi-label">Group Studies</span>
+          <span class="npi-desc">shared boards and lines</span>
+        </a>
+        <a class="nav-panel-item" role="menuitem" href="tools.html#books">
+          <span class="npi-label">Books</span>
+          <span class="npi-desc">reading list by level</span>
+        </a>
+      </div>
+    </div>
+
+    <a href="why-nexus.html">Why Nexus</a>
+  </div>
+  <div class="nav-actions">
+    <!-- two ways in, one button; the link is the fallback without JavaScript -->
+    <div class="nav-login" data-nav-login>
+      <a href="school-dashboard.html" class="nav-cta" aria-expanded="false" aria-controls="loginPanel">
+        Log in
+        <svg class="nav-cta-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </a>
+      <div class="nav-login-panel" id="loginPanel" role="menu" aria-label="Log in">
+        <a class="nav-login-item" role="menuitem" href="student-dashboard.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 10L12 5 2 10l10 5 10-5z"></path><path d="M6 12v5c3 2 9 2 12 0v-5"></path>
+          </svg>
+          <span><b>Student</b><i>Your chapters, points and rank</i></span>
+        </a>
+        <a class="nav-login-item" role="menuitem" href="school-dashboard.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 21h18"></path><path d="M5 21V8l7-5 7 5v13"></path><path d="M9 21v-5h6v5"></path>
+          </svg>
+          <span><b>School</b><i>Every class, at a glance</i></span>
+        </a>
+      </div>
+    </div>
+    <!--
+      The demo form (assets/booking.js) intercepts this button and opens the
+      modal. The href is the fallback for anyone without JavaScript, so it must
+      stay a real destination.
+    -->
+    <a href="index.html" class="nav-demo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+        <path d="M3 10h18M8 3v4M16 3v4"></path>
+        <path d="m9.6 15.4 1.7 1.7 3.3-3.4"></path>
+      </svg>
+      Book a free trial
+    </a>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <canvas id="particles"></canvas>
+
+  <div class="content-wrap">
+    <div class="text-col reveal" id="heroText">
+      <div class="kicker">Invitation-only online academy</div>
+      <h1 class="headline">Where chess meets<br>
+        <span class="cword-rig" id="cwordRig" aria-hidden="true">
+          <span class="cword">confidence.</span>
+          <span class="cword">curiosity.</span>
+          <span class="cword">creativity.</span>
+          <span class="cword">courage.</span>
+          <span class="cword">critical thinking.</span>
+          <span class="cword-rule"></span>
+        </span>
+        <span class="sr-only">confidence, curiosity, creativity, courage, and critical thinking.</span>
+      </h1>
+      <p class="sub">Every lesson starts from a position your child has already played, and ends with something they can use next game.</p>
+
+      <div class="cta-row">
+        <a class="btn-primary" href="index.html" data-book-demo>Join Nexus</a>
+        <a class="btn-ghost" href="learning-path.html">
+          Explore program
+          <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+    </div>
+
+    <div class="board-col">
+      <div class="board-rig" id="boardRig">
+        <div class="board-base"></div>
+        <div class="board" id="board"></div>
+
+        <div class="pieces-layer">
+          <div class="piece-shadow shadow-king"></div>
+          <div class="piece-shadow shadow-knight"></div>
+          <div class="piece-shadow shadow-pawn"></div>
+
+          <div class="piece king">
+            <svg viewBox="0 0 64 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="glassKing" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#f2fbff" stop-opacity="0.95"/>
+                  <stop offset="50%" stop-color="#7fd8ff" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#4fd8ff" stop-opacity="0.6"/>
+                </linearGradient>
+              </defs>
+              <rect x="29" y="2" width="6" height="16" rx="1" fill="url(#glassKing)"/>
+              <rect x="23" y="8" width="18" height="5" rx="1" fill="url(#glassKing)"/>
+              <circle cx="32" cy="26" r="7" fill="url(#glassKing)" stroke="#d9f4ff" stroke-opacity="0.7" stroke-width="1"/>
+              <path d="M32 32C21 39 15 50 19 62C21 68 18 74 13 80H51C46 74 43 68 45 62C49 50 43 39 32 32Z" fill="url(#glassKing)" stroke="#d9f4ff" stroke-opacity="0.55" stroke-width="1"/>
+              <path d="M18 62H46" stroke="#d9f4ff" stroke-opacity="0.35" stroke-width="1"/>
+              <rect x="9" y="80" width="46" height="9" rx="2" fill="url(#glassKing)"/>
+            </svg>
+          </div>
+
+          <div class="piece knight">
+            <svg viewBox="0 0 64 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="glassKnight" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#f2fbff" stop-opacity="0.95"/>
+                  <stop offset="55%" stop-color="#7fd8ff" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#c9a66b" stop-opacity="0.45"/>
+                </linearGradient>
+              </defs>
+              <!-- a Staunton knight in profile: muzzle forward, forehead sloping
+                   back to the ear, mane notched down the back of the neck -->
+              <path d="M19 72
+                       C18 61 18 51 23 45
+                       C20 44.5 15 45 11 44
+                       C7.5 43 5.5 40.5 6.5 37.5
+                       C7.5 34.5 10.5 32.5 14 31.5
+                       C17 30.7 19.5 29.5 21.5 27
+                       C24 22.5 27 17.5 30 13.5
+                       L31.5 5
+                       L38 12
+                       C44.5 17.5 48 28 48 40.5
+                       C48 55 47 65 46 72 Z"
+                    fill="url(#glassKnight)" stroke="#d9f4ff" stroke-opacity="0.55" stroke-width="1"/>
+              <path d="M33 9 C40 15.5 44.5 26 44.5 40.5 C44.5 55 43.5 65 43 72 L38.5 72
+                       C39.5 63 40.5 52 40 41 C39.4 28.5 36 18 30.5 12.5 Z"
+                    fill="#d9f4ff" fill-opacity="0.20"/>
+              <g stroke="#0a0d14" stroke-opacity="0.4" stroke-width="1.3" stroke-linecap="round">
+                <path d="M37 18.6 L41.2 20.6"/>
+                <path d="M39.1 28.4 L43.2 30.1"/>
+                <path d="M40 39.2 L44.1 40.4"/>
+                <path d="M39.8 50 L43.9 50.8"/>
+                <path d="M39.4 60.8 L43.5 61.3"/>
+              </g>
+              <path d="M23 45 C21 41 20 37 21.5 33" stroke="#d9f4ff" stroke-opacity="0.35" stroke-width="1" fill="none"/>
+              <path d="M7 40.5 C10 41.5 13.5 41.5 16.5 40.5" stroke="#d9f4ff" stroke-opacity="0.5" stroke-width="1.1" fill="none"/>
+              <ellipse cx="9.6" cy="36.4" rx="1.5" ry="1.15" fill="#0a0705" fill-opacity="0.8"/>
+              <circle cx="22.6" cy="27.6" r="2" fill="#0a0705"/>
+              <path d="M15 80 L19 72 L46 72 L50 80 Z" fill="url(#glassKnight)" stroke="#d9f4ff" stroke-opacity="0.45" stroke-width="1"/>
+              <rect x="8" y="80" width="48" height="10" rx="2" fill="url(#glassKnight)"/>
+            </svg>
+          </div>
+
+          <div class="piece pawn">
+            <svg viewBox="0 0 64 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="glassPawn" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#f2fbff" stop-opacity="0.95"/>
+                  <stop offset="60%" stop-color="#7fd8ff" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#4fd8ff" stop-opacity="0.5"/>
+                </linearGradient>
+              </defs>
+              <circle cx="32" cy="24" r="12" fill="url(#glassPawn)" stroke="#d9f4ff" stroke-opacity="0.6" stroke-width="1"/>
+              <path d="M32 36C24 44 20 56 24 68H40C44 56 40 44 32 36Z" fill="url(#glassPawn)" stroke="#d9f4ff" stroke-opacity="0.5" stroke-width="1"/>
+              <rect x="17" y="68" width="30" height="9" rx="2" fill="url(#glassPawn)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span>SCROLL</span><div class="scroll-line"></div></div>
+</section>
+
+<section class="block method" id="how-it-works" aria-labelledby="methodHeading">
+  <div class="method-bg" aria-hidden="true"></div>
+  <div class="wrap">
+
+    <header class="method-head" id="methodHead">
+      <div>
+        <p class="method-eyebrow">The Nexus Method</p>
+        <h2 id="methodHeading">
+          <span class="mh-line"><span class="mh-in">Your next level starts</span></span>
+          <span class="mh-line"><span class="mh-in">with <span class="mh-em"><em>the right first move.</em></span></span></span>
+        </h2>
+      </div>
+      <p class="method-lede">An individual starting point. A clear training plan. A coach who understands how you learn.</p>
+    </header>
+
+    <div class="journey" id="journey">
+      <div class="rail" aria-hidden="true">
+        <span class="rail-line"></span>
+        <span class="rail-dot"></span>
+        <span class="rail-dot"></span>
+        <span class="rail-dot"></span>
+        <span class="rail-dot"></span>
+      </div>
+
+      <ol class="milestones">
+        <li class="milestone">
+          <div class="ms-inner" tabindex="0">
+            <div class="ms-art" aria-hidden="true">
+              <!-- a board position -->
+              <svg viewBox="0 0 60 56" role="presentation" focusable="false">
+                <rect class="wash" x="22" y="19" width="16" height="16" rx="4"/>
+                <rect class="ivory" x="8" y="5" width="44" height="44" rx="9"/>
+                <path class="ivory" d="M8 19h44M8 35h44M22 5v44M38 5v44"/>
+                <g class="anim-hop">
+                  <!-- a round, friendly pawn -->
+                  <circle class="gold-fill" cx="30" cy="24" r="4.2"/>
+                  <path class="gold" d="M26.6 32c0-2.4 1.5-4.2 3.4-4.2s3.4 1.8 3.4 4.2"/>
+                </g>
+              </svg>
+            </div>
+            <p class="ms-num">01</p>
+            <h3 class="ms-title">Discover your game</h3>
+            <p class="ms-copy">Start with a guided assessment game so we can understand your calculation, decision-making, and current strengths.</p>
+            <p class="ms-label">Your starting point</p>
+          </div>
+        </li>
+
+        <li class="milestone">
+          <div class="ms-inner" tabindex="0">
+            <div class="ms-art" aria-hidden="true">
+              <!-- ascending squares -->
+              <svg viewBox="0 0 60 56" role="presentation" focusable="false">
+                <!-- three rounded steps that climb in turn -->
+                <g class="anim-step">
+                  <rect class="ivory" x="5" y="34" width="15" height="15" rx="4.5"/>
+                </g>
+                <g class="anim-step anim-step-2">
+                  <rect class="ivory" x="22" y="22" width="15" height="15" rx="4.5"/>
+                </g>
+                <g class="anim-step anim-step-3">
+                  <rect class="wash" x="39" y="10" width="15" height="15" rx="4.5"/>
+                  <rect class="gold" x="39" y="10" width="15" height="15" rx="4.5"/>
+                  <path class="gold" d="M46.5 14.6l1.2 2.4 2.6.4-1.9 1.8.5 2.6-2.4-1.3-2.4 1.3.5-2.6-1.9-1.8 2.6-.4z"/>
+                </g>
+              </svg>
+            </div>
+            <p class="ms-num">02</p>
+            <h3 class="ms-title">Find your level</h3>
+            <p class="ms-copy">Enter our Beginner, Intermediate, or Advanced pathway based on your game, experience, and learning needs.</p>
+            <p class="ms-label">Your training path</p>
+          </div>
+        </li>
+
+        <li class="milestone">
+          <div class="ms-inner" tabindex="0">
+            <div class="ms-art" aria-hidden="true">
+              <!-- a knight -->
+              <svg viewBox="0 0 60 56" role="presentation" focusable="false">
+                <!-- a friendly coach, waving hello -->
+                <path class="ivory" d="M12 49c0-9.5 5.8-15 13-15s13 5.5 13 15"/>
+                <g class="anim-nod">
+                  <circle class="wash" cx="25" cy="18" r="9"/>
+                  <circle class="ivory" cx="25" cy="18" r="9"/>
+                  <circle class="gold-fill" cx="21.6" cy="17.2" r="1.6"/>
+                  <circle class="gold-fill" cx="28.4" cy="17.2" r="1.6"/>
+                  <path class="gold" d="M22.2 21.8c1.6 1.7 4 1.7 5.6 0"/>
+                </g>
+                <g class="anim-wave">
+                  <path class="gold" d="M37 36l7.5-7"/>
+                  <circle class="gold-fill" cx="45.6" cy="27.6" r="3"/>
+                </g>
+              </svg>
+            </div>
+            <p class="ms-num">03</p>
+            <h3 class="ms-title">Meet your coach</h3>
+            <p class="ms-copy">Work with a coach matched to your goals, learning pace, and availability.</p>
+            <p class="ms-label">Your personal guidance</p>
+          </div>
+        </li>
+
+        <li class="milestone">
+          <div class="ms-inner" tabindex="0">
+            <div class="ms-art" aria-hidden="true">
+              <!-- a circular practice motif -->
+              <svg viewBox="0 0 60 56" role="presentation" focusable="false">
+                <!-- a hand lowers the pawn onto the square: the opening move -->
+                <rect class="wash anim-land" x="19" y="38" width="22" height="16" rx="4.5"/>
+                <rect class="ivory" x="19" y="38" width="22" height="16" rx="4.5"/>
+                <g class="anim-play">
+                  <!-- a hand reaching down to the pawn: palm, three fingers, thumb -->
+                  <g class="ivory-fill">
+                    <rect x="20.5" y="6" width="20" height="17" rx="7"/>
+                    <rect x="22.2" y="19" width="5.2" height="12" rx="2.6"/>
+                    <rect x="27.9" y="19" width="5.2" height="15" rx="2.6"/>
+                    <rect x="33.6" y="19" width="5.2" height="12" rx="2.6"/>
+                    <rect x="16" y="11" width="6.5" height="5.4" rx="2.7"/>
+                  </g>
+                  <!-- the pawn it is placing -->
+                  <circle class="gold-fill" cx="30.8" cy="41.5" r="3.5"/>
+                  <path class="gold" d="M27.5 48.5c0-1.9 1.5-3.4 3.3-3.4s3.3 1.5 3.3 3.4"/>
+                </g>
+              </svg>
+            </div>
+            <p class="ms-num">04</p>
+            <h3 class="ms-title">Build your rhythm</h3>
+            <p class="ms-copy">Follow weekly coaching, focused practice, and regular game reviews to turn lessons into lasting progress.</p>
+            <p class="ms-label">Your ongoing growth</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="method-cta">
+      <p class="mc-lead">Every strong player starts somewhere.</p>
+      <div class="mc-right">
+        <!-- data-book-demo hands this to the demo form; the href stays as the
+             fallback for anyone without JavaScript. -->
+        <a class="mc-btn" id="methodBookBtn" href="index.html" data-book-demo>
+          Book Your Assessment <span aria-hidden="true">&rarr;</span>
+        </a>
+        <p class="mc-sub">Let&rsquo;s find your starting point.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="block levels" id="levels" aria-labelledby="levelsHeading">
+  <div class="levels-bg" aria-hidden="true"></div>
+  <div class="wrap">
+
+    <header class="levels-head">
+      <p class="levels-eyebrow">A place for every player</p>
+      <h2 id="levelsHeading">First moves to <em>next-level thinking.</em></h2>
+      <p class="levels-lede">Start where you are. We will help you take the next step.</p>
+    </header>
+
+    <ol class="level-grid">
+
+      <li class="level-card">
+        <div class="lc-inner">
+          <div class="lc-top">
+            <span class="lc-num">01</span>
+            <span class="lc-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 6.4C10.4 5 8.2 4.4 5.6 4.6v12.2c2.6-.2 4.8.4 6.4 1.8 1.6-1.4 3.8-2 6.4-1.8V4.6c-2.6-.2-4.8.4-6.4 1.8Z"/><path d="M12 6.4v12.2"/></svg>
+            </span>
+          </div>
+          <p class="lc-kicker">Where everyone starts</p>
+          <h3 class="lc-title">Beginner</h3>
+          <p class="lc-lead">Every strong player began here.</p>
+          <p class="lc-copy">From naming the pieces to landing that first checkmate. We build a foundation solid enough that the board stops feeling like a puzzle.</p>
+          <ul class="lc-list">
+            <li>The board, the pieces, the rules</li>
+            <li>First tactics and checkmate patterns</li>
+            <li>Good habits from move one</li>
+          </ul>
+          <a class="lc-link" href="learning-path.html">
+            Explore beginner
+            <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8.4 7H17v8.6"/></svg></span>
+          </a>
+        </div>
+      </li>
+
+      <li class="level-card is-featured">
+        <div class="lc-inner">
+          <div class="lc-top">
+            <span class="lc-num">02</span>
+            <span class="lc-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="4.8"/><circle cx="12" cy="12" r="1.5"/></svg>
+            </span>
+          </div>
+          <p class="lc-kicker">Turn moves into plans</p>
+          <h3 class="lc-title">Intermediate</h3>
+          <p class="lc-lead">Good moves become good plans.</p>
+          <p class="lc-copy">The level where chess stops being a series of individual moves. You learn to read what your opponent is trying to do, and to answer it with a plan of your own.</p>
+          <ul class="lc-list">
+            <li>Tactical patterns and calculation</li>
+            <li>Opening ideas and middlegame plans</li>
+            <li>The endgames that decide games</li>
+          </ul>
+          <a class="lc-link" href="learning-path.html">
+            Explore intermediate
+            <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8.4 7H17v8.6"/></svg></span>
+          </a>
+        </div>
+      </li>
+
+      <li class="level-card">
+        <div class="lc-inner">
+          <div class="lc-top">
+            <span class="lc-num">03</span>
+            <span class="lc-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7.6 4h8.8v5.2a4.4 4.4 0 0 1-8.8 0Z"/><path d="M7.6 5.6H4.8v1.6a3.2 3.2 0 0 0 3 3.2M16.4 5.6h2.8v1.6a3.2 3.2 0 0 1-3 3.2"/><path d="M12 13.6V17M8.8 20h6.4l-.7-3H9.5Z"/></svg>
+            </span>
+          </div>
+          <p class="lc-kicker">Train with intent</p>
+          <h3 class="lc-title">Advanced</h3>
+          <p class="lc-lead">Bring your best to the board.</p>
+          <p class="lc-copy">Preparation that holds up under a clock. Your games are analysed line by line, your repertoire is built around how you actually play, and every session points at the next event.</p>
+          <ul class="lc-list">
+            <li>A repertoire built around you</li>
+            <li>Deep analysis and calculation</li>
+            <li>Tournament preparation</li>
+          </ul>
+          <a class="lc-link" href="learning-path.html">
+            Explore advanced
+            <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8.4 7H17v8.6"/></svg></span>
+          </a>
+        </div>
+      </li>
+
+    </ol>
+
+    <p class="levels-note">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 19 6v5.4c0 4.2-2.8 7.4-7 9.4-4.2-2-7-5.2-7-9.4V6Z"/><path d="m9.2 12.2 2 2 3.6-3.8"/></svg>
+      Not sure which level fits? Your evaluation game finds your starting point.
+      <a href="index.html" data-book-demo>Find your level <span aria-hidden="true">&rarr;</span></a>
+    </p>
+
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <!-- real students from assets/faces/ — 160px crops of the photographs
+         in assets/students/. The row is duplicated so the loop is seamless. -->
+    <div class="cta-faces" aria-hidden="true">
+      <div class="cta-faces-row">
+        <span class="cta-face"><img src="assets/faces/inter-divisional-champion.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/star-trophy.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/open-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/rapid-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/stage-award.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/award-presentation.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/sindh-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/defence-day-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/youth-rapid-tournament.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/inter-divisional-champion.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/star-trophy.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/open-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/rapid-championship.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/stage-award.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/award-presentation.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/sindh-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/defence-day-festival.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-face"><img src="assets/faces/youth-rapid-tournament.jpg" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+      </div>
+    </div>
+
+    <div class="cta-steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <p class="cta-script">it started in one room</p>
+    <h2>
+      <span class="rv-line"><span class="rv-in">Every strong player</span></span>
+      <span class="rv-line"><span class="rv-in">started with <em>one move.</em></span></span>
+    </h2>
+    <p class="cta-sub">Sit down with a coach, play a game, and find out where you actually stand. No commitment until you know.</p>
+    <!-- opens the trial form; the href is the fallback without JavaScript -->
+    <a class="btn-primary" href="index.html" data-book-demo>Begin your journey</a>
+    <p class="cta-fine">Takes two minutes to arrange &middot; no card, no commitment</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand"><img src="assets/nexus-logo.png" alt="Nexus Chess Academy" width="133" height="48" loading="lazy" decoding="async"></div>
+        <p>An online academy for players who want to understand the game, not just play it.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Academy</h5>
+        <a href="coaches.html">Coaches</a>
+        <a href="learning-path.html">Learning Path</a>
+        <a href="results.html">Results</a>
+        <a href="why-nexus.html">Why Nexus</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href="tools.html">Tools</a>
+        <a href="school-dashboard.html">School dashboard</a>
+        <a href="coaches.html#about">About</a>
+      </div>
+      <div class="footer-col">
+        <h5>Academy office</h5>
+        <a href="coaches.html#about">Admissions</a>
+        <a href="coaches.html#about">Support</a>
+        <a href="coaches.html#about">Press</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="ft-mark">© 2026 Nexus Chess Academy</span>
+      <span>Terms · Privacy</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js?v=48092abe" defer></script>
+<script src="assets/booking.js?v=382adf0c" defer></script>
+</body>
+</html>

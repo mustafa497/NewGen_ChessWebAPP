@@ -1,0 +1,36 @@
+{
+  "generated": "2026-09-17",
+  "sources": [
+    {
+      "name": "nexus-composed",
+      "note": "Composed by tools/generate-puzzles.mjs, verified with assets/chess-core.js. Not Lichess data.",
+      "total": 86,
+      "batches": [
+        {
+          "file": "nexus-01.json",
+          "count": 25,
+          "minRating": 781,
+          "maxRating": 1209
+        },
+        {
+          "file": "nexus-02.json",
+          "count": 25,
+          "minRating": 1209,
+          "maxRating": 1357
+        },
+        {
+          "file": "nexus-03.json",
+          "count": 25,
+          "minRating": 1535,
+          "maxRating": 2206
+        },
+        {
+          "file": "nexus-04.json",
+          "count": 11,
+          "minRating": 2206,
+          "maxRating": 2260
+        }
+      ]
+    }
+  ]
+}
