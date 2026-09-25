@@ -1,0 +1,153 @@
+/* ================= REGISTRATION =================
+   register.html — one page, two forms: a student (with a parent's details)
+   and a general member. The fields, cards, consent row and buttons are the
+   ones the demo form already styles in booking.css; this file only lays out
+   the page around them and adds the tabs and the interest chips.
+   ========================================================== */
+.rg{
+  /* the same palette booking.css scopes to .bk, so its field rules read right here */
+  --bk-navy:#080c17;
+  --bk-navy-2:#0d1426;
+  --bk-blue:#4fd8ff;
+  --bk-blue-deep:#2f7dff;
+  --bk-gold:#c9a66b;
+  --bk-ivory:#f8f5ee;
+  --bk-ivory-2:#efeade;
+  --bk-ink:#131a28;
+  --bk-ink-soft:#5b6579;
+  --bk-line:#ddd6c6;
+  --bk-rose:#b4384f;
+  --bk-green:#1f7a5a;
+  --bk-ease:cubic-bezier(0.22, 1, 0.36, 1);
+
+  padding:8.5rem 0 6rem;
+  background:
+    radial-gradient(60rem 30rem at 10% 0%, rgba(79,216,255,0.07), transparent 60%),
+    radial-gradient(50rem 30rem at 100% 100%, rgba(201,166,107,0.06), transparent 60%);
+}
+.rg-grid{
+  display:grid; grid-template-columns:minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap:4.5rem; align-items:start;
+}
+
+/* ---- the intro column ---- */
+.rg-intro{ position:sticky; top:7.5rem; }
+.rg-intro .eyebrow{
+  font-size:0.72rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold);
+  margin-bottom:1.1rem;
+}
+.rg-intro h1{ font-size:clamp(2.1rem, 4vw, 3.2rem); line-height:1.08; margin-bottom:1.1rem; }
+.rg-intro h1 em{ font-style:italic; color:var(--cyan); }
+.rg-intro > p{ color:var(--ink-dim); line-height:1.7; max-width:42ch; }
+.rg-next{ list-style:none; margin:2.2rem 0 0; display:grid; gap:1.1rem; counter-reset:rg; }
+.rg-next li{ display:grid; grid-template-columns:2rem 1fr; gap:0.9rem; align-items:start; counter-increment:rg; }
+.rg-next li::before{
+  content:counter(rg); width:2rem; height:2rem; border-radius:50%;
+  display:grid; place-items:center; font-size:0.8rem;
+  border:1px solid var(--gold-dim); color:var(--gold);
+}
+.rg-next b{ display:block; font-weight:500; font-size:0.95rem; margin-bottom:0.2rem; }
+.rg-next span{ display:block; font-size:0.84rem; color:var(--ink-dim); line-height:1.55; }
+.rg-have{ margin-top:2.2rem; font-size:0.86rem; color:var(--ink-dim); }
+.rg-have a{ color:var(--cyan); text-underline-offset:3px; }
+
+/* ---- the card ---- */
+.rg-card{
+  background:var(--bk-ivory); color:var(--bk-ink);
+  border-radius:18px; overflow:hidden;
+  box-shadow:0 40px 90px -40px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.06);
+}
+.rg-tabs{
+  display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;
+  padding:0.45rem; margin:1.4rem 2rem 0;
+  background:var(--bk-ivory-2); border-radius:12px;
+}
+.rg-tab{
+  display:flex; align-items:center; justify-content:center; gap:0.55rem;
+  padding:0.75rem 0.8rem; border:none; border-radius:9px; cursor:pointer;
+  background:transparent; color:var(--bk-ink-soft);
+  font-family:inherit; font-size:0.9rem; font-weight:500;
+  transition:background .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.rg-tab svg{ width:18px; height:18px; flex:none; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.rg-tab:hover{ color:var(--bk-ink); }
+.rg-tab[aria-selected="true"]{ background:#fff; color:var(--bk-ink); box-shadow:0 2px 8px -3px rgba(19,26,40,0.25); }
+.rg-tab:focus-visible{ outline:2px solid var(--bk-blue-deep); outline-offset:2px; }
+
+.rg-form{ padding:1.6rem 2rem 0; }
+.rg-form[hidden]{ display:none; }
+.rg-form h2{ font-size:1.35rem; margin-bottom:0.3rem; color:var(--bk-ink); }
+.rg-form .rg-sub{ font-size:0.84rem; color:var(--bk-ink-soft); line-height:1.55; margin-bottom:1.4rem; }
+.rg-section{
+  font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase; font-weight:600;
+  color:var(--bk-ink-soft); margin:1.6rem 0 0.9rem; padding-top:1.2rem;
+  border-top:1px solid var(--bk-line);
+}
+.rg-row2{ display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; }
+
+/* three cards side by side when there is room for them */
+.rg .bk-cards.three{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
+.rg .bk-cards.three .bk-card-opt{ flex-direction:column; align-items:flex-start; gap:0.55rem; }
+.rg .bk-cards.three .tick{ position:absolute; top:0.7rem; right:0.7rem; }
+
+/* ---- interest chips (checkboxes) ---- */
+.rg-chips{ display:flex; flex-wrap:wrap; gap:0.5rem; }
+.rg-chip{ position:relative; cursor:pointer; }
+.rg-chip input{ position:absolute; opacity:0; width:1px; height:1px; }
+.rg-chip span{
+  display:inline-block; padding:0.5rem 0.9rem; border-radius:999px;
+  border:1px solid var(--bk-line); background:#fff; font-size:0.82rem;
+  transition:border-color .2s ease, background .2s ease, color .2s ease;
+}
+.rg-chip:hover span{ border-color:#b9c3d4; }
+.rg-chip input:checked + span{ border-color:var(--bk-blue-deep); background:rgba(47,125,255,0.1); color:#1a4fb8; }
+.rg-chip input:focus-visible + span{ outline:2px solid var(--bk-blue-deep); outline-offset:2px; }
+
+.rg-consents{ display:grid; gap:0.55rem; }
+.rg-foot{ padding:1.2rem 2rem 1.8rem; border-top:1px solid var(--bk-line); margin:1.4rem -2rem 0; }
+.rg-foot .bk-go{ width:100%; }
+
+/* ---- done ---- */
+.rg-done{ display:none; padding:2.4rem 2rem 2rem; text-align:center; }
+.rg-done.on{ display:block; animation:bkPane .4s var(--bk-ease); }
+.rg-done .seal{
+  width:54px; height:54px; margin:0 auto 1.1rem; border-radius:50%;
+  display:grid; place-items:center; font-size:1.4rem;
+  background:linear-gradient(140deg, var(--bk-blue), var(--bk-blue-deep)); color:#fff;
+  box-shadow:0 12px 26px -10px rgba(47,125,255,0.8);
+}
+.rg-done h2{ font-size:1.4rem; margin-bottom:0.6rem; }
+.rg-done > p{ font-size:0.9rem; line-height:1.65; color:var(--bk-ink-soft); margin:0 auto 1.3rem; max-width:44ch; }
+.rg-done dl{
+  text-align:left; margin:0 auto 1.5rem; max-width:30rem;
+  border:1px solid var(--bk-line); border-radius:12px; background:#fff; overflow:hidden;
+}
+.rg-done dl div{ display:grid; grid-template-columns:9rem 1fr; gap:0.8rem; padding:0.6rem 0.95rem; font-size:0.83rem; }
+.rg-done dl div + div{ border-top:1px solid var(--bk-line); }
+.rg-done dt{ color:var(--bk-ink-soft); }
+.rg-done dd{ margin:0; overflow-wrap:anywhere; }
+.rg-done .bk-go{ display:inline-block; flex:none; padding:0.85rem 1.6rem; text-decoration:none; }
+
+@media (max-width:960px){
+  .rg{ padding-top:7rem; }
+  .rg-grid{ grid-template-columns:1fr; gap:2.5rem; }
+  .rg-intro{ position:static; }
+  .rg-next{ display:none; }
+}
+@media (max-width:560px){
+  .rg-tabs{ margin:1rem 1rem 0; }
+  .rg-form{ padding:1.3rem 1.1rem 0; }
+  .rg-foot{ padding:1.1rem 1.1rem 1.5rem; margin:1.4rem -1.1rem 0; }
+  .rg-done{ padding:2rem 1.1rem 1.6rem; }
+  .rg-row2{ grid-template-columns:1fr; gap:0; }
+  .rg .bk-cards.three{ grid-template-columns:1fr; }
+  .rg .bk-cards.three .bk-card-opt{ flex-direction:row; align-items:center; gap:0.8rem; }
+  .rg .bk-cards.three .tick{ position:static; }
+  .rg-done dl div{ grid-template-columns:1fr; gap:0.1rem; }
+  .rg-card{ border-radius:14px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .rg-done.on{ animation:none; }
+}
+.rg-tabs[hidden]{ display:none; }
+.rg-done{ scroll-margin-top:7rem; }

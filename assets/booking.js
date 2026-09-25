@@ -18,7 +18,7 @@
   /* ---------------------------------------------------------------
      CONFIGURATION — the two lines you edit after deploying the script
      --------------------------------------------------------------- */
-  var ENDPOINT = '';          // e.g. 'https://script.google.com/macros/s/AKfy.../exec'
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbypD02QDMeGs4uQlI9fk64rl8AvJKXG-wMd4cF8rSILJRrXNcKD9Afi6hp-NWAZnmX2/exec';          // e.g. 'https://script.google.com/macros/s/AKfy.../exec'
   var TOKEN    = 'nexus_uWWd9Zad2co7MZ0lqkRbktYV';          // must match SHARED_TOKEN in the Apps Script
 
   /* Digits only, with the country code and no '+' or spaces, e.g. '923001234567'.

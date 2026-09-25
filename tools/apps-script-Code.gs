@@ -1,5 +1,5 @@
 /**
- * Nexus Chess Academy — demo-class booking endpoint
+ * Nexus Chess Academy - demo-class booking endpoint
  * =================================================
  * Receives a booking from assets/booking.js and appends a row to the sheet.
  *
@@ -12,7 +12,7 @@
  *  4. Save, then Deploy -> New deployment -> type "Web app".
  *       Execute as:        Me
  *       Who has access:    Anyone
- *     "Anyone" is required — the visitor's browser is not signed in to Google.
+ *     "Anyone" is required - the visitor's browser is not signed in to Google.
  *     The token below is what stops strangers writing rows.
  *  5. Copy the /exec URL it gives you.
  *  6. In assets/booking.js set:
@@ -181,7 +181,7 @@ function isDuplicate(sheet, parent, student, digits) {
   for (var i = 0; i < rows.length; i++) {
     var when = rows[i][0];
     if (!(when instanceof Date) || when.getTime() < cutoff) continue;
-    /* column 7 is Phone — keep this in step with HEADERS */
+    /* column 7 is Phone - keep this in step with HEADERS */
     var sameDigits = String(rows[i][6] || '').replace(/[^0-9]/g, '') === digits;
     if (String(rows[i][1]) === parent && String(rows[i][2]) === student && sameDigits) return true;
   }
@@ -209,7 +209,7 @@ function reply(status, error, ok) {
 }
 
 /* ================================================================
-   REGISTRATION — from register.html (assets/register.js)
+   REGISTRATION - from register.html (assets/register.js)
    Students and members each get a tab of their own, created with a header
    row the first time one arrives. The academy reads these rows, confirms,
    and issues the login; nothing here creates an account.
@@ -327,6 +327,6 @@ function setup() {
   book();
   tab(STUDENT_SHEET, STUDENT_HEADERS);
   tab(MEMBER_SHEET, MEMBER_HEADERS);
-  Logger.log('Ready: ' + spreadsheet().getName() + ' — tabs ' +
+  Logger.log('Ready: ' + spreadsheet().getName() + ' - tabs ' +
     [SHEET_NAME, STUDENT_SHEET, MEMBER_SHEET].join(', '));
 }

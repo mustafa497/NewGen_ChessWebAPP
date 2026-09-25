@@ -13,6 +13,8 @@
     --ink-dim:#8d99b2;
     --line:rgba(255,255,255,0.09);
     --ease-lux:cubic-bezier(0.22, 1, 0.36, 1);
+    /* NAV LOGO SIZE - the one number to change. clamp(smallest, grows with screen width, largest) */
+    --logo-size:clamp(46px, 4.4vw, 64px);
   }
 
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -37,6 +39,15 @@
   .brand img{ height:36px; width:auto; }
   .footer-brand .brand img{ height:48px; }
   @media (max-width:600px){ .brand img{ height:28px; } }
+  /* the round badge in the top bar; its size comes from --logo-size above */
+  .nav .brand img.nav-badge{
+    width:var(--logo-size); height:var(--logo-size); border-radius:50%;
+    box-shadow:0 0 0 1px rgba(79,216,255,0.35), 0 6px 22px -6px rgba(47,125,255,0.65);
+    transition:transform .35s var(--ease-lux), box-shadow .35s ease;
+  }
+  .nav .brand a:hover img.nav-badge{ transform:scale(1.05); box-shadow:0 0 0 1px rgba(79,216,255,0.6), 0 8px 28px -6px rgba(47,125,255,0.85); }
+  .nav .brand a:focus-visible{ outline:2px solid var(--cyan); outline-offset:4px; border-radius:50%; }
+  @media (prefers-reduced-motion: reduce){ .nav .brand img.nav-badge{ transition:none; } }
   .nav-links{ display:flex; align-items:center; gap:2.3rem; font-size:0.9rem; color:var(--ink-dim); }
   .nav-links > a{ text-decoration:none; transition:color .3s; }
   .nav-links > a:hover{ color:var(--ink); }
@@ -472,12 +483,92 @@
     40%,100%{ left:44.5%; top:66%; opacity:0.78; transform:scale(1);    filter:blur(1.4px); }
   }
 
+  /* ================= THE CRYSTAL KNIGHT =================
+     The hero knight is the glass knight's shape in the old knight's icy-blue
+     glow (assets/knight-glow.webp, made from assets/knights/knight-crystal-cutout.png).
+     Its box keeps the proportions of the drawn pieces, so the knightMove
+     keyframes above still put its base on the right square.
+
+     Each jump plays in three beats, after the sketch in ideas/:
+       1. the lines - arcs draw out across the board to the squares it
+                      could go to; the one it takes is brighter
+       2. the jump  - the knight lifts off and flies along the chosen arc
+       3. the trail - three copies follow a beat behind it, fading, so the
+                      move leaves a shadow in the air
+     All of it runs on the same 9s clock as the knight. */
+  .piece.crystal{ width:27%; aspect-ratio:64/92; }
+  /* KNIGHT SIZE AND SHAPE: height is how tall the knight stands, width how
+     thick it is (keep left = (100% - width) / 2 so it stays centred). The base
+     stays on the same spot whatever the numbers. */
+  .piece.crystal img{
+    position:absolute; bottom:0; display:block;
+    height:76%; width:64%; left:18%;
+    object-fit:fill;
+  }
+
+  /* ---- 3. the trail ---- */
+  .piece.knight.ghost{
+    opacity:0;
+    animation:knightMove 9s ease-in-out infinite, knightTrail 9s linear infinite;
+  }
+  .piece.knight.ghost img{ filter:saturate(1.3) blur(0.8px); }
+  .piece.knight.ghost.g1{ --o:0.5;  animation-delay:0.16s, 0.16s; }
+  .piece.knight.ghost.g2{ --o:0.32; animation-delay:0.32s, 0.32s; }
+  .piece.knight.ghost.g3{ --o:0.18; animation-delay:0.48s, 0.48s; }
+  @keyframes knightTrail{
+    0%, 31%, 53%, 81% { opacity:0; }
+    36%, 46%          { opacity:var(--o); }
+    86%, 96%          { opacity:var(--o); }
+    100%              { opacity:0; }
+  }
+
+  /* ---- 1. the lines, lying on the board. Their ends are measured points
+     where the knight's base meets the board, in board-rig percent. ---- */
+  .knight-arcs{
+    position:absolute; left:0; top:0; width:100%; height:100%;
+    transform:translateZ(2px); overflow:visible; pointer-events:none;
+  }
+  .arc{
+    fill:none; stroke:var(--cyan); stroke-width:0.7; stroke-linecap:round;
+    stroke-dasharray:100; stroke-dashoffset:100; opacity:0;
+    filter:drop-shadow(0 0 1.6px rgba(79,216,255,1));
+  }
+  .arc.chosen{ stroke:#dff6ff; stroke-width:1.1; }
+  .arc-a{ animation:arcA 9s ease-in-out infinite; }
+  .arc-b{ animation:arcB 9s ease-in-out infinite; }
+  .arc-a.chosen{ animation-name:arcAChosen; }
+  .arc-b.chosen{ animation-name:arcBChosen; }
+  @keyframes arcA{
+    0%, 17%   { stroke-dashoffset:100; opacity:0; }
+    25%, 32%  { stroke-dashoffset:0;   opacity:0.8; }
+    40%, 100% { stroke-dashoffset:0;   opacity:0; }
+  }
+  @keyframes arcAChosen{
+    0%, 17%   { stroke-dashoffset:100; opacity:0; }
+    25%, 44%  { stroke-dashoffset:0;   opacity:0.95; }
+    54%, 100% { stroke-dashoffset:0;   opacity:0; }
+  }
+  @keyframes arcB{
+    0%, 67%   { stroke-dashoffset:100; opacity:0; }
+    75%, 82%  { stroke-dashoffset:0;   opacity:0.8; }
+    90%, 100% { stroke-dashoffset:0;   opacity:0; }
+  }
+  @keyframes arcBChosen{
+    0%, 67%   { stroke-dashoffset:100; opacity:0; }
+    75%, 94%  { stroke-dashoffset:0;   opacity:0.95; }
+    100%      { stroke-dashoffset:0;   opacity:0; }
+  }
+  .hero.is-offscreen .arc{ animation-play-state:paused; }
+
   @media (max-width:900px){
     .content-wrap{ grid-template-columns:1fr; text-align:center; }
     .text-col{ align-items:center; text-align:center; }
     .cta-row{ justify-content:center; }
     .board-col{ order:-1; min-height:360px; margin-bottom:1rem; }
     .board-rig{ transform:rotateX(46deg) rotateZ(38deg) scale(0.9); max-width:320px; }
+    /* the flatter tilt lands the lifted pieces up and to the left of where
+       they stand on a wide screen; the arcs follow them (measured) */
+    .knight-arcs{ transform:translate(-11.1%, -13.4%) translateZ(2px); }
     h1.headline{ max-width:100%; }
   }
   @media (prefers-reduced-motion: reduce){
@@ -488,6 +579,7 @@
     .piece.knight{ transform:translateZ(120px) rotateZ(-38deg) rotateX(-52deg) rotateY(-10deg); }
     .piece.pawn{ transform:translateZ(70px) rotateZ(-38deg) rotateX(-52deg); }
     .board-rig{ transition:none; }
+    .piece.ghost, .knight-arcs{ display:none; }
   }
 
   .scroll-cue{
